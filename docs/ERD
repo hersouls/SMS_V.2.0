@@ -1,140 +1,566 @@
-# Moonwave 구독관리 ERD (2025/최신)
+# 🌊 Moonwave 구독관리 ERD v2.0 (2025 최신/상세)
 
-## 1. 전체 ERD 구조 요약
-
-[auth.users]
-    │ 1
-    │
-    │───< (N) [subscriptions]
-    │              │
-    │              │───< (N) [subscription_alarms]
-    │
-    │───< (1) [exchange_rates]
-
-- [auth.users] (유저) : Supabase/Firebase 등 인증 시스템의 사용자 테이블
-- [subscriptions] (구독카드) : 유저별 구독 관리(개인전용, 공유 불가)
-- [exchange_rates] (환율정보) : 유저별 1:1 환율값 저장
-- [subscription_alarms] (알람) : 구독카드별 커스텀 알람 옵션/이력
-
----
-
-## 2. 엔터티 상세 정의
-
-### (1) auth.users (인증유저)
-- **id (UUID)** : PK, 모든 테이블의 user_id FK로 연동
-- 기타 인증/프로필 필드 (별도 관리)
-
----
-
-### (2) subscriptions (구독카드)
-- **id (UUID)** : PK, 각 구독 고유값
-- **user_id (UUID)** : FK → auth.users.id  
-  (로그인 유저별로 완전 분리, 반드시 소유자 존재)
-- **service_name (TEXT)** : 서비스명(직접입력)
-- **service_url (TEXT)** : 서비스 URL
-- **service_image_url (TEXT)** : 서비스 로고/썸네일(직접업로드/URL)
-- **category (TEXT[])** : 카테고리 다중선택(배열)
-- **status (TEXT)** : 구독상태 (active/paused/canceled)
-- **amount (NUMERIC)** : 결제금액(숫자)
-- **currency (TEXT)** : 'KRW' 또는 'USD'
-- **payment_cycle (TEXT)** : 'monthly', 'yearly', 'once'
-- **payment_day (INTEGER)** : 결제일(1~31)
-- **payment_method (TEXT)** : 결제수단(카드사/직접입력)
-- **start_date (DATE)** : 시작일
-- **end_date (DATE)** : 만료/갱신일
-- **auto_renewal (BOOLEAN)** : 자동갱신
-- **alarm_days (INTEGER[])** : 결제알람 (N일 전/당일 등)
-- **tier (TEXT)** : 티어/등급
-- **benefits (TEXT)** : 주요 혜택
-- **tags (TEXT[])** : 태그(배열)
-- **memo (TEXT)** : 메모/비고
-- **created_at, updated_at (TIMESTAMPTZ)** : 생성/수정일
-
-- **관계**:
-    - user_id → users.id (N:1)
-    - 1:N으로 subscription_alarms와 연결
-
----
-
-### (3) exchange_rates (환율정보)
-- **user_id (UUID)** : PK, users.id와 1:1 (각 유저별 한 행)
-- **usd_krw (NUMERIC)** : 현재 적용 환율(원/$)
-- **updated_at (TIMESTAMPTZ)** : 수정일
-
-- **관계**:
-    - user_id → users.id (1:1)
-
----
-
-### (4) subscription_alarms (알람/알림)
-- **id (UUID)** : PK
-- **user_id (UUID)** : FK → users.id
-- **subscription_id (UUID)** : FK → subscriptions.id
-- **alarm_type (TEXT)** : 결제예정/자동연장/만료/실패/변동 등
-- **alarm_day (INTEGER)** : N일 전/당일
-- **alarm_time (TIME)** : 알람 시각(옵션)
-- **is_active (BOOLEAN)** : 활성화 여부
-- **created_at (TIMESTAMPTZ)** : 생성일
-
-- **관계**:
-    - user_id → users.id (N:1)
-    - subscription_id → subscriptions.id (N:1)
-
----
-
-## 3. 관계도 (ERD Mermaid 다이어그램)
+## 1. 전체 ERD 구조 개요
 
 ```mermaid
 erDiagram
+    auth_users ||--o{ subscriptions : "1:N"
+    auth_users ||--|| exchange_rates : "1:1"
+    auth_users ||--o{ subscription_alarms : "1:N"
+    auth_users ||--o{ notification_history : "1:N"
+    auth_users ||--o{ user_categories : "1:N"
+    auth_users ||--o{ payment_methods : "1:N"
+    
+    subscriptions ||--o{ subscription_alarms : "1:N"
+    subscriptions ||--o{ subscription_history : "1:N"
+    subscriptions ||--o{ subscription_categories : "1:N"
+    
+    user_categories ||--o{ subscription_categories : "1:N"
+    payment_methods ||--o{ subscriptions : "1:N"
+```
 
-  auth_users {
-    UUID id PK
-    // ... (생략: 인증/프로필)
-  }
+### 데이터베이스 설계 원칙
+- **유저 격리**: 모든 데이터는 user_id로 완전 분리
+- **Soft Delete**: 중요 데이터는 삭제 대신 상태 변경
+- **감사 추적**: created_at, updated_at 필수
+- **타입 안전성**: ENUM 대신 CHECK 제약 사용
+- **성능 최적화**: 적절한 인덱스와 파티셔닝
 
-  subscriptions {
-    UUID id PK
-    UUID user_id FK
-    TEXT service_name
-    TEXT service_url
-    TEXT service_image_url
-    TEXT[] category
-    TEXT status
-    NUMERIC amount
-    TEXT currency
-    TEXT payment_cycle
-    INTEGER payment_day
-    TEXT payment_method
-    DATE start_date
-    DATE end_date
-    BOOLEAN auto_renewal
-    INTEGER[] alarm_days
-    TEXT tier
-    TEXT benefits
-    TEXT[] tags
-    TEXT memo
-    TIMESTAMPTZ created_at
-    TIMESTAMPTZ updated_at
-  }
+---
 
-  exchange_rates {
-    UUID user_id PK
-    NUMERIC usd_krw
-    TIMESTAMPTZ updated_at
-  }
+## 2. 테이블 상세 정의
 
-  subscription_alarms {
-    UUID id PK
-    UUID user_id FK
-    UUID subscription_id FK
-    TEXT alarm_type
-    INTEGER alarm_day
-    TIME alarm_time
-    BOOLEAN is_active
-    TIMESTAMPTZ created_at
-  }
+### 2.1 auth.users (Supabase Auth 제공)
+```sql
+-- Supabase Auth에서 관리하는 사용자 테이블
+-- id (UUID): 모든 테이블의 user_id FK로 사용
+-- email, created_at, updated_at 등 기본 필드 포함
+```
 
-  auth_users ||--o{ subscriptions : "1:N"
-  auth_users ||--|| exchange_rates : "1:1"
-  subscriptions ||--o{ subscription_alarms : "1:N"
-  auth_users ||--o{ subscription_alarms : "1:N"
+### 2.2 subscriptions (구독 서비스)
+```sql
+CREATE TABLE subscriptions (
+    -- 기본 식별자
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    
+    -- 서비스 정보
+    service_name TEXT NOT NULL,
+    service_url TEXT,
+    service_image_url TEXT, -- 서비스 로고 URL 또는 Storage 경로
+    service_id TEXT, -- 외부 서비스 고유 ID (선택)
+    
+    -- 결제 정보
+    amount NUMERIC(12,2) NOT NULL CHECK (amount >= 0),
+    currency TEXT NOT NULL CHECK (currency IN ('KRW', 'USD')),
+    payment_cycle TEXT NOT NULL CHECK (payment_cycle IN ('monthly', 'yearly', 'once')),
+    payment_day INTEGER CHECK (payment_day >= 1 AND payment_day <= 31),
+    payment_method_id UUID REFERENCES payment_methods(id) ON DELETE SET NULL,
+    
+    -- 구독 상태
+    status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'paused', 'canceled')),
+    start_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    end_date DATE,
+    next_payment_date DATE, -- 자동 계산 필드
+    auto_renewal BOOLEAN DEFAULT true,
+    
+    -- 분류 및 태그
+    tier TEXT, -- Basic, Premium, Enterprise 등
+    benefits TEXT, -- 주요 혜택 설명
+    tags TEXT[] DEFAULT '{}', -- 사용자 정의 태그
+    memo TEXT, -- 사용자 메모
+    
+    -- 알림 설정 (기본값)
+    alarm_days INTEGER[] DEFAULT '{3,1,0}', -- 3일전, 1일전, 당일
+    
+    -- 메타데이터
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    deleted_at TIMESTAMPTZ, -- Soft delete
+    
+    -- 인덱스를 위한 계산 필드
+    is_active BOOLEAN GENERATED ALWAYS AS (status = 'active' AND deleted_at IS NULL) STORED,
+    monthly_amount NUMERIC GENERATED ALWAYS AS (
+        CASE 
+            WHEN payment_cycle = 'monthly' THEN amount
+            WHEN payment_cycle = 'yearly' THEN amount / 12
+            ELSE 0
+        END
+    ) STORED
+);
+
+-- 인덱스
+CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
+CREATE INDEX idx_subscriptions_payment_day ON subscriptions(payment_day) WHERE is_active = true;
+CREATE INDEX idx_subscriptions_next_payment ON subscriptions(next_payment_date) WHERE is_active = true;
+CREATE INDEX idx_subscriptions_status ON subscriptions(status) WHERE deleted_at IS NULL;
+```
+
+### 2.3 exchange_rates (환율 정보)
+```sql
+CREATE TABLE exchange_rates (
+    user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    usd_krw NUMERIC(10,4) NOT NULL DEFAULT 1300.0000 CHECK (usd_krw > 0),
+    auto_update BOOLEAN DEFAULT false, -- 자동 업데이트 여부
+    last_auto_update TIMESTAMPTZ, -- 마지막 자동 업데이트 시각
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+### 2.4 subscription_alarms (알람 설정)
+```sql
+CREATE TABLE subscription_alarms (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+    
+    -- 알람 유형 및 설정
+    alarm_type TEXT NOT NULL CHECK (alarm_type IN (
+        'payment_due', -- 결제 예정
+        'payment_failed', -- 결제 실패
+        'price_changed', -- 가격 변동
+        'subscription_expiring', -- 구독 만료 임박
+        'auto_renewal', -- 자동 갱신
+        'benefit_expiring' -- 혜택 만료
+    )),
+    alarm_day INTEGER NOT NULL, -- N일 전 (음수는 N일 후)
+    alarm_time TIME DEFAULT '09:00:00', -- 알람 시각
+    
+    -- 상태
+    is_active BOOLEAN DEFAULT true,
+    last_triggered_at TIMESTAMPTZ,
+    
+    -- 메타데이터
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    
+    -- 복합 유니크 제약
+    UNIQUE(subscription_id, alarm_type, alarm_day)
+);
+
+-- 인덱스
+CREATE INDEX idx_alarms_active ON subscription_alarms(subscription_id, is_active) WHERE is_active = true;
+CREATE INDEX idx_alarms_trigger ON subscription_alarms(alarm_day, alarm_time) WHERE is_active = true;
+```
+
+### 2.5 user_categories (사용자 정의 카테고리)
+```sql
+CREATE TABLE user_categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    color TEXT DEFAULT '#3B82F6', -- HEX 색상 코드
+    icon TEXT, -- 아이콘 이름 또는 이모지
+    sort_order INTEGER DEFAULT 0,
+    
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    
+    UNIQUE(user_id, name)
+);
+
+-- 기본 카테고리 삽입 트리거
+CREATE OR REPLACE FUNCTION create_default_categories()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO user_categories (user_id, name, color, sort_order) VALUES
+    (NEW.id, '엔터테인먼트', '#EF4444', 1),
+    (NEW.id, '생산성', '#3B82F6', 2),
+    (NEW.id, '교육', '#10B981', 3),
+    (NEW.id, '음악', '#8B5CF6', 4),
+    (NEW.id, '클라우드', '#F59E0B', 5),
+    (NEW.id, '기타', '#6B7280', 99);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER create_user_categories_trigger
+AFTER INSERT ON auth.users
+FOR EACH ROW EXECUTE FUNCTION create_default_categories();
+```
+
+### 2.6 subscription_categories (구독-카테고리 연결)
+```sql
+CREATE TABLE subscription_categories (
+    subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+    category_id UUID NOT NULL REFERENCES user_categories(id) ON DELETE CASCADE,
+    
+    PRIMARY KEY (subscription_id, category_id)
+);
+```
+
+### 2.7 payment_methods (결제 수단)
+```sql
+CREATE TABLE payment_methods (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    
+    -- 결제 수단 정보
+    method_type TEXT NOT NULL CHECK (method_type IN ('card', 'bank', 'paypal', 'other')),
+    provider TEXT NOT NULL, -- 카드사, 은행명 등
+    last_four TEXT, -- 카드/계좌 끝 4자리
+    nickname TEXT, -- 사용자 정의 별칭
+    
+    -- 상태
+    is_active BOOLEAN DEFAULT true,
+    is_default BOOLEAN DEFAULT false,
+    
+    -- 메타데이터
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    
+    UNIQUE(user_id, nickname)
+);
+
+-- 기본 결제수단은 유저당 하나만
+CREATE UNIQUE INDEX idx_default_payment_method ON payment_methods(user_id) WHERE is_default = true;
+```
+
+### 2.8 subscription_history (구독 변경 이력)
+```sql
+CREATE TABLE subscription_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+    
+    -- 변경 정보
+    change_type TEXT NOT NULL CHECK (change_type IN (
+        'created', 'updated', 'paused', 'resumed', 'canceled', 'renewed', 'price_changed'
+    )),
+    changed_fields JSONB, -- 변경된 필드와 이전/이후 값
+    change_reason TEXT,
+    
+    -- 스냅샷 (변경 시점의 전체 데이터)
+    snapshot JSONB NOT NULL,
+    
+    -- 메타데이터
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    created_by UUID REFERENCES auth.users(id)
+);
+
+-- 인덱스
+CREATE INDEX idx_history_subscription ON subscription_history(subscription_id, created_at DESC);
+```
+
+### 2.9 notification_history (알림 발송 이력)
+```sql
+CREATE TABLE notification_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    subscription_id UUID REFERENCES subscriptions(id) ON DELETE SET NULL,
+    alarm_id UUID REFERENCES subscription_alarms(id) ON DELETE SET NULL,
+    
+    -- 알림 정보
+    notification_type TEXT NOT NULL,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    
+    -- 발송 정보
+    channel TEXT NOT NULL CHECK (channel IN ('email', 'push', 'in_app')),
+    sent_at TIMESTAMPTZ DEFAULT NOW(),
+    read_at TIMESTAMPTZ,
+    
+    -- 메타데이터
+    metadata JSONB DEFAULT '{}'
+);
+
+-- 인덱스
+CREATE INDEX idx_notifications_user ON notification_history(user_id, sent_at DESC);
+CREATE INDEX idx_notifications_unread ON notification_history(user_id, read_at) WHERE read_at IS NULL;
+```
+
+---
+
+## 3. Row Level Security (RLS) 정책
+
+```sql
+-- 모든 테이블에 RLS 활성화
+ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE exchange_rates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscription_alarms ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payment_methods ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notification_history ENABLE ROW LEVEL SECURITY;
+
+-- subscriptions 정책
+CREATE POLICY "Users can CRUD their own subscriptions" ON subscriptions
+    FOR ALL USING (auth.uid() = user_id);
+
+-- exchange_rates 정책
+CREATE POLICY "Users can manage their own exchange rate" ON exchange_rates
+    FOR ALL USING (auth.uid() = user_id);
+
+-- subscription_alarms 정책
+CREATE POLICY "Users can manage their own alarms" ON subscription_alarms
+    FOR ALL USING (auth.uid() = user_id);
+
+-- user_categories 정책
+CREATE POLICY "Users can manage their own categories" ON user_categories
+    FOR ALL USING (auth.uid() = user_id);
+
+-- payment_methods 정책
+CREATE POLICY "Users can manage their own payment methods" ON payment_methods
+    FOR ALL USING (auth.uid() = user_id);
+
+-- notification_history 정책
+CREATE POLICY "Users can view their own notifications" ON notification_history
+    FOR SELECT USING (auth.uid() = user_id);
+```
+
+---
+
+## 4. 트리거 및 함수
+
+### 4.1 자동 updated_at 업데이트
+```sql
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 모든 테이블에 트리거 적용
+CREATE TRIGGER update_subscriptions_updated_at BEFORE UPDATE ON subscriptions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    
+CREATE TRIGGER update_exchange_rates_updated_at BEFORE UPDATE ON exchange_rates
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    
+CREATE TRIGGER update_user_categories_updated_at BEFORE UPDATE ON user_categories
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+    
+CREATE TRIGGER update_payment_methods_updated_at BEFORE UPDATE ON payment_methods
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+```
+
+### 4.2 다음 결제일 자동 계산
+```sql
+CREATE OR REPLACE FUNCTION calculate_next_payment_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.status = 'active' AND NEW.auto_renewal = true THEN
+        NEW.next_payment_date = CASE
+            WHEN NEW.payment_cycle = 'monthly' THEN 
+                (NEW.start_date + INTERVAL '1 month' * 
+                CEIL(EXTRACT(EPOCH FROM (NOW() - NEW.start_date)) / (30 * 24 * 60 * 60)))::DATE
+            WHEN NEW.payment_cycle = 'yearly' THEN 
+                (NEW.start_date + INTERVAL '1 year' * 
+                CEIL(EXTRACT(EPOCH FROM (NOW() - NEW.start_date)) / (365 * 24 * 60 * 60)))::DATE
+            ELSE NULL
+        END;
+    ELSE
+        NEW.next_payment_date = NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER calculate_subscription_next_payment
+    BEFORE INSERT OR UPDATE ON subscriptions
+    FOR EACH ROW EXECUTE FUNCTION calculate_next_payment_date();
+```
+
+### 4.3 구독 변경 이력 자동 기록
+```sql
+CREATE OR REPLACE FUNCTION record_subscription_history()
+RETURNS TRIGGER AS $$
+DECLARE
+    change_type TEXT;
+    changed_fields JSONB;
+BEGIN
+    -- 변경 유형 결정
+    IF TG_OP = 'INSERT' THEN
+        change_type := 'created';
+    ELSIF OLD.status != NEW.status THEN
+        change_type := CASE NEW.status
+            WHEN 'paused' THEN 'paused'
+            WHEN 'canceled' THEN 'canceled'
+            WHEN 'active' THEN 'resumed'
+        END;
+    ELSIF OLD.amount != NEW.amount THEN
+        change_type := 'price_changed';
+    ELSE
+        change_type := 'updated';
+    END IF;
+    
+    -- 변경된 필드 추적
+    changed_fields := jsonb_build_object();
+    IF OLD IS NOT NULL THEN
+        -- 각 필드별 변경사항 기록
+        IF OLD.amount != NEW.amount THEN
+            changed_fields := changed_fields || 
+                jsonb_build_object('amount', jsonb_build_object('old', OLD.amount, 'new', NEW.amount));
+        END IF;
+        -- ... 다른 필드들도 동일하게 처리
+    END IF;
+    
+    -- 이력 기록
+    INSERT INTO subscription_history (
+        subscription_id,
+        change_type,
+        changed_fields,
+        snapshot,
+        created_by
+    ) VALUES (
+        NEW.id,
+        change_type,
+        changed_fields,
+        to_jsonb(NEW),
+        auth.uid()
+    );
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER record_subscription_changes
+    AFTER INSERT OR UPDATE ON subscriptions
+    FOR EACH ROW EXECUTE FUNCTION record_subscription_history();
+```
+
+---
+
+## 5. 뷰 (Views)
+
+### 5.1 사용자 구독 요약 뷰
+```sql
+CREATE VIEW user_subscription_summary AS
+SELECT 
+    u.id as user_id,
+    COUNT(s.id) FILTER (WHERE s.is_active) as active_subscriptions,
+    COUNT(s.id) FILTER (WHERE s.status = 'paused') as paused_subscriptions,
+    COUNT(s.id) FILTER (WHERE s.status = 'canceled') as canceled_subscriptions,
+    
+    -- KRW 합계
+    COALESCE(SUM(s.monthly_amount) FILTER (WHERE s.currency = 'KRW' AND s.is_active), 0) as total_krw_monthly,
+    
+    -- USD 합계
+    COALESCE(SUM(s.monthly_amount) FILTER (WHERE s.currency = 'USD' AND s.is_active), 0) as total_usd_monthly,
+    
+    -- 총 원화 환산 (USD * 환율 + KRW)
+    COALESCE(
+        SUM(s.monthly_amount) FILTER (WHERE s.currency = 'KRW' AND s.is_active), 0
+    ) + COALESCE(
+        SUM(s.monthly_amount * er.usd_krw) FILTER (WHERE s.currency = 'USD' AND s.is_active), 0
+    ) as total_krw_converted,
+    
+    -- 평균 구독료
+    AVG(s.monthly_amount) FILTER (WHERE s.is_active) as avg_subscription_amount,
+    
+    -- 다음 결제 예정
+    MIN(s.next_payment_date) FILTER (WHERE s.is_active) as next_payment_date
+    
+FROM auth.users u
+LEFT JOIN subscriptions s ON u.id = s.user_id AND s.deleted_at IS NULL
+LEFT JOIN exchange_rates er ON u.id = er.user_id
+GROUP BY u.id;
+```
+
+### 5.2 월별 결제 캘린더 뷰
+```sql
+CREATE VIEW monthly_payment_calendar AS
+SELECT 
+    s.user_id,
+    s.id as subscription_id,
+    s.service_name,
+    s.service_image_url,
+    s.amount,
+    s.currency,
+    s.payment_day,
+    s.next_payment_date,
+    
+    -- 이번 달 결제일 계산
+    CASE 
+        WHEN s.payment_cycle = 'monthly' THEN
+            DATE_TRUNC('month', CURRENT_DATE) + (s.payment_day - 1) * INTERVAL '1 day'
+        WHEN s.payment_cycle = 'yearly' AND 
+             EXTRACT(MONTH FROM s.start_date) = EXTRACT(MONTH FROM CURRENT_DATE) THEN
+            DATE_TRUNC('month', CURRENT_DATE) + (s.payment_day - 1) * INTERVAL '1 day'
+        ELSE NULL
+    END as this_month_payment_date
+    
+FROM subscriptions s
+WHERE s.is_active = true
+AND s.payment_day IS NOT NULL;
+```
+
+---
+
+## 6. 인덱스 최적화
+
+```sql
+-- 성능 최적화를 위한 추가 인덱스
+CREATE INDEX idx_subscriptions_user_status ON subscriptions(user_id, status) WHERE deleted_at IS NULL;
+CREATE INDEX idx_subscriptions_currency ON subscriptions(currency) WHERE is_active = true;
+CREATE INDEX idx_subscriptions_payment_cycle ON subscriptions(payment_cycle) WHERE is_active = true;
+
+-- 복합 인덱스
+CREATE INDEX idx_subscriptions_user_next_payment ON subscriptions(user_id, next_payment_date) 
+    WHERE is_active = true;
+
+-- 부분 인덱스 (활성 구독만)
+CREATE INDEX idx_active_subscriptions ON subscriptions(user_id, service_name, amount) 
+    WHERE status = 'active' AND deleted_at IS NULL;
+
+-- 알람 조회 최적화
+CREATE INDEX idx_alarms_schedule ON subscription_alarms(alarm_day, alarm_time, is_active) 
+    WHERE is_active = true;
+
+-- 알림 이력 조회 최적화
+CREATE INDEX idx_notifications_recent ON notification_history(user_id, sent_at DESC) 
+    WHERE sent_at > NOW() - INTERVAL '30 days';
+```
+
+---
+
+## 7. 샘플 데이터
+
+```sql
+-- 테스트 사용자 생성 후 실행
+-- 카테고리는 트리거로 자동 생성됨
+
+-- 결제 수단 추가
+INSERT INTO payment_methods (user_id, method_type, provider, last_four, nickname, is_default) VALUES
+(auth.uid(), 'card', '신한카드', '1234', '신한 체크카드', true),
+(auth.uid(), 'card', '삼성카드', '5678', '삼성 신용카드', false);
+
+-- 구독 추가
+INSERT INTO subscriptions (
+    user_id, service_name, service_url, amount, currency, 
+    payment_cycle, payment_day, status, start_date
+) VALUES
+(auth.uid(), 'Netflix', 'https://netflix.com', 17000, 'KRW', 'monthly', 15, 'active', '2024-01-15'),
+(auth.uid(), 'Spotify', 'https://spotify.com', 10900, 'KRW', 'monthly', 20, 'active', '2024-03-20'),
+(auth.uid(), 'ChatGPT Plus', 'https://chat.openai.com', 20, 'USD', 'monthly', 1, 'active', '2024-06-01');
+
+-- 알람 설정
+INSERT INTO subscription_alarms (user_id, subscription_id, alarm_type, alarm_day) 
+SELECT 
+    user_id,
+    id,
+    'payment_due',
+    unnest(ARRAY[3, 1, 0])
+FROM subscriptions
+WHERE user_id = auth.uid();
+```
+
+---
+
+## 8. 성능 및 보안 고려사항
+
+### 성능 최적화
+- **파티셔닝**: 대용량 테이블(notification_history)은 월별 파티셔닝 고려
+- **인덱스 전략**: 자주 조회되는 컬럼 위주로 인덱스 생성
+- **뷰 캐싱**: Materialized View 사용 검토
+- **쿼리 최적화**: EXPLAIN ANALYZE로 쿼리 플랜 확인
+
+### 보안 강화
+- **RLS 필수**: 모든 테이블에 Row Level Security 적용
+- **입력 검증**: CHECK 제약과 트리거로 데이터 무결성 보장
+- **감사 추적**: 모든 변경사항을 history 테이블에 기록
+- **암호화**: 민감한 정보는 pgcrypto 확장으로 암호화
+
+---
+
+*이 ERD는 Moonwave v2.0의 완전한 데이터베이스 설계를 담고 있으며, Supabase PostgreSQL 환경에 최적화되어 있습니다.*
