@@ -180,43 +180,43 @@
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: theme(boxShadow.lg);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
   .card-gradient {
-    background: linear-gradient(to bottom right, theme(colors.purple.50), theme(colors.primary.50));
-    border: 1px solid theme(colors.purple.100);
-    box-shadow: theme(boxShadow.sm);
+    background: linear-gradient(to bottom right, #faf5ff, #eff6ff);
+    border: 1px solid #f3e8ff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   }
 
   /* 한글 텍스트 유틸리티 */
   .text-korean {
-    font-family: theme(fontFamily.sans);
+    font-family: 'Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: theme(letterSpacing.korean-normal);
+    letter-spacing: -0.01em;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
 
   .text-korean-sm {
-    font-family: theme(fontFamily.sans);
+    font-family: 'Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: theme(letterSpacing.korean-normal);
+    letter-spacing: -0.01em;
     word-break: keep-all;
     overflow-wrap: break-word;
-    font-size: theme(fontSize.sm);
+    font-size: 0.875rem;
   }
 
   .text-korean-lg {
-    font-family: theme(fontFamily.sans);
+    font-family: 'Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: theme(letterSpacing.korean-normal);
+    letter-spacing: -0.01em;
     word-break: keep-all;
     overflow-wrap: break-word;
-    font-size: theme(fontSize.lg);
+    font-size: 1.125rem;
   }
 }
 
