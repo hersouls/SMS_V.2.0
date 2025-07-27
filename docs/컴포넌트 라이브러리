@@ -1,5 +1,6 @@
 Moonwave 프로젝트의 디자인 시스템과 기술 아키텍처를 기반으로 재사용 가능한 컴포넌트 라이브러리 문서를 제작합니다. Utility-First CSS, Pretendard 폰트, Container Queries를 활용한 React + TypeScript 컴포넌트들을 체계적으로 정리합니다.
-분석
+
+## 분석
 프로젝트 문서 분석 결과:
 
 디자인 원칙: Utility-First CSS, 아이콘 중심 UI, 한글 최적화
@@ -8,51 +9,87 @@ Moonwave 프로젝트의 디자인 시스템과 기술 아키텍처를 기반으
 디자인 토큰: 표준화된 spacing, color, shadow, typography
 접근성: ARIA 레이블, 키보드 내비게이션 필수
 
-실행
-🌊 Moonwave 컴포넌트 라이브러리 v2.0
-목차
+## 실행
 
-개요
-설치 및 설정
-기본 컴포넌트
-레이아웃 컴포넌트
-기능별 컴포넌트
-유틸리티
-사용 예시
+# 🌊 Moonwave 컴포넌트 라이브러리 v2.0
 
+## ⚠️ CRITICAL WARNINGS - READ FIRST
+
+**⚠️ IMPORTANT: Always cd SMS_V.2.0 before running any commands**
+**⚠️ DO NOT create src folder manually - Vite already created it**
+**⚠️ GitHub Actions workflows must be in root .github folder**
+**⚠️ All development work must happen inside SMS_V.2.0 directory**
+
+---
+
+## 목차
 
 1. 개요
-1.1 디자인 원칙
+2. 설치 및 설정
+3. 기본 컴포넌트
+4. 레이아웃 컴포넌트
+5. 기능별 컴포넌트
+6. 유틸리티
+7. 사용 예시
+8. Common Mistakes and Solutions
 
-Utility-First CSS: Tailwind CSS 기반 스타일링
-타입 안전성: TypeScript로 모든 Props 정의
-접근성 우선: ARIA 속성과 키보드 내비게이션
-반응형 설계: Container Queries 활용
-한글 최적화: Pretendard 폰트와 한글 타이포그래피
+---
 
-1.2 폴더 구조
-src/components/
+## 1. 개요
+
+### 1.1 디자인 원칙
+
+- **Utility-First CSS**: Tailwind CSS 기반 스타일링
+- **타입 안전성**: TypeScript로 모든 Props 정의
+- **접근성 우선**: ARIA 속성과 키보드 내비게이션
+- **반응형 설계**: Container Queries 활용
+- **한글 최적화**: Pretendard 폰트와 한글 타이포그래피
+
+### 1.2 폴더 구조
+
+```
+SMS_V.2.0/src/components/
 ├── ui/              # 기본 UI 컴포넌트
 ├── layout/          # 레이아웃 컴포넌트
 ├── features/        # 기능별 컴포넌트
 └── index.ts         # 통합 export
+```
 
-2. 설치 및 설정
-2.1 필수 의존성
-bashnpm install clsx tailwind-merge @radix-ui/react-icons lucide-react
-npm install -D @tailwindcss/container-queries
-2.2 유틸리티 함수
-typescript// src/lib/utils.ts
+---
+
+## 2. 설치 및 설정
+
+### 2.1 필수 의존성
+
+```bash
+# ⚠️ IMPORTANT: Make sure you're in SMS_V.2.0 directory
+cd SMS_V.2.0
+
+# Install dependencies (--legacy-peer-deps for Vite 7 compatibility)
+npm install --legacy-peer-deps clsx tailwind-merge @radix-ui/react-icons lucide-react
+npm install --legacy-peer-deps -D @tailwindcss/container-queries
+```
+
+### 2.2 유틸리티 함수
+
+```typescript
+// SMS_V.2.0/src/lib/utils.ts
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+```
 
-3. 기본 컴포넌트
-3.1 Button
-typescript// src/components/ui/Button.tsx
+---
+
+## 3. 기본 컴포넌트
+
+### 3.1 Button
+
+```typescript
+// SMS_V.2.0/src/components/ui/Button.tsx
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
@@ -99,659 +136,688 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         {...props}
       >
-        {loading ? (
-          <span className="flex items-center justify-center gap-2">
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            {size !== 'icon' && '로딩 중...'}
-          </span>
-        ) : (
-          children
+        {loading && (
+          <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
         )}
+        {children}
       </button>
     )
   }
 )
+
 Button.displayName = 'Button'
 
 export { Button }
-3.2 Card
-typescript// src/components/ui/Card.tsx
-import * as React from 'react'
-import { cn } from '@/lib/utils'
+```
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  hover?: boolean
-  glass?: boolean
-}
+### 3.2 Input
 
-const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, hover = true, glass = false, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          '@container rounded-xl p-6',
-          glass
-            ? 'bg-white/80 backdrop-blur-md border border-white/20'
-            : 'bg-white border border-gray-200 shadow-sm',
-          hover && 'hover:shadow-lg transition-shadow duration-200',
-          className
-        )}
-        {...props}
-      />
-    )
-  }
-)
-Card.displayName = 'Card'
-
-const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('mb-4', className)} {...props} />
-  )
-)
-CardHeader.displayName = 'CardHeader'
-
-const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => (
-    <h3
-      ref={ref}
-      className={cn(
-        'text-lg @sm:text-xl font-bold font-pretendard',
-        'tracking-ko-tight break-keep-ko',
-        className
-      )}
-      {...props}
-    />
-  )
-)
-CardTitle.displayName = 'CardTitle'
-
-const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('text-gray-700', className)} {...props} />
-  )
-)
-CardContent.displayName = 'CardContent'
-
-export { Card, CardHeader, CardTitle, CardContent }
-3.3 Input
-typescript// src/components/ui/Input.tsx
+```typescript
+// SMS_V.2.0/src/components/ui/Input.tsx
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
-  icon?: React.ReactNode
+  helperText?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, icon, ...props }, ref) => {
+  ({ className, type, label, error, helperText, ...props }, ref) => {
     return (
-      <div className="space-y-1">
+      <div className="space-y-2">
         {label && (
-          <label className="font-pretendard text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 tracking-ko-normal">
             {label}
           </label>
         )}
-        <div className="relative">
-          {icon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              {icon}
-            </div>
+        <input
+          type={type}
+          className={cn(
+            'flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm',
+            'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500',
+            'focus:border-transparent tracking-ko-normal break-keep-ko',
+            error && 'border-red-500 focus:ring-red-500',
+            className
           )}
-          <input
-            ref={ref}
-            className={cn(
-              'w-full px-3 py-2 border rounded-md',
-              'font-pretendard tracking-ko-normal',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500',
-              'transition-all duration-200',
-              icon && 'pl-10',
-              error ? 'border-red-300' : 'border-gray-300',
-              className
-            )}
-            {...props}
-          />
-        </div>
+          ref={ref}
+          {...props}
+        />
         {error && (
-          <p className="text-sm text-red-600 font-pretendard">{error}</p>
+          <p className="text-sm text-red-600 tracking-ko-normal">{error}</p>
+        )}
+        {helperText && !error && (
+          <p className="text-sm text-gray-500 tracking-ko-normal">{helperText}</p>
         )}
       </div>
     )
   }
 )
+
 Input.displayName = 'Input'
 
 export { Input }
-3.4 Badge
-typescript// src/components/ui/Badge.tsx
+```
+
+### 3.3 Card
+
+```typescript
+// SMS_V.2.0/src/components/ui/Card.tsx
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'success' | 'warning' | 'error' | 'info'
-}
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      'rounded-lg border border-gray-200 bg-white text-gray-950 shadow-sm',
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = 'Card'
 
-const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant = 'default', ...props }, ref) => {
-    const variants = {
-      default: 'bg-gray-100 text-gray-700 ring-gray-600/20',
-      success: 'bg-green-50 text-green-700 ring-green-600/20',
-      warning: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
-      error: 'bg-red-50 text-red-700 ring-red-600/20',
-      info: 'bg-blue-50 text-blue-700 ring-blue-600/20'
-    }
-    
-    return (
-      <span
-        ref={ref}
-        className={cn(
-          'inline-flex items-center rounded-md px-2 py-1',
-          'text-xs font-medium font-pretendard',
-          'ring-1 ring-inset',
-          variants[variant],
-          className
-        )}
-        {...props}
-      />
-    )
-  }
-)
-Badge.displayName = 'Badge'
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('flex flex-col space-y-1.5 p-6', className)}
+    {...props}
+  />
+))
+CardHeader.displayName = 'CardHeader'
 
-export { Badge }
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      'text-2xl font-semibold leading-none tracking-tight tracking-ko-normal',
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = 'CardTitle'
 
-4. 레이아웃 컴포넌트
-4.1 Header
-typescript// src/components/layout/Header.tsx
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn('text-sm text-gray-500 tracking-ko-normal', className)}
+    {...props}
+  />
+))
+CardDescription.displayName = 'CardDescription'
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
+))
+CardContent.displayName = 'CardContent'
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('flex items-center p-6 pt-0', className)}
+    {...props}
+  />
+))
+CardFooter.displayName = 'CardFooter'
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+```
+
+---
+
+## 4. 레이아웃 컴포넌트
+
+### 4.1 Header
+
+```typescript
+// SMS_V.2.0/src/components/layout/Header.tsx
 import * as React from 'react'
-import { Home, Bell, User } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Button } from '../ui/Button'
+import { Button } from '@/components/ui/Button'
+import { useAuth } from '@/hooks/useAuth'
 
 export interface HeaderProps {
-  serviceButtons?: Array<{
-    icon: React.ReactNode
-    onClick: () => void
-    ariaLabel: string
-  }>
+  className?: string
 }
 
-export const Header: React.FC<HeaderProps> = ({ serviceButtons = [] }) => {
+export function Header({ className }: HeaderProps) {
+  const { user, signOut } = useAuth()
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Wave Background */}
-      <div className="absolute inset-0 h-20 overflow-hidden">
-        <svg 
-          className="absolute bottom-0 w-full wave-single"
-          style={{ height: '80px', opacity: 0.3 }}
-          viewBox="0 0 1440 320"
-          preserveAspectRatio="none"
-        >
-          <path 
-            fill="#3b82f6" 
-            d="M0,192L48,181.3C96,171,192,149,288,154.7C384,160,480,192,576,213.3C672,235,768,245,864,218.7C960,192,1056,128,1152,106.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          />
-        </svg>
-      </div>
-      
-      {/* Navigation */}
-      <nav className="relative">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Home Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="glass-button"
-              aria-label="홈으로 가기"
-            >
-              <Home className="w-5 h-5 text-white" />
-            </Button>
-            
-            {/* Right Actions */}
-            <div className="flex items-center gap-3">
-              {serviceButtons.map((button, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  size="icon"
-                  onClick={button.onClick}
-                  className="glass-button"
-                  aria-label={button.ariaLabel}
-                >
-                  {button.icon}
-                </Button>
-              ))}
-              
-              {/* Notifications */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="glass-button"
-                aria-label="알림"
-              >
-                <Bell className="w-5 h-5 text-white" />
-              </Button>
-              
-              {/* Profile */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="glass-button"
-                aria-label="프로필"
-              >
-                <User className="w-5 h-5 text-white" />
+    <header className={cn(
+      'sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60',
+      className
+    )}>
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <h1 className="text-xl font-bold text-gray-900 tracking-ko-normal">
+            Moonwave
+          </h1>
+        </div>
+        
+        <nav className="flex items-center space-x-4">
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-700 tracking-ko-normal">
+                {user.email}
+              </span>
+              <Button variant="ghost" size="sm" onClick={signOut}>
+                로그아웃
               </Button>
             </div>
-          </div>
-        </div>
-      </nav>
+          ) : (
+            <Button variant="primary" size="sm">
+              로그인
+            </Button>
+          )}
+        </nav>
+      </div>
     </header>
   )
 }
-4.2 Footer
-typescript// src/components/layout/Footer.tsx
-import * as React from 'react'
-import { Facebook, Instagram, Twitter, Github } from 'lucide-react'
-import { cn } from '@/lib/utils'
+```
 
-const socialLinks = [
-  { name: 'Facebook', icon: Facebook, href: '#' },
-  { name: 'Instagram', icon: Instagram, href: '#' },
-  { name: 'Twitter', icon: Twitter, href: '#' },
-  { name: 'GitHub', icon: Github, href: '#' },
+### 4.2 Sidebar
+
+```typescript
+// SMS_V.2.0/src/components/layout/Sidebar.tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+import { HomeIcon, CreditCardIcon, CalendarIcon, ChartBarIcon } from '@heroicons/react/24/outline'
+
+interface SidebarItem {
+  name: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+const navigation: SidebarItem[] = [
+  { name: '대시보드', href: '/dashboard', icon: HomeIcon },
+  { name: '구독 관리', href: '/subscriptions', icon: CreditCardIcon },
+  { name: '결제 일정', href: '/calendar', icon: CalendarIcon },
+  { name: '통계', href: '/analytics', icon: ChartBarIcon },
 ]
 
-export const Footer: React.FC = () => {
+export interface SidebarProps {
+  className?: string
+}
+
+export function Sidebar({ className }: SidebarProps) {
   return (
-    <footer className="@container bg-white border-t border-gray-200">
-      <div className={cn(
-        "mx-auto max-w-7xl px-6 py-8",
-        "@lg:flex-row @lg:gap-6 @lg:items-center @lg:justify-between",
-        "flex flex-col gap-4"
-      )}>
-        {/* Social Links */}
-        <div className="@container flex justify-center @lg:justify-end @lg:order-2 space-x-6">
-          {socialLinks.map((item) => (
-            
-              key={item.name}
-              href={item.href}
-              className={cn(
-                "text-gray-400 hover:text-gray-500 transition-colors duration-200",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                "focus:ring-offset-2 rounded-lg p-1"
-              )}
-              aria-label={`${item.name} 팔로우하기`}
-            >
-              <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
-            </a>
+    <aside className={cn(
+      'w-64 bg-gray-50 border-r border-gray-200 min-h-screen',
+      className
+    )}>
+      <nav className="mt-8 px-4">
+        <ul className="space-y-2">
+          {navigation.map((item) => (
+            <li key={item.name}>
+              <a
+                href={item.href}
+                className={cn(
+                  'flex items-center px-4 py-2 text-sm font-medium rounded-md',
+                  'text-gray-700 hover:text-gray-900 hover:bg-gray-100',
+                  'tracking-ko-normal transition-colors'
+                )}
+              >
+                <item.icon className="mr-3 h-5 w-5" />
+                {item.name}
+              </a>
+            </li>
           ))}
-        </div>
-        
-        {/* Copyright */}
-        <div className="@container @lg:order-1 @lg:mt-0 mt-8">
-          <p className={cn(
-            "font-pretendard tracking-ko-normal break-keep-ko",
-            "text-center @lg:text-left text-sm leading-5 text-gray-500"
-          )}>
-            &copy; 2025 Moonwave Company, Inc. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
+        </ul>
+      </nav>
+    </aside>
   )
 }
+```
 
-5. 기능별 컴포넌트
-5.1 SubscriptionCard
-typescript// src/components/features/subscription/SubscriptionCard.tsx
+---
+
+## 5. 기능별 컴포넌트
+
+### 5.1 SubscriptionCard
+
+```typescript
+// SMS_V.2.0/src/components/features/SubscriptionCard.tsx
 import * as React from 'react'
-import { Calendar, CreditCard, ExternalLink } from 'lucide-react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
-import { cn } from '@/lib/utils'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
+import { Subscription } from '@/types/subscription'
 
 export interface SubscriptionCardProps {
-  subscription: {
-    id: string
-    service_name: string
-    service_url?: string
-    service_image_url?: string
-    amount: number
-    currency: 'KRW' | 'USD'
-    payment_cycle: 'monthly' | 'yearly' | 'once'
-    payment_day: number
-    status: 'active' | 'paused' | 'canceled'
-  }
-  onClick?: () => void
+  subscription: Subscription
+  onEdit?: (subscription: Subscription) => void
+  onDelete?: (id: string) => void
+  className?: string
 }
 
-export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ 
+export function SubscriptionCard({ 
   subscription, 
-  onClick 
-}) => {
-  const statusVariants = {
-    active: 'success',
-    paused: 'warning',
-    canceled: 'error'
-  } as const
-  
-  const statusLabels = {
-    active: '활성',
-    paused: '일시정지',
-    canceled: '해지됨'
+  onEdit, 
+  onDelete, 
+  className 
+}: SubscriptionCardProps) {
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'currency',
+      currency: 'KRW'
+    }).format(amount)
   }
-  
-  const cycleLabels = {
-    monthly: '월간',
-    yearly: '연간',
-    once: '일회성'
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
   }
-  
+
   return (
-    <Card 
-      className="cursor-pointer @container"
-      onClick={onClick}
-    >
+    <Card className={className}>
       <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            {subscription.service_image_url ? (
-              <img
-                src={subscription.service_image_url}
-                alt={subscription.service_name}
-                className="w-12 h-12 rounded-lg object-cover"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
-                <CreditCard className="w-6 h-6 text-gray-400" />
-              </div>
-            )}
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                {subscription.service_name}
-                {subscription.service_url && (
-                  
-                    href={subscription.service_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-gray-600"
-                    onClick={(e) => e.stopPropagation()}
-                    aria-label="서비스 사이트 방문"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-              </CardTitle>
-            </div>
-          </div>
-          <Badge variant={statusVariants[subscription.status]}>
-            {statusLabels[subscription.status]}
-          </Badge>
-        </div>
+        <CardTitle className="tracking-ko-normal">
+          {subscription.service_name}
+        </CardTitle>
+        <p className="text-sm text-gray-500 tracking-ko-normal">
+          {subscription.category}
+        </p>
       </CardHeader>
       
       <CardContent>
-        <div className="space-y-2 @sm:space-y-0 @sm:flex @sm:items-center @sm:justify-between">
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span className="font-pretendard font-semibold text-lg text-gray-900">
-              {subscription.currency === 'KRW' ? '₩' : '$'}
-              {subscription.amount.toLocaleString()}
-            </span>
-            <span className="text-gray-500">
-              {cycleLabels[subscription.payment_cycle]}
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600 tracking-ko-normal">월 요금:</span>
+            <span className="font-semibold tracking-ko-normal">
+              {formatCurrency(subscription.monthly_fee)}
             </span>
           </div>
-          
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Calendar className="w-4 h-4" />
-            <span>매월 {subscription.payment_day}일</span>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600 tracking-ko-normal">다음 결제일:</span>
+            <span className="text-sm tracking-ko-normal">
+              {formatDate(subscription.next_billing_date)}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600 tracking-ko-normal">상태:</span>
+            <span className={cn(
+              'text-sm font-medium',
+              subscription.status === 'active' && 'text-green-600',
+              subscription.status === 'cancelled' && 'text-red-600',
+              subscription.status === 'paused' && 'text-yellow-600'
+            )}>
+              {subscription.status === 'active' && '활성'}
+              {subscription.status === 'cancelled' && '취소됨'}
+              {subscription.status === 'paused' && '일시정지'}
+            </span>
           </div>
         </div>
+      </CardContent>
+      
+      <CardFooter className="flex space-x-2">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => onEdit?.(subscription)}
+          className="flex-1"
+        >
+          수정
+        </Button>
+        <Button 
+          variant="destructive" 
+          size="sm" 
+          onClick={() => onDelete?.(subscription.id)}
+          className="flex-1"
+        >
+          삭제
+        </Button>
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+---
+
+## 6. 유틸리티
+
+### 6.1 컴포넌트 통합 export
+
+```typescript
+// SMS_V.2.0/src/components/index.ts
+// UI Components
+export { Button } from './ui/Button'
+export { Input } from './ui/Input'
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './ui/Card'
+
+// Layout Components
+export { Header } from './layout/Header'
+export { Sidebar } from './layout/Sidebar'
+
+// Feature Components
+export { SubscriptionCard } from './features/SubscriptionCard'
+```
+
+### 6.2 스타일 유틸리티
+
+```typescript
+// SMS_V.2.0/src/lib/styles.ts
+export const commonStyles = {
+  // 한글 텍스트 최적화
+  koreanText: 'tracking-ko-normal break-keep-ko antialiased',
+  
+  // 반응형 컨테이너
+  container: 'container mx-auto px-4',
+  
+  // 그라디언트
+  gradient: 'bg-gradient-to-r from-blue-600 to-purple-600',
+  
+  // 그림자
+  shadow: 'shadow-lg hover:shadow-xl transition-shadow duration-300',
+  
+  // 애니메이션
+  fadeIn: 'animate-in fade-in duration-300',
+  slideIn: 'animate-in slide-in-from-bottom-4 duration-300'
+}
+```
+
+---
+
+## 7. 사용 예시
+
+### 7.1 기본 사용법
+
+```typescript
+// SMS_V.2.0/src/pages/Dashboard.tsx
+import { Button, Card, CardHeader, CardTitle, CardContent } from '@/components/ui'
+import { Header, Sidebar } from '@/components/layout'
+import { SubscriptionCard } from '@/components/features'
+
+export function Dashboard() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="flex">
+        <Sidebar />
+        <main className="flex-1 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>총 구독 수</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold">12</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>월 총 비용</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold">₩89,000</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>이번 달 결제</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold">3</p>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
+```
+
+### 7.2 폼 예시
+
+```typescript
+// SMS_V.2.0/src/components/features/SubscriptionForm.tsx
+import { useState } from 'react'
+import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui'
+
+export function SubscriptionForm() {
+  const [formData, setFormData] = useState({
+    serviceName: '',
+    monthlyFee: '',
+    category: '',
+    notes: ''
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // 폼 제출 로직
+  }
+
+  return (
+    <Card className="max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle>새 구독 추가</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Input
+            label="서비스명"
+            placeholder="Netflix"
+            value={formData.serviceName}
+            onChange={(e) => setFormData(prev => ({ ...prev, serviceName: e.target.value }))}
+            required
+          />
+          
+          <Input
+            label="월 요금"
+            type="number"
+            placeholder="17,000"
+            value={formData.monthlyFee}
+            onChange={(e) => setFormData(prev => ({ ...prev, monthlyFee: e.target.value }))}
+            required
+          />
+          
+          <Input
+            label="카테고리"
+            placeholder="엔터테인먼트"
+            value={formData.category}
+            onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+          />
+          
+          <Input
+            label="메모"
+            placeholder="추가 정보"
+            value={formData.notes}
+            onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+          />
+          
+          <Button type="submit" className="w-full">
+            구독 추가
+          </Button>
+        </form>
       </CardContent>
     </Card>
   )
 }
-5.2 DashboardStats
-typescript// src/components/features/dashboard/DashboardStats.tsx
-import * as React from 'react'
-import { CreditCard, TrendingUp, Calendar, DollarSign } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/Card'
-import { cn } from '@/lib/utils'
+```
 
-export interface Stat {
-  name: string
-  value: string | number
-  change?: string
-  changeType?: 'increase' | 'decrease' | 'neutral'
-  icon: React.ElementType
-}
+---
 
-export interface DashboardStatsProps {
-  stats: Stat[]
-}
+## 🔧 Common Mistakes and Solutions
 
-export const DashboardStats: React.FC<DashboardStatsProps> = ({ stats }) => {
-  return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      {stats.map((stat) => (
-        <Card key={stat.name} className="relative overflow-hidden">
-          <CardContent className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="rounded-md bg-blue-500 p-3">
-                  <stat.icon className="h-6 w-6 text-white" aria-hidden="true" />
-                </div>
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 font-pretendard truncate">
-                    {stat.name}
-                  </dt>
-                  <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900 font-pretendard">
-                      {stat.value}
-                    </div>
-                    {stat.change && (
-                      <div
-                        className={cn(
-                          'ml-2 flex items-baseline text-sm font-semibold',
-                          stat.changeType === 'increase' && 'text-green-600',
-                          stat.changeType === 'decrease' && 'text-red-600',
-                          stat.changeType === 'neutral' && 'text-gray-500'
-                        )}
-                      >
-                        {stat.change}
-                      </div>
-                    )}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  )
-}
+### ❌ Common Mistakes
 
-6. 유틸리티
-6.1 디자인 토큰
-typescript// src/lib/design-tokens.ts
-export const DESIGN_TOKENS = {
-  // 색상
-  colors: {
-    primary: {
-      50: '#eff6ff',
-      500: '#3b82f6',
-      600: '#2563eb',
-    },
-    gray: {
-      50: '#f9fafb',
-      500: '#6b7280',
-      900: '#111827',
-    }
-  },
-  
-  // 타이포그래피
-  typography: {
-    korean: {
-      base: 'font-pretendard tracking-ko-normal break-keep-ko',
-      tight: 'font-pretendard tracking-ko-tight break-keep-ko',
-    }
-  },
-  
-  // 애니메이션
-  animation: {
-    fast: 'transition-all duration-200',
-    medium: 'transition-all duration-300',
-    slow: 'transition-all duration-500',
-  },
-  
-  // 그림자
-  shadow: {
-    soft: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-    glow: '0 0 20px rgba(59, 130, 246, 0.3)',
-  }
-}
-6.2 커스텀 훅
-typescript// src/hooks/useMediaQuery.ts
-import { useState, useEffect } from 'react'
+1. **Creating duplicate src folders**
+   - ❌ Wrong: Creating another src folder inside SMS_V.2.0
+   - ✅ Correct: Use existing SMS_V.2.0/src folder created by Vite
 
-export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false)
-  
-  useEffect(() => {
-    const media = window.matchMedia(query)
-    if (media.matches !== matches) {
-      setMatches(media.matches)
-    }
-    
-    const listener = () => setMatches(media.matches)
-    media.addListener(listener)
-    
-    return () => media.removeListener(listener)
-  }, [matches, query])
-  
-  return matches
-}
+2. **Running commands in wrong directory**
+   - ❌ Wrong: Running npm commands from repository root
+   - ✅ Correct: Always `cd SMS_V.2.0` first
 
-7. 사용 예시
-7.1 구독 관리 페이지
-tsximport { useState } from 'react'
-import { Plus } from 'lucide-react'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
-import { Button } from '@/components/ui/Button'
-import { SubscriptionCard } from '@/components/features/subscription/SubscriptionCard'
-import { DashboardStats } from '@/components/features/dashboard/DashboardStats'
+3. **GitHub Actions in wrong location**
+   - ❌ Wrong: Placing workflows in SMS_V.2.0/.github/
+   - ✅ Correct: Place in root .github/workflows/
 
-export function SubscriptionsPage() {
-  const [subscriptions] = useState([
-    {
-      id: '1',
-      service_name: 'Netflix',
-      amount: 17000,
-      currency: 'KRW' as const,
-      payment_cycle: 'monthly' as const,
-      payment_day: 15,
-      status: 'active' as const,
-    }
-  ])
-  
-  const stats = [
-    {
-      name: '총 구독',
-      value: '12',
-      change: '+2',
-      changeType: 'increase' as const,
-      icon: CreditCard,
-    }
-  ]
-  
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 pt-20 px-4 pb-8">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {/* 통계 */}
-          <DashboardStats stats={stats} />
-          
-          {/* 구독 목록 */}
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {subscriptions.map((subscription) => (
-              <SubscriptionCard
-                key={subscription.id}
-                subscription={subscription}
-                onClick={() => console.log('Clicked:', subscription.id)}
-              />
-            ))}
-          </div>
-        </div>
-      </main>
-      
-      <Footer />
-      
-      {/* 플로팅 버튼 */}
-      <Button
-        variant="gradient"
-        size="icon"
-        className="fixed bottom-8 right-8 w-14 h-14 rounded-full shadow-lg"
-        aria-label="구독 추가"
-      >
-        <Plus className="w-6 h-6" />
-      </Button>
-    </div>
-  )
-}
-7.2 스토리북 설정
-typescript// .storybook/main.ts
-export default {
-  stories: ['../src/components/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-  ],
-  framework: {
-    name: '@storybook/react-vite',
-    options: {},
-  },
-}
-typescript// src/components/ui/Button.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react'
-import { Button } from './Button'
+4. **npm dependency conflicts**
+   - ❌ Wrong: Using `npm install` without --legacy-peer-deps
+   - ✅ Correct: Use `npm install --legacy-peer-deps`
 
-const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
-  component: Button,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
-}
+5. **Incorrect file paths in imports**
+   - ❌ Wrong: `import Button from '../components/Button'`
+   - ✅ Correct: `import Button from '@/components/ui/Button'`
 
-export default meta
-type Story = StoryObj<typeof meta>
+6. **Missing TypeScript interfaces**
+   - ❌ Wrong: Using any type for props
+   - ✅ Correct: Define proper interfaces for all props
 
-export const Primary: Story = {
-  args: {
-    variant: 'primary',
-    children: '버튼',
-  },
-}
+7. **Ignoring accessibility**
+   - ❌ Wrong: Not adding ARIA labels or keyboard navigation
+   - ✅ Correct: Always include accessibility features
 
-export const AllVariants: Story = {
-  render: () => (
-    <div className="flex gap-4">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="gradient">Gradient</Button>
-    </div>
-  ),
-}
+### ✅ Solutions
+
+1. **Directory Structure Verification**
+   ```bash
+   # Always verify you're in the right directory
+   pwd  # Should show: /workspace/SMS_V.2.0
+   ls   # Should show: src/, package.json, vite.config.ts, etc.
+   ```
+
+2. **Path Alias Configuration**
+   ```typescript
+   // SMS_V.2.0/tsconfig.app.json
+   {
+     "compilerOptions": {
+       "paths": {
+         "@/*": ["./src/*"]
+       }
+     }
+   }
+   ```
+
+3. **Component Import Best Practices**
+   ```typescript
+   // ✅ Good - Use path aliases
+   import { Button } from '@/components/ui/Button'
+   import { Card } from '@/components/ui/Card'
+   
+   // ✅ Good - Use barrel exports
+   import { Button, Card } from '@/components/ui'
+   
+   // ❌ Avoid - Relative paths
+   import { Button } from '../../../components/ui/Button'
+   ```
+
+4. **TypeScript Interface Best Practices**
+   ```typescript
+   // ✅ Good - Extend HTML attributes
+   export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+     variant?: 'primary' | 'secondary'
+     size?: 'sm' | 'md' | 'lg'
+   }
+   
+   // ✅ Good - Use proper types
+   export interface SubscriptionCardProps {
+     subscription: Subscription
+     onEdit?: (subscription: Subscription) => void
+   }
+   ```
+
+5. **Accessibility Best Practices**
+   ```typescript
+   // ✅ Good - Include ARIA labels and keyboard support
+   <button
+     aria-label="Close modal"
+     onKeyDown={(e) => e.key === 'Escape' && onClose()}
+     onClick={onClose}
+   >
+     <XIcon className="h-4 w-4" />
+   </button>
+   ```
+
+6. **Korean Text Optimization**
+   ```typescript
+   // ✅ Good - Use Korean typography classes
+   <p className="tracking-ko-normal break-keep-ko antialiased">
+     한글 텍스트는 적절한 간격과 줄바꿈이 필요합니다.
+   </p>
+   ```
+
+7. **Component Testing**
+   ```typescript
+   // ✅ Good - Test component rendering
+   import { render, screen } from '@testing-library/react'
+   import { Button } from '@/components/ui/Button'
+   
+   test('Button renders with correct text', () => {
+     render(<Button>Click me</Button>)
+     expect(screen.getByRole('button')).toHaveTextContent('Click me')
+   })
+   ```
+
+---
+
+## 📋 Verification Checklist
+
+Before using any component:
+
+- [ ] Verify you are in SMS_V.2.0 directory: `pwd`
+- [ ] Check that component exists in correct location: `ls src/components/ui/`
+- [ ] Verify TypeScript interfaces are properly defined
+- [ ] Test component with Korean text
+- [ ] Check accessibility features (ARIA labels, keyboard navigation)
+- [ ] Verify responsive design works correctly
+- [ ] Test component with different props and variants
+
+---
+
+## 🚀 Quick Start Commands
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/moonwave-v2.git
+cd moonwave-v2
+
+# Navigate to project directory
+cd SMS_V.2.0
+
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Deploy (automatic via GitHub Actions)
+git add .
+git commit -m "feat: new component"
+git push origin main
+```

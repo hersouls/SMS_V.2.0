@@ -1,80 +1,39 @@
-# Moonwave Design System v2.1
+# 🎨 Moonwave 디자인 가이드 v2.0
 
-> 구독 관리 서비스의 일관된 사용자 경험을 위한 표준 디자인 시스템
+## ⚠️ CRITICAL WARNINGS - READ FIRST
 
-## 목차
-
-1. [디자인 철학](#1-디자인-철학)
-2. [기술 스택](#2-기술-스택)
-3. [디자인 토큰](#3-디자인-토큰)
-4. [타이포그래피](#4-타이포그래피)
-5. [컬러 시스템](#5-컬러-시스템)
-6. [레이아웃 시스템](#6-레이아웃-시스템)
-7. [컴포넌트 라이브러리](#7-컴포넌트-라이브러리)
-8. [Tailwind UI 프리미엄 컴포넌트](#8-tailwind-ui-프리미엄-컴포넌트)
-9. [배경 디자인 시스템](#9-배경-디자인-시스템)
-10. [접근성 가이드라인](#10-접근성-가이드라인)
-11. [개발 가이드라인](#11-개발-가이드라인)
+**⚠️ IMPORTANT: Always cd SMS_V.2.0 before running any commands**
+**⚠️ DO NOT create src folder manually - Vite already created it**
+**⚠️ GitHub Actions workflows must be in root .github folder**
+**⚠️ All development work must happen inside SMS_V.2.0 directory**
 
 ---
 
-## 1. 디자인 철학
+## 1. 디자인 시스템 개요
+
+Moonwave v2.0은 **Utility-First CSS**와 **Container Queries**를 기반으로 한 현대적인 디자인 시스템을 제공합니다. 한글 타이포그래피 최적화와 접근성을 우선시하며, 확장 가능한 컴포넌트 아키텍처를 지향합니다.
 
 ### 1.1 핵심 원칙
 
-#### Utility-First CSS Framework
-```tsx
-// 전통적인 CSS 방식 (비권장)
-.custom-button {
-  background-color: #3b82f6;
-  color: white;
-  font-weight: bold;
-}
+- **Utility-First**: Tailwind CSS 기반의 유틸리티 클래스 우선
+- **Container Queries**: 요소 기반 반응형 디자인
+- **Korean Typography**: Pretendard 폰트와 한글 최적화
+- **Accessibility First**: WCAG 2.1 AA 준수
+- **Design Tokens**: 일관된 디자인 토큰 시스템
 
-// Utility-First 방식 (권장)
-<button className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
-  버튼
-</button>
+### 1.2 디자인 철학
+
 ```
-
-#### 설계 원칙
-- **Utility-First**: 사전 정의된 유틸리티 클래스로 커스텀 디자인 구축
-- **Component Abstraction**: 반복되는 패턴을 컴포넌트로 추상화
-- **Design System Constraints**: 제약된 디자인 토큰으로 일관성 확보
-- **Responsive by Default**: 모바일 우선 반응형 설계
-- **Performance Optimized**: PurgeCSS로 미사용 스타일 제거
-- **Icon-Only Interface**: 텍스트 없이 아이콘만으로 명확한 의미 전달
-- **No Emoji Policy**: 이모지 사용 금지, 전문적인 아이콘 라이브러리만 사용
-- **Premium Components First**: Tailwind UI 프리미엄 컴포넌트 우선 활용
-
-### 1.2 브랜드 아이덴티티
-
-- **Flow**: 물결처럼 자연스러운 사용자 여정
-- **Clarity**: 명확한 정보 계층과 직관적 인터페이스
-- **Trust**: 안정감을 주는 블루 계열과 소프트한 그라디언트
-- **Efficiency**: 최소한의 클릭으로 최대한의 기능 접근
-- **Premium**: Tailwind UI의 검증된 패턴으로 전문적인 완성도
-
-### 1.3 아이콘 사용 원칙
-
-#### 아이콘 라이브러리 우선순위
-1. **Radix Icons**: UI 상태 및 시스템 아이콘
-2. **Lucide React**: 일반 UI 아이콘
-3. **Heroicons**: 보조 아이콘 (Tailwind UI 기본)
-
-#### 아이콘 사용 규칙
-- **텍스트 금지**: 모든 아이콘은 텍스트 없이 단독 사용
-- **크기 일관성**: 동일한 컨텍스트에서는 동일한 크기 유지
-- **접근성 필수**: 모든 아이콘 버튼에 aria-label 제공
-- **의미 명확성**: 아이콘만으로 기능이 명확하게 전달되어야 함
+Moonwave = Utility-First CSS + Container Queries + Korean Typography + Accessibility
+```
 
 ---
 
 ## 2. 기술 스택
 
-### 2.1 필수 기술
-- **CSS Framework**: Tailwind CSS v3.3+
-- **UI Library**: Tailwind UI (유료 구독)
+### 2.1 핵심 기술
+
+- **CSS Framework**: Tailwind CSS 3.3+
 - **Container Queries**: @tailwindcss/container-queries
 - **Typography**: Pretendard Variable Font
 - **Icons**: @radix-ui/react-icons, lucide-react, @heroicons/react
@@ -84,19 +43,22 @@
 ### 2.2 설치 및 설정
 
 ```bash
-# 필수 패키지 설치
-npm install -D tailwindcss @tailwindcss/container-queries
-npm install clsx tailwind-merge
+# ⚠️ IMPORTANT: Make sure you're in SMS_V.2.0 directory
+cd SMS_V.2.0
+
+# 필수 패키지 설치 (--legacy-peer-deps for Vite 7 compatibility)
+npm install --legacy-peer-deps -D tailwindcss @tailwindcss/container-queries
+npm install --legacy-peer-deps clsx tailwind-merge
 
 # 아이콘 라이브러리 설치
-npm install @radix-ui/react-icons lucide-react @heroicons/react
+npm install --legacy-peer-deps @radix-ui/react-icons lucide-react @heroicons/react
 
 # Tailwind UI 추가 의존성
-npm install @headlessui/react @tailwindcss/forms @tailwindcss/typography @tailwindcss/aspect-ratio
+npm install --legacy-peer-deps @headlessui/react @tailwindcss/forms @tailwindcss/typography @tailwindcss/aspect-ratio
 ```
 
 ```javascript
-// tailwind.config.js
+// SMS_V.2.0/tailwind.config.js
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -1357,3 +1319,5 @@ import {
   Plus, 
   Menu 
 } from 'lucide-react';
+
+```
