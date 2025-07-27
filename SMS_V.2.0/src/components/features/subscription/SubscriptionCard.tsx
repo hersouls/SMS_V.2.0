@@ -106,7 +106,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
                   src={subscription.service_image_url} 
                   alt={subscription.service_name}
                   className="w-full h-full object-cover rounded-lg"
-                  onError={(e) => {
+                  onError={() => {
                     if (nextSibling) {
                       nextSibling.style.display = 'flex';
                     }
