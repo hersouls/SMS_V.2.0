@@ -10,7 +10,9 @@
   }
 
   body {
-    @apply font-sans antialiased;
+    font-family: theme(fontFamily.sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* 한글 텍스트 최적화 */
@@ -120,36 +122,101 @@
 @layer components {
   /* Moonwave 디자인 토큰 */
   .btn-primary {
-    @apply bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2;
+    background: linear-gradient(to right, theme(colors.purple.600), theme(colors.blue.600));
+    color: white;
+    font-weight: 600;
+    padding: theme(spacing.2) theme(spacing.4);
+    border-radius: theme(borderRadius.lg);
+    transition: all 0.2s;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, theme(colors.purple.700), theme(colors.blue.700));
+  }
+  
+  .btn-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px theme(colors.purple.500), 0 0 0 4px theme(colors.white);
   }
 
   .btn-secondary {
-    @apply bg-white text-gray-700 font-semibold py-2 px-4 rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    background: white;
+    color: theme(colors.gray.700);
+    font-weight: 600;
+    padding: theme(spacing.2) theme(spacing.4);
+    border-radius: theme(borderRadius.lg);
+    border: 1px solid theme(colors.gray.300);
+    transition: all 0.2s;
+  }
+  
+  .btn-secondary:hover {
+    background: theme(colors.gray.50);
+  }
+  
+  .btn-secondary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px theme(colors.blue.500), 0 0 0 4px theme(colors.white);
   }
 
   .btn-ghost {
-    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-semibold py-2 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    color: theme(colors.gray.600);
+    font-weight: 600;
+    padding: theme(spacing.2) theme(spacing.4);
+    border-radius: theme(borderRadius.lg);
+    transition: all 0.2s;
+  }
+  
+  .btn-ghost:hover {
+    color: theme(colors.gray.900);
+    background: theme(colors.gray.100);
+  }
+  
+  .btn-ghost:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px theme(colors.blue.500), 0 0 0 4px theme(colors.white);
   }
 
   .card-glass {
-    @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-lg;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: theme(boxShadow.lg);
   }
 
   .card-gradient {
-    @apply bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 shadow-sm;
+    background: linear-gradient(to bottom right, theme(colors.purple.50), theme(colors.blue.50));
+    border: 1px solid theme(colors.purple.100);
+    box-shadow: theme(boxShadow.sm);
   }
 
   /* 한글 텍스트 유틸리티 */
   .text-korean {
-    @apply font-sans antialiased tracking-korean-normal break-keep-ko;
+    font-family: theme(fontFamily.sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: theme(letterSpacing.korean-normal);
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .text-korean-sm {
-    @apply font-sans antialiased tracking-korean-normal break-keep-ko text-sm;
+    font-family: theme(fontFamily.sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: theme(letterSpacing.korean-normal);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    font-size: theme(fontSize.sm);
   }
 
   .text-korean-lg {
-    @apply font-sans antialiased tracking-korean-normal break-keep-ko text-lg;
+    font-family: theme(fontFamily.sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: theme(letterSpacing.korean-normal);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    font-size: theme(fontSize.lg);
   }
 }
 
