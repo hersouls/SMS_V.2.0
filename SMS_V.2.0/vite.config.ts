@@ -120,8 +120,7 @@ export default defineConfig({
           supabase: ['@supabase/supabase-js'],
           ui: ['@radix-ui/react-icons', 'lucide-react', '@heroicons/react', '@headlessui/react'],
           utils: ['clsx', 'tailwind-merge'],
-          charts: ['recharts'],
-          animations: ['framer-motion']
+
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',

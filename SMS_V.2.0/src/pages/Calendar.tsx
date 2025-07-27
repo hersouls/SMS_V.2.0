@@ -6,25 +6,20 @@ import {
   getTodayPayments, 
   getWeeklyPayments, 
   calculateMonthlyTotal,
-  formatAmount,
-  formatMonthName,
-  type CalendarEvent
+  formatAmount
 } from '../utils/calendar';
 import { type Subscription } from '../types/database.types';
 import { 
-  ChevronLeftIcon, 
-  ChevronRightIcon,
   CalendarIcon,
   CreditCardIcon,
   ClockIcon,
-  TrendingUpIcon
+  ChartBarIcon
 } from '@heroicons/react/24/outline';
-import { cn } from '../lib/utils';
 
 const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-  const [exchangeRate, setExchangeRate] = useState(1300);
+  const [exchangeRate] = useState(1300);
   const [isLoading, setIsLoading] = useState(true);
 
   const year = currentDate.getFullYear();
@@ -181,7 +176,7 @@ const Calendar: React.FC = () => {
             {/* Weekly Summary */}
             <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl p-6">
               <div className="flex items-center gap-2 mb-4">
-                <TrendingUpIcon className="w-5 h-5 text-green-600" />
+                <ChartBarIcon className="w-5 h-5 text-green-600" />
                 <h3 className="font-semibold font-pretendard text-gray-900">
                   이번 주 요약
                 </h3>

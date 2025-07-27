@@ -7,8 +7,7 @@ import {
   formatMonthName,
   formatAmount,
   formatDate,
-  getServiceIcon,
-  type ServiceIcon
+  getServiceIcon
 } from '../../../utils/calendar';
 
 interface CalendarGridProps {
