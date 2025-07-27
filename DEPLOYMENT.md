@@ -1,134 +1,102 @@
-# Deployment Guide
+# 🚀 GitHub Pages 배포 가이드
 
-## Issue: GitHub Actions Ownership Restriction
+## ✅ 완료된 설정
 
-You're encountering this error because GitHub Actions requires the repository to be owned by the "hersouls" organization to use certain actions like:
-- `actions/checkout@v4`
-- `actions/setup-node@v4`
-- `actions/configure-pages@v4`
-- `actions/upload-pages-artifact@v3`
-- `actions/deploy-pages@v4`
+### 1. Workflow 파일 위치 수정
+- ❌ 이전: `SMS_V.2.0/.github/workflows/deploy.yml`
+- ✅ 현재: `.github/workflows/deploy.yml` (repository 루트)
 
-## Solutions
+### 2. Working Directory 설정
+- `working-directory: SMS_V.2.0` 설정으로 올바른 디렉토리에서 작업
+- npm ci 및 build 명령어가 SMS_V.2.0 폴더에서 실행됨
 
-### Solution 1: Transfer Repository Ownership (Recommended)
-Transfer your repository to the "hersouls" organization:
-1. Go to your repository settings
-2. Scroll down to "Danger Zone"
-3. Click "Transfer ownership"
-4. Enter "hersouls" as the new owner
-5. Confirm the transfer
+### 3. GitHub Pages 설정
+- GitHub Pages 배포를 위한 workflow 구성 완료
+- 환경 변수 설정 포함 (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)
 
-### Solution 2: Use GitHub CLI Deployment (Alternative)
+## 🔧 Workflow 구성
 
-If you can't transfer ownership, use GitHub CLI to deploy:
+### 주요 설정
+```yaml
+name: Deploy to GitHub Pages
 
-#### Prerequisites
-1. Install GitHub CLI: https://cli.github.com/
-2. Authenticate: `gh auth login`
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-#### Deploy using npm script
-```bash
-cd SMS_V.2.0
-npm run deploy
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
 ```
 
-#### Deploy using the provided script
-```bash
-./deploy-with-gh.sh
-```
+### 빌드 단계
+1. **Checkout**: 코드 체크아웃
+2. **Setup Node.js**: Node.js 20 설정 및 npm 캐시
+3. **Install dependencies**: `SMS_V.2.0` 디렉토리에서 `npm ci` 실행
+4. **Build application**: 환경 변수와 함께 `npm run build` 실행
+5. **Setup Pages**: GitHub Pages 설정
+6. **Upload artifact**: `SMS_V.2.0/dist` 디렉토리를 아티팩트로 업로드
+7. **Deploy to GitHub Pages**: GitHub Pages에 배포
 
-### Solution 3: Manual Deployment
+## 🔑 필요한 환경 변수
 
-1. Build the project:
-```bash
-cd SMS_V.2.0
-npm run build
-```
+GitHub Repository Settings > Secrets and variables > Actions에서 다음 환경 변수를 설정해야 합니다:
 
-2. Create a gh-pages branch:
-```bash
-git checkout -b gh-pages
-```
+- `VITE_SUPABASE_URL`: Supabase 프로젝트 URL
+- `VITE_SUPABASE_ANON_KEY`: Supabase 익명 키
 
-3. Copy build files to root:
-```bash
-cp -r dist/* .
-git add .
-git commit -m "Deploy to GitHub Pages"
-git push origin gh-pages
-```
+## 📋 GitHub Pages 활성화 단계
 
-4. Configure GitHub Pages:
-   - Go to repository settings
-   - Navigate to Pages section
-   - Set source to "Deploy from a branch"
-   - Select "gh-pages" branch
-   - Save
+1. **Repository Settings 접속**
+   - GitHub repository 페이지에서 Settings 탭 클릭
 
-### Solution 4: Use Netlify/Vercel (Alternative Hosting)
+2. **Pages 설정**
+   - 왼쪽 메뉴에서 "Pages" 클릭
 
-If GitHub Pages restrictions persist, consider using alternative hosting:
+3. **Source 설정**
+   - Source: "GitHub Actions" 선택
 
-#### Netlify
-1. Connect your repository to Netlify
-2. Set build command: `cd SMS_V.2.0 && npm run build`
-3. Set publish directory: `SMS_V.2.0/dist`
+4. **배포 확인**
+   - main 브랜치에 push하면 자동으로 배포됨
+   - Actions 탭에서 배포 진행 상황 확인 가능
 
-#### Vercel
-1. Connect your repository to Vercel
-2. Set root directory to `SMS_V.2.0`
-3. Deploy automatically
+## 🎯 배포 확인
 
-## Current Workflow Files
+배포가 완료되면 다음 URL에서 접근 가능:
+- `https://[username].github.io/[repository-name]/`
 
-The following workflow files are currently disabled due to ownership restrictions:
-- `.github/workflows/ci.yml` - CI/CD pipeline
-- `.github/workflows/pages.yml` - GitHub Pages deployment
-- `.github/workflows/release.yml` - Release management
-- `.github/workflows/security.yml` - Security scanning
+## 🔍 문제 해결
 
-## Quick Start
+### Workflow가 실행되지 않는 경우
+1. `.github/workflows/deploy.yml` 파일이 repository 루트에 있는지 확인
+2. main 브랜치에 push했는지 확인
+3. GitHub Actions 탭에서 workflow 상태 확인
 
-For immediate deployment without GitHub Actions:
+### 빌드 실패하는 경우
+1. 환경 변수가 올바르게 설정되었는지 확인
+2. `SMS_V.2.0/package.json`의 build 스크립트 확인
+3. Actions 로그에서 구체적인 오류 메시지 확인
 
-```bash
-# Option 1: Use the deployment script
-./deploy-with-gh.sh
+### 페이지가 404 오류인 경우
+1. `SMS_V.2.0/public/_redirects` 파일이 있는지 확인
+2. GitHub Pages 설정에서 올바른 브랜치가 선택되었는지 확인
 
-# Option 2: Use npm script (if GitHub CLI is installed)
-cd SMS_V.2.0
-npm run deploy
+## 📝 추가 참고사항
 
-# Option 3: Manual build
-cd SMS_V.2.0
-npm run build
-# Then manually upload dist/ contents to GitHub Pages
-```
-
-## Troubleshooting
-
-### GitHub CLI not found
-```bash
-# Install on Ubuntu/Debian
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-sudo apt update
-sudo apt install gh
-
-# Install on macOS
-brew install gh
-```
-
-### Authentication issues
-```bash
-gh auth login
-# Follow the prompts to authenticate
-```
-
-### Build errors
-```bash
-cd SMS_V.2.0
-npm ci
-npm run build
-```
+- SPA 라우팅을 위해 `_redirects` 파일이 포함됨
+- 빌드 결과물은 `SMS_V.2.0/dist` 디렉토리에 생성됨
+- GitHub Pages는 정적 파일만 서빙하므로 서버 사이드 기능은 사용 불가
