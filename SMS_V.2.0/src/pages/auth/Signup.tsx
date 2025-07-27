@@ -43,7 +43,7 @@ const Signup: React.FC = () => {
     const { error } = await signUp(email, password);
     
     if (error) {
-      setError(error.message);
+      setError(error.userMessage || error.message);
     } else {
       setSuccess(true);
       setTimeout(() => {
@@ -61,7 +61,7 @@ const Signup: React.FC = () => {
     const { error } = await signInWithGoogle();
     
     if (error) {
-      setError(error.message);
+      setError(error.userMessage || error.message);
     }
     
     setLoading(false);

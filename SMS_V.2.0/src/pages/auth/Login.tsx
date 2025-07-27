@@ -24,7 +24,7 @@ const Login: React.FC = () => {
     const { error } = await signIn(email, password);
     
     if (error) {
-      setError(error.message);
+      setError(error.userMessage || error.message);
     } else {
       navigate('/dashboard');
     }
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     const { error } = await signInWithGoogle();
     
     if (error) {
-      setError(error.message);
+      setError(error.userMessage || error.message);
     }
     
     setLoading(false);
