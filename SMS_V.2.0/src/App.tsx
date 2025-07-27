@@ -6,11 +6,9 @@ import Footer from './components/layout/Footer';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 
-// Placeholder components for pages that will be created later
-const Dashboard = () => <div className="p-4">Dashboard Page (Coming Soon)</div>;
-const Subscriptions = () => <div className="p-4">Subscriptions Page (Coming Soon)</div>;
-const Calendar = () => <div className="p-4">Calendar Page (Coming Soon)</div>;
-const Settings = () => <div className="p-4">Settings Page (Coming Soon)</div>;
+// Import actual page components
+import Dashboard from './pages/Dashboard';
+import Subscriptions from './pages/Subscriptions';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
