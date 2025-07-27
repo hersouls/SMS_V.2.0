@@ -32,56 +32,56 @@
 
   /* Container Queries - Design Guide 표준 */
   @container (min-width: 16rem) {
-    .@2xs\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-    .@2xs\:p-4 { padding: 1rem; }
+    .container-2xs-text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .container-2xs-p-4 { padding: 1rem; }
   }
 
   @container (min-width: 20rem) {
-    .@xs\:text-base { font-size: 1rem; line-height: 1.5rem; }
-    .@xs\:p-6 { padding: 1.5rem; }
+    .container-xs-text-base { font-size: 1rem; line-height: 1.5rem; }
+    .container-xs-p-6 { padding: 1.5rem; }
   }
 
   @container (min-width: 24rem) {
-    .@sm\:text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-    .@sm\:p-8 { padding: 2rem; }
-    .@sm\:flex-row { flex-direction: row; }
-    .@sm\:justify-between { justify-content: space-between; }
-    .@sm\:items-center { align-items: center; }
-    .@sm\:gap-6 { gap: 1.5rem; }
+    .container-sm-text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .container-sm-p-8 { padding: 2rem; }
+    .container-sm-flex-row { flex-direction: row; }
+    .container-sm-justify-between { justify-content: space-between; }
+    .container-sm-items-center { align-items: center; }
+    .container-sm-gap-6 { gap: 1.5rem; }
   }
 
   @container (min-width: 28rem) {
-    .@md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-    .@md\:p-10 { padding: 2.5rem; }
-    .@md\:flex-row { flex-direction: row; }
-    .@md\:justify-between { justify-content: space-between; }
-    .@md\:items-center { align-items: center; }
-    .@md\:gap-6 { gap: 1.5rem; }
+    .container-md-text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .container-md-p-10 { padding: 2.5rem; }
+    .container-md-flex-row { flex-direction: row; }
+    .container-md-justify-between { justify-content: space-between; }
+    .container-md-items-center { align-items: center; }
+    .container-md-gap-6 { gap: 1.5rem; }
   }
 
   @container (min-width: 32rem) {
-    .@lg\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
-    .@lg\:p-12 { padding: 3rem; }
-    .@lg\:flex-row { flex-direction: row; }
-    .@lg\:justify-between { justify-content: space-between; }
-    .@lg\:items-center { align-items: center; }
-    .@lg\:gap-6 { gap: 1.5rem; }
-    .@lg\:order-1 { order: 1; }
-    .@lg\:order-2 { order: 2; }
-    .@lg\:justify-end { justify-content: flex-end; }
-    .@lg\:text-left { text-align: left; }
-    .@lg\:mt-0 { margin-top: 0; }
+    .container-lg-text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .container-lg-p-12 { padding: 3rem; }
+    .container-lg-flex-row { flex-direction: row; }
+    .container-lg-justify-between { justify-content: space-between; }
+    .container-lg-items-center { align-items: center; }
+    .container-lg-gap-6 { gap: 1.5rem; }
+    .container-lg-order-1 { order: 1; }
+    .container-lg-order-2 { order: 2; }
+    .container-lg-justify-end { justify-content: flex-end; }
+    .container-lg-text-left { text-align: left; }
+    .container-lg-mt-0 { margin-top: 0; }
   }
 
   @container (min-width: 36rem) {
-    .@xl\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-    .@xl\:justify-between { justify-content: space-between; }
-    .@xl\:items-center { align-items: center; }
-    .@xl\:gap-6 { gap: 1.5rem; }
+    .container-xl-text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .container-xl-justify-between { justify-content: space-between; }
+    .container-xl-items-center { align-items: center; }
+    .container-xl-gap-6 { gap: 1.5rem; }
   }
 
   @container (min-width: 42rem) {
-    .@2xl\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .container-2xl-text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
   }
 }
 

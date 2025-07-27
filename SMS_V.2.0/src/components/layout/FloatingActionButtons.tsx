@@ -15,7 +15,7 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onDebugClick 
 }) => {
   return (
-    <div className="@container fixed bottom-32 right-4 @sm:right-6 @lg:right-8 flex flex-col gap-3 z-40">
+          <div className="container fixed bottom-32 right-4 sm:right-6 lg:right-8 flex flex-col gap-3 z-40">
       {/* 개발 환경 전용 버튼들 - Footer 디자인 가이드 표준 */}
       {process.env.NODE_ENV === 'development' && (
         <>
@@ -29,7 +29,7 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
               )}
               aria-label="디버그 모드"
             >
-              <Bug className="w-5 h-5 @sm:w-6 @sm:h-6" />
+              <Bug className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           )}
           
@@ -43,7 +43,7 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
               )}
               aria-label="긴급 상황"
             >
-              <AlertTriangle className="w-5 h-5 @sm:w-6 @sm:h-6" />
+              <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           )}
         </>
@@ -59,7 +59,7 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         )}
         aria-label="새 구독 추가"
       >
-        <Plus className="w-5 h-5 @sm:w-6 @sm:h-6" />
+                    <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
     </div>
   );

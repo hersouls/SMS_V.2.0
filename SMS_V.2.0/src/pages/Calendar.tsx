@@ -114,9 +114,9 @@ const Calendar: React.FC = () => {
           </p>
         </div>
 
-        <div className="@container grid @lg:grid-cols-4 gap-6">
-          {/* Main Calendar */}
-          <div className="@lg:col-span-3">
+              <div className="container grid lg:grid-cols-4 gap-6">
+        {/* Main Calendar */}
+        <div className="lg:col-span-3">
             <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl overflow-hidden">
               <CalendarGrid
                 calendar={calendar}
@@ -128,7 +128,7 @@ const Calendar: React.FC = () => {
           </div>
 
           {/* Right Sidebar */}
-          <div className="@lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-6">
             {/* Today's Payments */}
             <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl p-6">
               <div className="flex items-center gap-2 mb-4">

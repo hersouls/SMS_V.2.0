@@ -56,7 +56,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
               title={`${event.subscriptions.map(s => s.service_name).join(', ')} - ${formatAmount(event.totalAmount)}`}
             >
               <span className="text-sm">{serviceIcon.icon}</span>
-              <span className="hidden @sm:inline font-medium">
+                              <span className="hidden sm:inline font-medium">
                 {formatAmount(event.totalAmount)}
               </span>
             </div>

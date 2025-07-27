@@ -51,13 +51,13 @@ const Login: React.FC = () => {
         {/* 로고 - Design Guide 표준 */}
         <div className="text-center space-y-2">
           <h1 className={cn(
-            "text-2xl @sm:text-3xl @lg:text-4xl font-bold font-pretendard",
+            "text-2xl sm:text-3xl lg:text-4xl font-bold font-pretendard",
             "bg-gradient-to-r from-blue-600 to-purple-600",
             "bg-clip-text text-transparent tracking-ko-tight break-keep-ko"
           )}>
             Moonwave
           </h1>
-          <p className="text-sm @sm:text-base text-gray-600 font-pretendard tracking-ko-normal break-keep-ko">
+                      <p className="text-sm sm:text-base text-gray-600 font-pretendard tracking-ko-normal break-keep-ko">
             구독 관리의 새로운 기준
           </p>
         </div>
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               className={cn(
                 "w-full pl-10 pr-4 py-3 rounded-lg",
-                "font-pretendard tracking-ko-normal text-sm @sm:text-base",
+                "font-pretendard tracking-ko-normal text-sm sm:text-base",
                 "border border-gray-200 focus:border-blue-500",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
                 "transition-all duration-200",
@@ -92,7 +92,7 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               className={cn(
                 "w-full pl-10 pr-12 py-3 rounded-lg",
-                "font-pretendard tracking-ko-normal text-sm @sm:text-base",
+                "font-pretendard tracking-ko-normal text-sm sm:text-base",
                 "border border-gray-200 focus:border-blue-500",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
                 "transition-all duration-200",
@@ -134,7 +134,7 @@ const Login: React.FC = () => {
               "text-white hover:shadow-lg transform hover:scale-[1.02]",
               "transition-all duration-200",
               "focus:outline-none focus:ring-2 focus:ring-purple-500/50",
-              "text-sm @sm:text-base tracking-ko-normal",
+              "text-sm sm:text-base tracking-ko-normal",
               loading && "opacity-70 cursor-not-allowed"
             )}
             aria-label="로그인하기"

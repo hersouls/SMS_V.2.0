@@ -39,10 +39,10 @@ const Footer: React.FC = () => {
       <div className={cn(
         "mx-auto max-w-7xl px-6 py-8",
         DESIGN_TOKENS.CONTAINER_RESPONSIVE,
-        "@lg:justify-between"
+        "lg:justify-between"
       )}>
         {/* 소셜 링크 - Footer 디자인 가이드 표준 */}
-        <div className="@container flex justify-center @lg:justify-end @lg:order-2 space-x-6">
+                  <div className="container flex justify-center lg:justify-end lg:order-2 space-x-6">
           {socialLinks.map((item) => (
             <a
               key={item.name}
@@ -63,16 +63,16 @@ const Footer: React.FC = () => {
         </div>
         
         {/* 저작권 정보 - Footer 디자인 가이드 표준 */}
-        <div className="@container @lg:order-1 @lg:mt-0 mt-8">
+                  <div className="container lg:order-1 lg:mt-0 mt-8">
           <p className={cn(
             DESIGN_TOKENS.KOREAN_TEXT_BASE,
-            "text-center @lg:text-left text-sm leading-5 text-gray-500"
+                          "text-center lg:text-left text-sm leading-5 text-gray-500"
           )}>
             &copy; {currentYear} Moonwave Company, Inc. All rights reserved.
           </p>
           <p className={cn(
             DESIGN_TOKENS.KOREAN_TEXT_BASE,
-            "text-center @lg:text-left text-xs leading-4 text-gray-400 mt-1"
+                          "text-center lg:text-left text-xs leading-4 text-gray-400 mt-1"
           )}>
             Made with <Heart className="inline w-3 h-3 text-red-400" /> for better subscription management
           </p>

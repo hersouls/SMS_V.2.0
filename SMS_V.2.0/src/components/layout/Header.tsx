@@ -27,7 +27,7 @@ const Header: React.FC = () => {
       
       {/* Glass Card Navigation - Design Guide 표준 */}
       <nav className="relative" role="navigation" aria-label="메인 네비게이션">
-        <div className="mx-auto max-w-7xl px-4 @sm:px-6 @lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Home Button - Design Guide 표준 */}
             <Link

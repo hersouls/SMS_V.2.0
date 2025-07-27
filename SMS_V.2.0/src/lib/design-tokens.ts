@@ -12,7 +12,7 @@ export const DESIGN_TOKENS = {
   KOREAN_TEXT_BASE: "font-pretendard antialiased tracking-korean-normal break-keep-ko",
   
   // 컨테이너 반응형
-  CONTAINER_RESPONSIVE: "@container @lg:flex-row @lg:gap-6 @lg:items-center flex flex-col gap-4",
+  CONTAINER_RESPONSIVE: "container lg:flex-row lg:gap-6 lg:items-center flex flex-col gap-4",
   
   // 그라디언트
   GRADIENT_PRIMARY: "bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900",
@@ -147,11 +147,11 @@ export const TRANSITIONS = {
 
 // 반응형 브레이크포인트
 export const BREAKPOINTS = {
-  mobile: '@sm:',
-  tablet: '@md:',
-  desktop: '@lg:',
-  wide: '@xl:',
-  ultra: '@2xl:',
+  mobile: 'sm:',
+  tablet: 'md:',
+  desktop: 'lg:',
+  wide: 'xl:',
+  ultra: '2xl:',
 };
 
 // 접근성 관련

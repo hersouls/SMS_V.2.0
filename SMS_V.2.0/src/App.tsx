@@ -100,7 +100,7 @@ function AppRoutes() {
             <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
               <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                   <Dashboard />
                 </div>
               </main>
@@ -120,7 +120,7 @@ function AppRoutes() {
             <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
               <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                   <Subscriptions />
                 </div>
               </main>
@@ -158,7 +158,7 @@ function AppRoutes() {
             <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
               <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                   <Calendar />
                 </div>
               </main>
@@ -178,7 +178,7 @@ function AppRoutes() {
             <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
               <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                   <Settings />
                 </div>
               </main>
@@ -198,7 +198,7 @@ function AppRoutes() {
           <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
             <Header />
             <main className="flex-1 pt-16 pb-32">
-              <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <DataTest />
               </div>
             </main>
