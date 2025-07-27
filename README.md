@@ -320,6 +320,50 @@ CREATE TABLE exchange_rates (
 - [👆 로그인/회원가입 가이드](docs/로그인%20회원가입%20디자인%20가이드)
 - [🦶 Footer 디자인 가이드](docs/Footer%20디자인가이드)
 
+## 🚀 CI/CD & 배포
+
+### GitHub Actions 워크플로우
+
+#### 1. CI/CD Pipeline (`.github/workflows/ci.yml`)
+- **트리거**: `main`, `develop` 브랜치 푸시 및 PR
+- **기능**:
+  - 코드 품질 검사 (ESLint, TypeScript 체크)
+  - 빌드 테스트
+  - GitHub Pages 자동 배포 (main 브랜치만)
+
+#### 2. Security & Dependencies (`.github/workflows/security.yml`)
+- **트리거**: 매주 월요일 오전 9시 (스케줄) + 수동 실행
+- **기능**:
+  - 보안 취약점 검사 (`npm audit`)
+  - 의존성 업데이트 확인
+  - 자동 의존성 업데이트 (수동 실행 시)
+
+#### 3. Release Management (`.github/workflows/release.yml`)
+- **트리거**: `v*` 태그 푸시
+- **기능**:
+  - 자동 릴리즈 생성
+  - 빌드 아티팩트 업로드
+
+#### 4. GitHub Pages 배포 (`.github/workflows/pages.yml`)
+- **트리거**: `main` 브랜치 푸시
+- **기능**: 정적 사이트 자동 배포
+
+### Dependabot 설정 (`.github/dependabot.yml`)
+- **npm 의존성**: 매주 월요일 오전 9시 자동 업데이트
+- **GitHub Actions**: 매주 월요일 오전 9시 자동 업데이트
+- **PR 자동 생성**: 보안 업데이트 및 호환성 업데이트
+
+### 배포 환경
+- **개발**: `develop` 브랜치 → 개발 환경
+- **스테이징**: `main` 브랜치 → GitHub Pages
+- **프로덕션**: 릴리즈 태그 → GitHub Pages + 릴리즈 아티팩트
+
+### 사용법
+1. **개발**: `develop` 브랜치에서 작업
+2. **PR 생성**: `develop` → `main` 브랜치로 PR
+3. **자동 배포**: PR 머지 시 GitHub Pages에 자동 배포
+4. **릴리즈**: `git tag v1.0.0 && git push origin v1.0.0`
+
 ## 🤝 기여하기
 
 ### 개발 워크플로우
