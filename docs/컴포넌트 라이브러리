@@ -1,0 +1,757 @@
+Moonwave 프로젝트의 디자인 시스템과 기술 아키텍처를 기반으로 재사용 가능한 컴포넌트 라이브러리 문서를 제작합니다. Utility-First CSS, Pretendard 폰트, Container Queries를 활용한 React + TypeScript 컴포넌트들을 체계적으로 정리합니다.
+분석
+프로젝트 문서 분석 결과:
+
+디자인 원칙: Utility-First CSS, 아이콘 중심 UI, 한글 최적화
+기술 스택: React + TypeScript + Tailwind CSS + Container Queries
+컴포넌트 구조: ui/ (기본), layout/ (레이아웃), features/ (기능별)
+디자인 토큰: 표준화된 spacing, color, shadow, typography
+접근성: ARIA 레이블, 키보드 내비게이션 필수
+
+실행
+🌊 Moonwave 컴포넌트 라이브러리 v2.0
+목차
+
+개요
+설치 및 설정
+기본 컴포넌트
+레이아웃 컴포넌트
+기능별 컴포넌트
+유틸리티
+사용 예시
+
+
+1. 개요
+1.1 디자인 원칙
+
+Utility-First CSS: Tailwind CSS 기반 스타일링
+타입 안전성: TypeScript로 모든 Props 정의
+접근성 우선: ARIA 속성과 키보드 내비게이션
+반응형 설계: Container Queries 활용
+한글 최적화: Pretendard 폰트와 한글 타이포그래피
+
+1.2 폴더 구조
+src/components/
+├── ui/              # 기본 UI 컴포넌트
+├── layout/          # 레이아웃 컴포넌트
+├── features/        # 기능별 컴포넌트
+└── index.ts         # 통합 export
+
+2. 설치 및 설정
+2.1 필수 의존성
+bashnpm install clsx tailwind-merge @radix-ui/react-icons lucide-react
+npm install -D @tailwindcss/container-queries
+2.2 유틸리티 함수
+typescript// src/lib/utils.ts
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+3. 기본 컴포넌트
+3.1 Button
+typescript// src/components/ui/Button.tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'destructive' | 'ghost' | 'gradient'
+  size?: 'sm' | 'md' | 'lg' | 'icon'
+  loading?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = 'primary', size = 'md', loading, children, disabled, ...props }, ref) => {
+    const baseClasses = cn(
+      'font-pretendard font-semibold rounded-lg transition-all duration-200',
+      'focus:outline-none focus:ring-2 focus:ring-offset-2',
+      'tracking-ko-normal break-keep-ko antialiased',
+      'transform active:scale-95'
+    )
+    
+    const variants = {
+      primary: 'bg-blue-500 hover:bg-blue-600 text-white focus:ring-blue-500',
+      secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500',
+      destructive: 'bg-red-500 hover:bg-red-600 text-white focus:ring-red-500',
+      ghost: 'bg-transparent hover:bg-gray-100 text-gray-700',
+      gradient: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg'
+    }
+    
+    const sizes = {
+      sm: 'py-1.5 px-3 text-sm',
+      md: 'py-2 px-4 text-base',
+      lg: 'py-3 px-6 text-lg',
+      icon: 'p-2 w-10 h-10'
+    }
+    
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          baseClasses,
+          variants[variant],
+          sizes[size],
+          (disabled || loading) && 'opacity-70 cursor-not-allowed',
+          className
+        )}
+        disabled={disabled || loading}
+        {...props}
+      >
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            {size !== 'icon' && '로딩 중...'}
+          </span>
+        ) : (
+          children
+        )}
+      </button>
+    )
+  }
+)
+Button.displayName = 'Button'
+
+export { Button }
+3.2 Card
+typescript// src/components/ui/Card.tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  hover?: boolean
+  glass?: boolean
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, hover = true, glass = false, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          '@container rounded-xl p-6',
+          glass
+            ? 'bg-white/80 backdrop-blur-md border border-white/20'
+            : 'bg-white border border-gray-200 shadow-sm',
+          hover && 'hover:shadow-lg transition-shadow duration-200',
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
+Card.displayName = 'Card'
+
+const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('mb-4', className)} {...props} />
+  )
+)
+CardHeader.displayName = 'CardHeader'
+
+const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => (
+    <h3
+      ref={ref}
+      className={cn(
+        'text-lg @sm:text-xl font-bold font-pretendard',
+        'tracking-ko-tight break-keep-ko',
+        className
+      )}
+      {...props}
+    />
+  )
+)
+CardTitle.displayName = 'CardTitle'
+
+const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('text-gray-700', className)} {...props} />
+  )
+)
+CardContent.displayName = 'CardContent'
+
+export { Card, CardHeader, CardTitle, CardContent }
+3.3 Input
+typescript// src/components/ui/Input.tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string
+  error?: string
+  icon?: React.ReactNode
+}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, label, error, icon, ...props }, ref) => {
+    return (
+      <div className="space-y-1">
+        {label && (
+          <label className="font-pretendard text-sm font-medium text-gray-700">
+            {label}
+          </label>
+        )}
+        <div className="relative">
+          {icon && (
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              {icon}
+            </div>
+          )}
+          <input
+            ref={ref}
+            className={cn(
+              'w-full px-3 py-2 border rounded-md',
+              'font-pretendard tracking-ko-normal',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500',
+              'transition-all duration-200',
+              icon && 'pl-10',
+              error ? 'border-red-300' : 'border-gray-300',
+              className
+            )}
+            {...props}
+          />
+        </div>
+        {error && (
+          <p className="text-sm text-red-600 font-pretendard">{error}</p>
+        )}
+      </div>
+    )
+  }
+)
+Input.displayName = 'Input'
+
+export { Input }
+3.4 Badge
+typescript// src/components/ui/Badge.tsx
+import * as React from 'react'
+import { cn } from '@/lib/utils'
+
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: 'default' | 'success' | 'warning' | 'error' | 'info'
+}
+
+const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+  ({ className, variant = 'default', ...props }, ref) => {
+    const variants = {
+      default: 'bg-gray-100 text-gray-700 ring-gray-600/20',
+      success: 'bg-green-50 text-green-700 ring-green-600/20',
+      warning: 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
+      error: 'bg-red-50 text-red-700 ring-red-600/20',
+      info: 'bg-blue-50 text-blue-700 ring-blue-600/20'
+    }
+    
+    return (
+      <span
+        ref={ref}
+        className={cn(
+          'inline-flex items-center rounded-md px-2 py-1',
+          'text-xs font-medium font-pretendard',
+          'ring-1 ring-inset',
+          variants[variant],
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
+Badge.displayName = 'Badge'
+
+export { Badge }
+
+4. 레이아웃 컴포넌트
+4.1 Header
+typescript// src/components/layout/Header.tsx
+import * as React from 'react'
+import { Home, Bell, User } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Button } from '../ui/Button'
+
+export interface HeaderProps {
+  serviceButtons?: Array<{
+    icon: React.ReactNode
+    onClick: () => void
+    ariaLabel: string
+  }>
+}
+
+export const Header: React.FC<HeaderProps> = ({ serviceButtons = [] }) => {
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Wave Background */}
+      <div className="absolute inset-0 h-20 overflow-hidden">
+        <svg 
+          className="absolute bottom-0 w-full wave-single"
+          style={{ height: '80px', opacity: 0.3 }}
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <path 
+            fill="#3b82f6" 
+            d="M0,192L48,181.3C96,171,192,149,288,154.7C384,160,480,192,576,213.3C672,235,768,245,864,218.7C960,192,1056,128,1152,106.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+        </svg>
+      </div>
+      
+      {/* Navigation */}
+      <nav className="relative">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            {/* Home Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="glass-button"
+              aria-label="홈으로 가기"
+            >
+              <Home className="w-5 h-5 text-white" />
+            </Button>
+            
+            {/* Right Actions */}
+            <div className="flex items-center gap-3">
+              {serviceButtons.map((button, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  size="icon"
+                  onClick={button.onClick}
+                  className="glass-button"
+                  aria-label={button.ariaLabel}
+                >
+                  {button.icon}
+                </Button>
+              ))}
+              
+              {/* Notifications */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="glass-button"
+                aria-label="알림"
+              >
+                <Bell className="w-5 h-5 text-white" />
+              </Button>
+              
+              {/* Profile */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="glass-button"
+                aria-label="프로필"
+              >
+                <User className="w-5 h-5 text-white" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+  )
+}
+4.2 Footer
+typescript// src/components/layout/Footer.tsx
+import * as React from 'react'
+import { Facebook, Instagram, Twitter, Github } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+const socialLinks = [
+  { name: 'Facebook', icon: Facebook, href: '#' },
+  { name: 'Instagram', icon: Instagram, href: '#' },
+  { name: 'Twitter', icon: Twitter, href: '#' },
+  { name: 'GitHub', icon: Github, href: '#' },
+]
+
+export const Footer: React.FC = () => {
+  return (
+    <footer className="@container bg-white border-t border-gray-200">
+      <div className={cn(
+        "mx-auto max-w-7xl px-6 py-8",
+        "@lg:flex-row @lg:gap-6 @lg:items-center @lg:justify-between",
+        "flex flex-col gap-4"
+      )}>
+        {/* Social Links */}
+        <div className="@container flex justify-center @lg:justify-end @lg:order-2 space-x-6">
+          {socialLinks.map((item) => (
+            
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "text-gray-400 hover:text-gray-500 transition-colors duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500",
+                "focus:ring-offset-2 rounded-lg p-1"
+              )}
+              aria-label={`${item.name} 팔로우하기`}
+            >
+              <span className="sr-only">{item.name}</span>
+              <item.icon className="h-6 w-6" aria-hidden="true" />
+            </a>
+          ))}
+        </div>
+        
+        {/* Copyright */}
+        <div className="@container @lg:order-1 @lg:mt-0 mt-8">
+          <p className={cn(
+            "font-pretendard tracking-ko-normal break-keep-ko",
+            "text-center @lg:text-left text-sm leading-5 text-gray-500"
+          )}>
+            &copy; 2025 Moonwave Company, Inc. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+5. 기능별 컴포넌트
+5.1 SubscriptionCard
+typescript// src/components/features/subscription/SubscriptionCard.tsx
+import * as React from 'react'
+import { Calendar, CreditCard, ExternalLink } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
+import { cn } from '@/lib/utils'
+
+export interface SubscriptionCardProps {
+  subscription: {
+    id: string
+    service_name: string
+    service_url?: string
+    service_image_url?: string
+    amount: number
+    currency: 'KRW' | 'USD'
+    payment_cycle: 'monthly' | 'yearly' | 'once'
+    payment_day: number
+    status: 'active' | 'paused' | 'canceled'
+  }
+  onClick?: () => void
+}
+
+export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ 
+  subscription, 
+  onClick 
+}) => {
+  const statusVariants = {
+    active: 'success',
+    paused: 'warning',
+    canceled: 'error'
+  } as const
+  
+  const statusLabels = {
+    active: '활성',
+    paused: '일시정지',
+    canceled: '해지됨'
+  }
+  
+  const cycleLabels = {
+    monthly: '월간',
+    yearly: '연간',
+    once: '일회성'
+  }
+  
+  return (
+    <Card 
+      className="cursor-pointer @container"
+      onClick={onClick}
+    >
+      <CardHeader>
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            {subscription.service_image_url ? (
+              <img
+                src={subscription.service_image_url}
+                alt={subscription.service_name}
+                className="w-12 h-12 rounded-lg object-cover"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                <CreditCard className="w-6 h-6 text-gray-400" />
+              </div>
+            )}
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                {subscription.service_name}
+                {subscription.service_url && (
+                  
+                    href={subscription.service_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-gray-600"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label="서비스 사이트 방문"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
+              </CardTitle>
+            </div>
+          </div>
+          <Badge variant={statusVariants[subscription.status]}>
+            {statusLabels[subscription.status]}
+          </Badge>
+        </div>
+      </CardHeader>
+      
+      <CardContent>
+        <div className="space-y-2 @sm:space-y-0 @sm:flex @sm:items-center @sm:justify-between">
+          <div className="flex items-center gap-4 text-sm text-gray-600">
+            <span className="font-pretendard font-semibold text-lg text-gray-900">
+              {subscription.currency === 'KRW' ? '₩' : '$'}
+              {subscription.amount.toLocaleString()}
+            </span>
+            <span className="text-gray-500">
+              {cycleLabels[subscription.payment_cycle]}
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Calendar className="w-4 h-4" />
+            <span>매월 {subscription.payment_day}일</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+5.2 DashboardStats
+typescript// src/components/features/dashboard/DashboardStats.tsx
+import * as React from 'react'
+import { CreditCard, TrendingUp, Calendar, DollarSign } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/Card'
+import { cn } from '@/lib/utils'
+
+export interface Stat {
+  name: string
+  value: string | number
+  change?: string
+  changeType?: 'increase' | 'decrease' | 'neutral'
+  icon: React.ElementType
+}
+
+export interface DashboardStatsProps {
+  stats: Stat[]
+}
+
+export const DashboardStats: React.FC<DashboardStatsProps> = ({ stats }) => {
+  return (
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat) => (
+        <Card key={stat.name} className="relative overflow-hidden">
+          <CardContent className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="rounded-md bg-blue-500 p-3">
+                  <stat.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                </div>
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 font-pretendard truncate">
+                    {stat.name}
+                  </dt>
+                  <dd className="flex items-baseline">
+                    <div className="text-2xl font-semibold text-gray-900 font-pretendard">
+                      {stat.value}
+                    </div>
+                    {stat.change && (
+                      <div
+                        className={cn(
+                          'ml-2 flex items-baseline text-sm font-semibold',
+                          stat.changeType === 'increase' && 'text-green-600',
+                          stat.changeType === 'decrease' && 'text-red-600',
+                          stat.changeType === 'neutral' && 'text-gray-500'
+                        )}
+                      >
+                        {stat.change}
+                      </div>
+                    )}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+6. 유틸리티
+6.1 디자인 토큰
+typescript// src/lib/design-tokens.ts
+export const DESIGN_TOKENS = {
+  // 색상
+  colors: {
+    primary: {
+      50: '#eff6ff',
+      500: '#3b82f6',
+      600: '#2563eb',
+    },
+    gray: {
+      50: '#f9fafb',
+      500: '#6b7280',
+      900: '#111827',
+    }
+  },
+  
+  // 타이포그래피
+  typography: {
+    korean: {
+      base: 'font-pretendard tracking-ko-normal break-keep-ko',
+      tight: 'font-pretendard tracking-ko-tight break-keep-ko',
+    }
+  },
+  
+  // 애니메이션
+  animation: {
+    fast: 'transition-all duration-200',
+    medium: 'transition-all duration-300',
+    slow: 'transition-all duration-500',
+  },
+  
+  // 그림자
+  shadow: {
+    soft: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+    glow: '0 0 20px rgba(59, 130, 246, 0.3)',
+  }
+}
+6.2 커스텀 훅
+typescript// src/hooks/useMediaQuery.ts
+import { useState, useEffect } from 'react'
+
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false)
+  
+  useEffect(() => {
+    const media = window.matchMedia(query)
+    if (media.matches !== matches) {
+      setMatches(media.matches)
+    }
+    
+    const listener = () => setMatches(media.matches)
+    media.addListener(listener)
+    
+    return () => media.removeListener(listener)
+  }, [matches, query])
+  
+  return matches
+}
+
+7. 사용 예시
+7.1 구독 관리 페이지
+tsximport { useState } from 'react'
+import { Plus } from 'lucide-react'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
+import { Button } from '@/components/ui/Button'
+import { SubscriptionCard } from '@/components/features/subscription/SubscriptionCard'
+import { DashboardStats } from '@/components/features/dashboard/DashboardStats'
+
+export function SubscriptionsPage() {
+  const [subscriptions] = useState([
+    {
+      id: '1',
+      service_name: 'Netflix',
+      amount: 17000,
+      currency: 'KRW' as const,
+      payment_cycle: 'monthly' as const,
+      payment_day: 15,
+      status: 'active' as const,
+    }
+  ])
+  
+  const stats = [
+    {
+      name: '총 구독',
+      value: '12',
+      change: '+2',
+      changeType: 'increase' as const,
+      icon: CreditCard,
+    }
+  ]
+  
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      <main className="flex-1 pt-20 px-4 pb-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* 통계 */}
+          <DashboardStats stats={stats} />
+          
+          {/* 구독 목록 */}
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {subscriptions.map((subscription) => (
+              <SubscriptionCard
+                key={subscription.id}
+                subscription={subscription}
+                onClick={() => console.log('Clicked:', subscription.id)}
+              />
+            ))}
+          </div>
+        </div>
+      </main>
+      
+      <Footer />
+      
+      {/* 플로팅 버튼 */}
+      <Button
+        variant="gradient"
+        size="icon"
+        className="fixed bottom-8 right-8 w-14 h-14 rounded-full shadow-lg"
+        aria-label="구독 추가"
+      >
+        <Plus className="w-6 h-6" />
+      </Button>
+    </div>
+  )
+}
+7.2 스토리북 설정
+typescript// .storybook/main.ts
+export default {
+  stories: ['../src/components/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+  ],
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
+  },
+}
+typescript// src/components/ui/Button.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react'
+import { Button } from './Button'
+
+const meta: Meta<typeof Button> = {
+  title: 'UI/Button',
+  component: Button,
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+}
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {
+  args: {
+    variant: 'primary',
+    children: '버튼',
+  },
+}
+
+export const AllVariants: Story = {
+  render: () => (
+    <div className="flex gap-4">
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="gradient">Gradient</Button>
+    </div>
+  ),
+}
