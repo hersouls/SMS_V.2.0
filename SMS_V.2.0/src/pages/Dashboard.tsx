@@ -270,6 +270,7 @@ const Dashboard: React.FC = () => {
           <ExchangeRateDisplay
             onEditClick={() => setIsExchangeRateModalOpen(true)}
             showRefreshButton={true}
+            enableInlineEdit={true}
           />
         </div>
 

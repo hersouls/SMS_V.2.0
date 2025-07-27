@@ -121,13 +121,24 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   // 실시간 환율 API에서 최신 환율 가져오기
   const fetchLatestRateFromAPI = async (): Promise<number | null> => {
     try {
-      // 실제 API 키가 필요하므로 주석 처리
-      // const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-      // const data = await response.json();
-      // return data.rates.KRW;
+      // 무료 환율 API 사용 (API 키 불필요)
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+      const data = await response.json();
       
-      // 임시로 고정값 반환
-      return 1298;
+      if (data.rates && data.rates.KRW) {
+        return data.rates.KRW;
+      }
+      
+      // 백업 API 시도
+      const backupResponse = await fetch('https://open.er-api.com/v6/latest/USD');
+      const backupData = await backupResponse.json();
+      
+      if (backupData.rates && backupData.rates.KRW) {
+        return backupData.rates.KRW;
+      }
+      
+      console.warn('환율 API에서 데이터를 가져올 수 없습니다. 기본값을 사용합니다.');
+      return null;
     } catch (err) {
       console.error('실시간 환율 API 호출 실패:', err);
       return null;
@@ -136,11 +147,23 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
 
   // 실시간 환율로 업데이트
   const updateWithLatestRate = async (): Promise<boolean> => {
-    const latestRate = await fetchLatestRateFromAPI();
-    if (latestRate) {
-      return await updateExchangeRate(latestRate);
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const latestRate = await fetchLatestRateFromAPI();
+      if (latestRate) {
+        return await updateExchangeRate(latestRate);
+      } else {
+        setError('실시간 환율을 가져올 수 없습니다. 네트워크 연결을 확인해주세요.');
+        return false;
+      }
+    } catch (err) {
+      setError('실시간 환율 업데이트에 실패했습니다.');
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-    return false;
   };
 
   // 통화 변환 유틸리티

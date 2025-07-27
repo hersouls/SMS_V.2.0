@@ -246,10 +246,10 @@ export const ExchangeRateModal: React.FC<ExchangeRateModalProps> = ({
                       실시간 환율 정보
                     </p>
                     <p className="text-sm text-blue-700 font-pretendard">
-                      현재 실시간 환율: 1 USD = 1,298 KRW
+                      위의 새로고침 버튼을 클릭하여 실시간 환율로 자동 업데이트할 수 있습니다.
                     </p>
                     <p className="text-xs text-blue-600 font-pretendard mt-1">
-                      위의 새로고침 버튼을 클릭하여 실시간 환율로 자동 업데이트할 수 있습니다.
+                      실시간 환율은 외부 API에서 가져오며, 네트워크 상태에 따라 일시적으로 사용할 수 없을 수 있습니다.
                     </p>
                   </div>
                 </div>
