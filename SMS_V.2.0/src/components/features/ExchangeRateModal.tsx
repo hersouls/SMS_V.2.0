@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CurrencyDollarIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
-import { useExchangeRate } from '../../hooks/useExchangeRate';
+import { useExchangeRateContext } from '../../contexts/ExchangeRateContext';
 
 interface ExchangeRateModalProps {
   isOpen: boolean;
@@ -19,7 +19,7 @@ export const ExchangeRateModal: React.FC<ExchangeRateModalProps> = ({
     updateExchangeRate,
     updateWithLatestRate,
     getFormattedLastUpdated
-  } = useExchangeRate();
+  } = useExchangeRateContext();
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isUpdating, setIsUpdating] = useState<boolean>(false);

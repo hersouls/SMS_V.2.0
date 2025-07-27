@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrencyDollarIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
-import { useExchangeRate } from '../../hooks/useExchangeRate';
+import { useExchangeRateContext } from '../../contexts/ExchangeRateContext';
 
 interface ExchangeRateDisplayProps {
   onEditClick?: () => void;
@@ -21,7 +21,7 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
     getFormattedRate,
     getFormattedLastUpdated,
     updateWithLatestRate
-  } = useExchangeRate();
+  } = useExchangeRateContext();
 
   const handleRefresh = async () => {
     await updateWithLatestRate();

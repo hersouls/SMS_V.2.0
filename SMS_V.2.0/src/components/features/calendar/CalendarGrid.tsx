@@ -205,12 +205,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                   "hover:shadow-lg hover:scale-[1.02] hover:z-10",
                   dayIndex === 6 && "border-r-0"
                 )}
-                onClick={() => day?.date && onDayClick?.(day.date)}
+                onClick={() => {
+                  if (day?.date) {
+                    onDayClick?.(day.date);
+                  }
+                }}
                 tabIndex={day?.date ? 0 : -1}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    day?.date && onDayClick?.(day.date);
+                    if (day?.date) {
+                      onDayClick?.(day.date);
+                    }
                   }
                 }}
                 role={day?.date ? "button" : undefined}
