@@ -34,9 +34,9 @@ git init
 "Create a comprehensive .gitignore for React TypeScript Vite project with Supabase, including .env.local, dist, and common IDE files"
 ```
 
-- [ ] **Cursor 프롬프트 2**:
+- [x] **Cursor 프롬프트 2**:
 ```
-"Set up git remote with URL: https://github.com/YOUR_USERNAME/moonwave-v2.git and make initial commit"
+"Set up git remote with URL: https://github.com/hersouls/SMS_V.2.0.git and make initial commit"
 ```
 
 ### 1.2 개발 환경 설정
