@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Mock performance API
 const mockPerformanceObserver = {
   observe: vi.fn(),
   disconnect: vi.fn(),
-  takeRecords: vi.fn(() => [])
+  takeRecords: vi.fn(() => []) as any
 };
 
 const mockPerformance = {
@@ -35,7 +35,7 @@ const mockNavigation = {
 describe('Performance Monitoring', () => {
   beforeEach(() => {
     // Setup mocks
-    global.PerformanceObserver = vi.fn().mockImplementation(() => mockPerformanceObserver);
+    global.PerformanceObserver = vi.fn().mockImplementation(() => mockPerformanceObserver) as any;
     global.performance = mockPerformance as any;
     global.navigator = {
       ...global.navigator,
@@ -110,7 +110,7 @@ describe('Performance Monitoring', () => {
     });
 
     it('should measure TTFB correctly', () => {
-      mockPerformance.getEntriesByType.mockReturnValue([mockNavigation]);
+      mockPerformance.getEntriesByType.mockReturnValue([mockNavigation] as any);
 
       // Test TTFB calculation
       const ttfb = mockNavigation.responseStart - mockNavigation.requestStart;
@@ -194,8 +194,8 @@ describe('Performance Monitoring', () => {
       expect(totalSize).toBeLessThan(2000000); // Should be under 2MB
       
       // Individual chunks should be reasonable
-      Object.entries(bundleSizes).forEach(([name, size]) => {
-        expect(size).toBeLessThan(1000000, `${name} bundle is too large`);
+      Object.entries(bundleSizes).forEach(([, size]) => {
+        expect(size).toBeLessThan(1000000);
       });
     });
   });
@@ -209,7 +209,7 @@ describe('Performance Monitoring', () => {
       ];
 
       criticalResources.forEach(resource => {
-        expect(resource.loadTime).toBeLessThan(1000, `${resource.name} took too long to load`);
+        expect(resource.loadTime).toBeLessThan(1000);
       });
 
       const totalLoadTime = criticalResources.reduce((sum, resource) => sum + resource.loadTime, 0);
@@ -252,7 +252,8 @@ describe('Performance Monitoring', () => {
       const batchSize = 10;
       for (let i = 0; i < updates.length; i += batchSize) {
         const batch = updates.slice(i, i + batchSize);
-        // Process batch
+        // Process batch - simulate some work
+        batch.forEach(() => {});
       }
 
       const endTime = performance.now();
@@ -264,12 +265,16 @@ describe('Performance Monitoring', () => {
 
   describe('Caching Performance', () => {
     it('should cache static assets effectively', () => {
+      // Define static assets that should be cached
       const staticAssets = [
         '/icons/icon-192x192.png',
         '/icons/icon-512x512.png',
         '/manifest.json',
         '/offline.html'
       ];
+
+      // Verify static assets are defined
+      expect(staticAssets).toHaveLength(4);
 
       // Mock cache API
       const mockCache = {
@@ -302,13 +307,13 @@ describe('Performance Monitoring', () => {
         updateViaCache: 'all'
       };
 
-      global.navigator.serviceWorker = {
+      (global.navigator as any).serviceWorker = {
         register: vi.fn().mockResolvedValue(mockRegistration),
         ready: vi.fn().mockResolvedValue(mockRegistration),
         controller: null,
         addEventListener: vi.fn(),
         removeEventListener: vi.fn()
-      } as any;
+      };
 
       expect(navigator.serviceWorker.register).toBeDefined();
     });
