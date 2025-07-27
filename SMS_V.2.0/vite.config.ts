@@ -91,7 +91,6 @@ export default defineConfig({
           router: ['react-router-dom'],
           supabase: ['@supabase/supabase-js'],
           ui: ['@radix-ui/react-icons', 'lucide-react', '@heroicons/react', '@headlessui/react'],
-          utils: ['clsx', 'tailwind-merge']
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',

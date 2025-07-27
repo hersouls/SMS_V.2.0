@@ -132,7 +132,6 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
-
           const fidScore = calculateScore(fid, { good: 100, needsImprovement: 300 });
           
           metricsRef.current.fid = fid;
