@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { AuthContext } from './AuthContext';
-import type { User, Session } from '@supabase/supabase-js';
+import type { User, Session, AuthError } from '@supabase/supabase-js';
+
+// Extended error type with userMessage
+interface ExtendedAuthError extends AuthError {
+  userMessage?: string;
+}
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -63,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
       }
       
-      return { error: { ...error, userMessage } };
+      return { error: { ...error, userMessage } as ExtendedAuthError };
     }
     
     return { error: null };
@@ -100,7 +105,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
       }
       
-      return { error: { ...error, userMessage } };
+      return { error: { ...error, userMessage } as ExtendedAuthError };
     }
     
     return { error: null };
@@ -140,7 +145,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
       }
       
-      return { error: { ...error, userMessage } };
+      return { error: { ...error, userMessage } as ExtendedAuthError };
     }
     
     return { error: null };
