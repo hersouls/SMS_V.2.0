@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, TrendingUp, CreditCard, Users, DollarSign } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
+import { ExchangeRateDisplay } from '../components/features/ExchangeRateDisplay';
+import { ExchangeRateModal } from '../components/features/ExchangeRateModal';
 import { supabase } from '../lib/supabase';
 import type { Subscription, DashboardStats } from '../types/database.types';
 
@@ -16,6 +18,7 @@ const Dashboard: React.FC = () => {
   const [exchangeRate, setExchangeRate] = useState<number>(1300);
   const [activeSubscriptions, setActiveSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -184,24 +187,12 @@ const Dashboard: React.FC = () => {
       {/* Exchange Rate and Active Subscriptions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Exchange Rate */}
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-green-600" />
-              Exchange Rate
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-gray-900">
-                1 USD = {exchangeRate.toLocaleString()} KRW
-              </p>
-              <p className="text-sm text-gray-500 mt-2 break-keep-ko">
-                Click to update rate
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="lg:col-span-1">
+          <ExchangeRateDisplay
+            onEditClick={() => setIsExchangeRateModalOpen(true)}
+            showRefreshButton={true}
+          />
+        </div>
 
         {/* Active Subscriptions */}
         <Card className="lg:col-span-2">
@@ -277,6 +268,12 @@ const Dashboard: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Exchange Rate Modal */}
+      <ExchangeRateModal
+        isOpen={isExchangeRateModalOpen}
+        onClose={() => setIsExchangeRateModalOpen(false)}
+      />
     </div>
   );
 };

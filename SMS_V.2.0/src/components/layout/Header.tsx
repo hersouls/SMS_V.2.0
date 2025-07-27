@@ -71,10 +71,10 @@ const Header: React.FC = () => {
           </Link>
           
           <Link
-            to="/profile"
+            to="/settings"
             className={cn(
               'p-2 rounded-lg transition-all duration-200',
-              location.pathname === '/profile'
+              location.pathname === '/settings'
                 ? 'bg-white/20 text-white backdrop-blur-sm'
                 : 'text-white/80 hover:bg-white/10 hover:text-white'
             )}
