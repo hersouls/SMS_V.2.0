@@ -143,10 +143,9 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
     setErrors({});
 
     try {
-      let logoUrl = formData.service_image_url;
-      
       if (imageFile) {
-        logoUrl = await handleImageUpload(imageFile);
+        const logoUrl = await handleImageUpload(imageFile);
+        formData.service_image_url = logoUrl;
       }
 
       const result = await onSubmit({
