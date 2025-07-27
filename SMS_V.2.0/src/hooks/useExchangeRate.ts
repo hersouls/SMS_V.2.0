@@ -1,6 +1,8 @@
 
+import { useExchangeRateContext } from '../contexts/ExchangeRateContext';
+
 // Re-export the interface for backward compatibility
-export { ExchangeRate } from '../contexts/ExchangeRateContext';
+export type { ExchangeRate } from '../contexts/ExchangeRateContext';
 
 export interface ExchangeRateData {
   rate: number;
