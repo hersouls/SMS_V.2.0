@@ -22,19 +22,19 @@ Moonwave v2.0 개발 작업을 Cursor AI 중심 워크플로우로 재구성합�
 - [ ] Repository URL 복사해두기
 
 #### 🤖 Cursor에서 실행할 명령어와 작업
-```bash
+- [x] ```bash
 # Cursor 터미널에서 실행
 npm create vite@latest moonwave-v2 -- --template react-ts
 cd moonwave-v2
 git init
 ```
 
-**Cursor 프롬프트 1**: 
+- [x] **Cursor 프롬프트 1**: 
 ```
 "Create a comprehensive .gitignore for React TypeScript Vite project with Supabase, including .env.local, dist, and common IDE files"
 ```
 
-**Cursor 프롬프트 2**:
+- [ ] **Cursor 프롬프트 2**:
 ```
 "Set up git remote with URL: https://github.com/YOUR_USERNAME/moonwave-v2.git and make initial commit"
 ```
@@ -47,7 +47,7 @@ git init
 
 #### 🤖 Cursor에서 실행할 작업
 
-**터미널 명령어 블록** (복사하여 한번에 실행):
+- [x] **터미널 명령어 블록** (복사하여 한번에 실행):
 ```bash
 # 필수 패키지 설치
 npm install -D tailwindcss postcss autoprefixer @tailwindcss/container-queries
@@ -61,7 +61,7 @@ npm install react-router-dom
 npx tailwindcss init -p
 ```
 
-**Cursor 프롬프트 3**:
+- [x] **Cursor 프롬프트 3**:
 ```
 "Configure tailwind.config.js with:
 1. Pretendard font family
@@ -71,7 +71,7 @@ npx tailwindcss init -p
 5. Custom spacing and shadow tokens from the design guide"
 ```
 
-**Cursor 프롬프트 4**:
+- [x] **Cursor 프롬프트 4**:
 ```
 "Create src/styles/globals.css with Tailwind directives, Pretendard font import, and Korean text optimization utilities (break-keep-ko, tracking-ko)"
 ```
@@ -80,7 +80,7 @@ npx tailwindcss init -p
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 5**:
+- [x] **Cursor 프롬프트 5**:
 ```
 "Create the following folder structure with index.ts files for exports:
 src/
@@ -96,7 +96,7 @@ src/
 └── utils/"
 ```
 
-**Cursor 프롬프트 6**:
+- [x] **Cursor 프롬프트 6**:
 ```
 "Create src/lib/utils.ts with cn function using clsx and tailwind-merge for className combination"
 ```
@@ -129,7 +129,7 @@ src/
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 7**:
+- [x] **Cursor 프롬프트 7**:
 ```
 "Create .env.local file with:
 VITE_SUPABASE_URL=
@@ -137,7 +137,7 @@ VITE_SUPABASE_ANON_KEY=
 and add .env.local to .gitignore"
 ```
 
-**Cursor 프롬프트 8**:
+- [x] **Cursor 프롬프트 8**:
 ```
 "Create src/lib/supabase.ts with typed Supabase client initialization using environment variables"
 ```
@@ -150,7 +150,7 @@ and add .env.local to .gitignore"
 
 #### 🤖 Cursor에서 SQL 생성
 
-**Cursor 프롬프트 9**:
+- [x] **Cursor 프롬프트 9**:
 ```
 "Create SQL schema for Moonwave based on the ERD:
 1. subscriptions table with user_id, service_name, amount, currency, payment_cycle, etc.
@@ -159,13 +159,13 @@ and add .env.local to .gitignore"
 Include RLS policies for user data isolation"
 ```
 
-생성된 SQL을 문유가 Supabase SQL Editor에 붙여넣고 실행
+✅ SQL 스키마가 `database_schema.sql` 파일로 생성됨. 문유가 Supabase SQL Editor에 붙여넣고 실행 필요
 
 ### 1.6 타입 정의
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 10**:
+- [x] **Cursor 프롬프트 10**:
 ```
 "Generate TypeScript types for Supabase database tables:
 1. Create src/types/database.types.ts
@@ -177,7 +177,7 @@ Include RLS policies for user data isolation"
 
 #### 🤖 Cursor에서 컴포넌트 생성
 
-**Cursor 프롬프트 11 (Button)**:
+- [x] **Cursor 프롬프트 11 (Button)**:
 ```
 "Create src/components/ui/Button.tsx:
 - React forwardRef component with TypeScript
@@ -188,7 +188,7 @@ Include RLS policies for user data isolation"
 - Pretendard font and Korean text optimization"
 ```
 
-**Cursor 프롬프트 12 (Card)**:
+- [x] **Cursor 프롬프트 12 (Card)**:
 ```
 "Create src/components/ui/Card.tsx with:
 - Card, CardHeader, CardTitle, CardContent components
@@ -198,7 +198,7 @@ Include RLS policies for user data isolation"
 - TypeScript interfaces"
 ```
 
-**Cursor 프롬프트 13 (Input)**:
+- [x] **Cursor 프롬프트 13 (Input)**:
 ```
 "Create src/components/ui/Input.tsx:
 - ForwardRef with TypeScript
@@ -212,7 +212,7 @@ Include RLS policies for user data isolation"
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 14**:
+- [x] **Cursor 프롬프트 14**:
 ```
 "Create src/App.tsx with React Router setup:
 - Routes: /, /login, /signup, /dashboard, /subscriptions, /calendar, /settings
@@ -220,7 +220,7 @@ Include RLS policies for user data isolation"
 - Layout component integration"
 ```
 
-**Cursor 프롬프트 15**:
+- [x] **Cursor 프롬프트 15**:
 ```
 "Create src/contexts/AuthContext.tsx:
 - Supabase auth state management
@@ -237,7 +237,7 @@ Include RLS policies for user data isolation"
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 16**:
+- [x] **Cursor 프롬프트 16**:
 ```
 "Create src/components/layout/Header.tsx based on the design guide:
 - Fixed header with wave SVG background
@@ -246,7 +246,7 @@ Include RLS policies for user data isolation"
 - Mobile responsive"
 ```
 
-**Cursor 프롬프트 17**:
+- [x] **Cursor 프롬프트 17**:
 ```
 "Create src/components/layout/Footer.tsx:
 - Social links with Lucide icons
@@ -258,7 +258,7 @@ Include RLS policies for user data isolation"
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 18**:
+- [x] **Cursor 프롬프트 18**:
 ```
 "Create src/pages/auth/Login.tsx:
 - Email/password inputs with icons
@@ -269,7 +269,7 @@ Include RLS policies for user data isolation"
 - Supabase auth integration"
 ```
 
-**Cursor 프롬프트 19**:
+- [x] **Cursor 프롬프트 19**:
 ```
 "Create src/pages/auth/Signup.tsx:
 - Similar to login but with password confirmation
