@@ -39,7 +39,6 @@ export interface SupabaseResponse<T> {
   error: Error | null;
 }
 
-// Type aliases for better readability
 export type SupabaseSubscriptionResponse = SupabaseResponse<Subscription[]>;
 export type SupabaseExchangeRateResponse = SupabaseResponse<ExchangeRate>;
 export type SupabaseAlarmResponse = SupabaseResponse<SubscriptionAlarm[]>;

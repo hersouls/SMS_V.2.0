@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+
 
 interface FirstInputEntry extends PerformanceEntry {
   processingStart: number;
@@ -319,7 +319,4 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
   // This component doesn't render anything
   return null;
-};
-
-
 

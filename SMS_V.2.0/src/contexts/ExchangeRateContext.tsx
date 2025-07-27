@@ -1,34 +1,3 @@
-
-import React, { createContext, useEffect, useState, ReactNode, useCallback } from 'react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../hooks/useAuth';
-import { convertCurrency as convertCurrencyUtil, getFormattedRate as getFormattedRateUtil, getFormattedLastUpdated as getFormattedLastUpdatedUtil } from '../utils/exchangeRateUtils';
-
-export interface ExchangeRate {
-  id?: string;
-  user_id: string;
-  usd_krw: number;
-  created_at?: string;
-  updated_at?: string;
-}
-
-interface ExchangeRateContextType {
-  rate: number;
-  lastUpdated: string;
-  isLoading: boolean;
-  error: string | null;
-  updateExchangeRate: (newRate: number) => Promise<boolean>;
-  updateWithLatestRate: () => Promise<boolean>;
-  convertCurrency: (amount: number, fromCurrency: string, toCurrency?: string) => number;
-  getFormattedRate: () => string;
-  getFormattedLastUpdated: () => string;
-  refetch: () => Promise<void>;
-}
-
-const ExchangeRateContext = createContext<ExchangeRateContextType | undefined>(undefined);
-
-const DEFAULT_RATE = 1300;
-
 interface ExchangeRateProviderProps {
   children: ReactNode;
 }

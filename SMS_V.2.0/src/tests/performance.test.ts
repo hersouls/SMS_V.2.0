@@ -1,14 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
+interface NetworkInformation {
+  effectiveType: string;
+  downlink: number;
+  rtt: number;
+  saveData: boolean;
+}
+
 // Mock performance API
 const mockPerformanceObserver = {
   observe: vi.fn(),
   disconnect: vi.fn(),
-  takeRecords: vi.fn(() => []) as any
+  takeRecords: vi.fn(() => []) as () => PerformanceEntry[]
 };
 
 const mockPerformanceObserverConstructor = vi.fn().mockImplementation(() => mockPerformanceObserver);
-(mockPerformanceObserverConstructor as any).supportedEntryTypes = ['first-contentful-paint', 'largest-contentful-paint', 'first-input', 'layout-shift', 'navigation'];
+(mockPerformanceObserverConstructor as typeof PerformanceObserver).supportedEntryTypes = ['first-contentful-paint', 'largest-contentful-paint', 'first-input', 'layout-shift', 'navigation'];
 
 const mockPerformance = {
   now: vi.fn(() => Date.now()),
@@ -38,7 +45,7 @@ const mockNavigation = {
 describe('Performance Monitoring', () => {
   beforeEach(() => {
     // Setup mocks
-    global.performance = mockPerformance as any;
+    global.performance = mockPerformance as Performance;
     global.navigator = {
       ...global.navigator,
       connection: {
@@ -47,7 +54,7 @@ describe('Performance Monitoring', () => {
         rtt: 50,
         saveData: false
       }
-    } as any;
+    } as Navigator;
   });
 
   afterEach(() => {
@@ -61,7 +68,7 @@ describe('Performance Monitoring', () => {
         startTime: 1500
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([fcpEntry] as any);
+      mockPerformanceObserver.takeRecords.mockReturnValue([fcpEntry] as PerformanceEntry[]);
 
       // Test FCP measurement
       const fcp = fcpEntry.startTime;
@@ -75,7 +82,7 @@ describe('Performance Monitoring', () => {
         size: 1000
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([lcpEntry] as any);
+      mockPerformanceObserver.takeRecords.mockReturnValue([lcpEntry] as PerformanceEntry[]);
 
       // Test LCP measurement
       const lcp = lcpEntry.startTime;
@@ -89,7 +96,7 @@ describe('Performance Monitoring', () => {
         processingStart: 1050
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([fidEntry] as any);
+      mockPerformanceObserver.takeRecords.mockReturnValue([fidEntry] as PerformanceEntry[]);
 
       // Test FID calculation
       const fid = fidEntry.processingStart - fidEntry.startTime;
@@ -103,7 +110,7 @@ describe('Performance Monitoring', () => {
         hadRecentInput: false
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([clsEntry] as any);
+      mockPerformanceObserver.takeRecords.mockReturnValue([clsEntry] as PerformanceEntry[]);
 
       // Test CLS measurement
       const cls = clsEntry.value;
@@ -112,7 +119,7 @@ describe('Performance Monitoring', () => {
     });
 
     it('should measure TTFB correctly', () => {
-      mockPerformance.getEntriesByType.mockReturnValue([mockNavigation] as any);
+      mockPerformance.getEntriesByType.mockReturnValue([mockNavigation] as PerformanceEntry[]);
 
       // Test TTFB calculation
       const ttfb = mockNavigation.responseStart - mockNavigation.requestStart;
@@ -166,7 +173,7 @@ describe('Performance Monitoring', () => {
 
   describe('Network Information', () => {
     it('should detect network conditions correctly', () => {
-      const connection = (global.navigator as any).connection;
+      const connection = (global.navigator as Navigator & { connection: NetworkInformation }).connection;
       
       expect(connection.effectiveType).toBe('4g');
       expect(connection.downlink).toBe(10);
@@ -253,6 +260,9 @@ describe('Performance Monitoring', () => {
       // Simulate batch updates
       const batchSize = 10;
       for (let i = 0; i < updates.length; i += batchSize) {
+        const batch = updates.slice(i, i + batchSize);
+        // Process batch
+        expect(batch.length).toBeLessThanOrEqual(batchSize);
       }
 
       const endTime = performance.now();
@@ -287,7 +297,7 @@ describe('Performance Monitoring', () => {
         match: vi.fn(),
         delete: vi.fn(),
         keys: vi.fn()
-      } as any;
+      } as CacheStorage;
 
       // Test cache operations
       expect(mockCache.addAll).toBeDefined();
