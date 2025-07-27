@@ -1,4 +1,5 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -222,15 +223,6 @@ export const useErrorTracking = () => {
   };
 
   const trackEvent = (eventName: string, properties?: Record<string, any>) => {
-    const eventData = {
-      event: eventName,
-      properties,
-      timestamp: new Date().toISOString(),
-      url: window.location.href,
-      userId: getUserId(),
-      sessionId: getSessionId()
-    };
-
     // Send to analytics service
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', eventName, properties);
