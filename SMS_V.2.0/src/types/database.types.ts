@@ -42,6 +42,17 @@ export interface SubscriptionAlarm {
   created_at: string;
 }
 
+export interface UserNotificationPreferences {
+  user_id: string;
+  payment_reminders: boolean;
+  renewal_alerts: boolean;
+  price_changes: boolean;
+  monthly_summary: boolean;
+  system_updates: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 // Supabase response types
 export interface SupabaseResponse<T> {
   data: T | null;
@@ -51,6 +62,7 @@ export interface SupabaseResponse<T> {
 export type SupabaseSubscriptionResponse = SupabaseResponse<Subscription[]>;
 export type SupabaseExchangeRateResponse = SupabaseResponse<ExchangeRate>;
 export type SupabaseAlarmResponse = SupabaseResponse<SubscriptionAlarm[]>;
+export type SupabaseNotificationPreferencesResponse = SupabaseResponse<UserNotificationPreferences>;
 
 // Form types
 export interface SubscriptionFormData {
