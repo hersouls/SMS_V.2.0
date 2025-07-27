@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode, useCallback } from 'react';
+
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 import { DEFAULT_RATE } from '../constants/exchangeRate';

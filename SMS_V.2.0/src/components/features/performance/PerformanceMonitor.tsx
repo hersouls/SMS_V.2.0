@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+
 
 interface FirstInputEntry extends PerformanceEntry {
   processingStart: number;

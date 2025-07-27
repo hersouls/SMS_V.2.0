@@ -9,8 +9,9 @@ export const useExchangeRateContext = () => {
   return context;
 };
 
+import { useExchangeRateContext } from '../contexts/ExchangeRateContext';
+
 // Re-export the interface for backward compatibility
-export { ExchangeRate } from '../contexts/ExchangeRateContextDefinition';
 
 export interface ExchangeRateData {
   rate: number;

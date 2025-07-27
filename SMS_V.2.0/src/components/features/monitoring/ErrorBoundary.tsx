@@ -1,4 +1,9 @@
 
+
+interface ErrorInfo {
+  componentStack: string;
+}
+
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
