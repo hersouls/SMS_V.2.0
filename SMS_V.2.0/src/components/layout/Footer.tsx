@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, Twitter, Instagram, Mail } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -32,37 +33,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-gray-50 border-t border-gray-200 mt-auto">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col items-center space-y-4">
-          {/* Social Links */}
-          <div className="flex items-center space-x-6">
-            {socialLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-gray-400 transition-colors duration-200 ${link.color}`}
-                  aria-label={link.name}
-                >
-                  <Icon className="w-5 h-5" />
-                </a>
-              );
-            })}
-          </div>
 
-          {/* Copyright */}
-          <div className="text-center">
-            <p className="text-sm text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
-              © {currentYear} Moonwave. All rights reserved.
-            </p>
-            <p className="text-xs text-gray-400 mt-1 break-keep-ko tracking-ko-normal font-pretendard">
-              Made with ❤️ for subscription management
-            </p>
-          </div>
         </div>
       </div>
     </footer>

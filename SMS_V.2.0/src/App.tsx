@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import MusicPlayer from './components/layout/MusicPlayer'
+import FloatingActionButtons from './components/layout/FloatingActionButtons'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 import { ErrorBoundary } from './components/features/monitoring/ErrorBoundary'
 import { PerformanceMonitor } from './components/features/performance/PerformanceMonitor'
@@ -49,6 +50,21 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 }
 
 function AppRoutes() {
+  const handleAddSubscription = () => {
+    // TODO: 구독 추가 모달 또는 페이지로 이동
+    console.log('구독 추가 버튼 클릭됨');
+  };
+
+  const handleEmergencyClick = () => {
+    // TODO: 긴급 상황 처리
+    console.log('긴급 상황 버튼 클릭됨');
+  };
+
+  const handleDebugClick = () => {
+    // TODO: 디버그 모드 활성화
+    console.log('디버그 버튼 클릭됨');
+  };
+
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
@@ -74,6 +90,11 @@ function AppRoutes() {
               </main>
               <Footer />
               <MusicPlayer />
+              <FloatingActionButtons 
+                onAddClick={handleAddSubscription}
+                onEmergencyClick={handleEmergencyClick}
+                onDebugClick={handleDebugClick}
+              />
             </div>
           </ProtectedRoute>
         } />
@@ -87,6 +108,11 @@ function AppRoutes() {
               </main>
               <Footer />
               <MusicPlayer />
+              <FloatingActionButtons 
+                onAddClick={handleAddSubscription}
+                onEmergencyClick={handleEmergencyClick}
+                onDebugClick={handleDebugClick}
+              />
             </div>
           </ProtectedRoute>
         } />
@@ -100,6 +126,11 @@ function AppRoutes() {
               </main>
               <Footer />
               <MusicPlayer />
+              <FloatingActionButtons 
+                onAddClick={handleAddSubscription}
+                onEmergencyClick={handleEmergencyClick}
+                onDebugClick={handleDebugClick}
+              />
             </div>
           </ProtectedRoute>
         } />
@@ -113,6 +144,11 @@ function AppRoutes() {
               </main>
               <Footer />
               <MusicPlayer />
+              <FloatingActionButtons 
+                onAddClick={handleAddSubscription}
+                onEmergencyClick={handleEmergencyClick}
+                onDebugClick={handleDebugClick}
+              />
             </div>
           </ProtectedRoute>
         } />

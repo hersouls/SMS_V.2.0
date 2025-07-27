@@ -218,6 +218,23 @@
 }
 
 @layer utilities {
+  /* 한글 줄바꿈 최적화 */
+  .break-keep-ko {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  
+  /* 한글 자간 최적화 */
+  .tracking-ko-tight { letter-spacing: -0.02em; }
+  .tracking-ko-normal { letter-spacing: -0.01em; }
+  .tracking-ko-wide { letter-spacing: 0; }
+  
+  /* 숫자 최적화 */
+  .text-numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
   /* 애니메이션 */
   .animate-fade-in {
     animation: fadeIn 0.3s ease-in-out;
