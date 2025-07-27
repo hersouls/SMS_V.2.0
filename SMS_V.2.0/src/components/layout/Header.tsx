@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Bell, User } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -32,8 +33,7 @@ const Header: React.FC = () => {
             <Link
               to="/dashboard"
               className={cn(
-                "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30",
-                "hover:bg-white/30 transition-all duration-200",
+                DESIGN_TOKENS.GLASS_BUTTON,
                 "focus:outline-none focus:ring-2 focus:ring-white/50",
                 location.pathname === '/dashboard' && "bg-white/30"
               )}
@@ -49,8 +49,7 @@ const Header: React.FC = () => {
               <Link
                 to="/notifications"
                 className={cn(
-                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30",
-                  "hover:bg-white/30 transition-all duration-200",
+                  DESIGN_TOKENS.GLASS_BUTTON,
                   "focus:outline-none focus:ring-2 focus:ring-white/50",
                   location.pathname === '/notifications' && "bg-white/30"
                 )}
@@ -64,8 +63,7 @@ const Header: React.FC = () => {
               <Link
                 to="/settings"
                 className={cn(
-                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30",
-                  "hover:bg-white/30 transition-all duration-200",
+                  DESIGN_TOKENS.GLASS_BUTTON,
                   "focus:outline-none focus:ring-2 focus:ring-white/50",
                   location.pathname === '/settings' && "bg-white/30"
                 )}

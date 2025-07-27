@@ -13,6 +13,7 @@ import {
   List
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 interface Track {
   id: number;
@@ -43,18 +44,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const [showPlaylist, setShowPlaylist] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
-  // 플레이리스트 (실제 음악 파일로 교체 필요)
+  // 플레이리스트 (Footer 디자인 가이드 표준)
   const playlist: Track[] = [
     {
       id: 1,
       title: "Glow Not Noise",
       artist: "Moonwave",
-      url: "/audio/glow-not-noise.mp3",
-      duration: 180
+      url: "/Glow Not Noise.mp3",
+      duration: 225
     },
     {
       id: 2,
@@ -74,15 +76,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const currentTrackData = playlist[currentTrack];
 
+  // 자동 재생 로직 (Footer 디자인 가이드 표준)
   useEffect(() => {
     if (isLoggedIn && autoPlay && audioRef.current) {
       const playMusic = async () => {
         try {
+          setIsLoading(true);
           audioRef.current!.volume = volume;
           await audioRef.current!.play();
           setIsPlaying(true);
         } catch (error) {
           console.log('자동 재생 실패 (브라우저 정책):', error);
+        } finally {
+          setIsLoading(false);
         }
       };
       
@@ -193,7 +199,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     <>
       <div className={cn(
         "@container fixed bottom-0 left-0 right-0 z-30",
-        "bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900",
+        DESIGN_TOKENS.GRADIENT_PRIMARY,
         "backdrop-blur-md shadow-2xl border-t border-white/10",
         className
       )}>
@@ -242,10 +248,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
               <button
                 onClick={togglePlay}
-                className="p-2 @sm:p-3 rounded-full bg-white/20 text-white hover:bg-white/30 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className={cn(
+                  "p-2 @sm:p-3 rounded-full bg-white/20 text-white hover:bg-white/30 transition-all duration-200 shadow-lg hover:shadow-xl",
+                  "focus:ring-white/50"
+                )}
                 aria-label={isPlaying ? "일시정지" : "재생"}
+                disabled={isLoading}
               >
-                {isPlaying ? (
+                {isLoading ? (
+                  <div className="w-4 h-4 @sm:w-5 @sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : isPlaying ? (
                   <Pause className="w-4 h-4 @sm:w-5 @sm:h-5" />
                 ) : (
                   <Play className="w-4 h-4 @sm:w-5 @sm:h-5 ml-0.5" />
@@ -281,11 +293,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             <div className="flex-1 mx-3 @sm:mx-4 max-w-md hidden @md:block">
               <div
                 ref={progressRef}
-                className="w-full h-1 bg-white/20 rounded-full cursor-pointer"
+                className={cn(DESIGN_TOKENS.PROGRESS_BASE)}
                 onClick={handleProgressClick}
+                role="progressbar"
+                aria-label="재생 진행률"
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
               >
                 <div
-                  className="h-full bg-gradient-to-r from-purple-400 to-blue-400 rounded-full transition-all duration-100"
+                  className={cn(DESIGN_TOKENS.PROGRESS_FILL)}
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -316,8 +333,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 step="0.01"
                 value={isMuted ? 0 : volume}
                 onChange={handleVolumeChange}
-                className="w-12 @sm:w-16 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                className={cn(DESIGN_TOKENS.SLIDER_BASE, "w-12 @sm:w-16")}
                 aria-label="볼륨 조절"
+                aria-valuenow={isMuted ? 0 : volume * 100}
+                aria-valuemin="0"
+                aria-valuemax="100"
               />
 
               <button
@@ -362,6 +382,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                             ? "bg-white/20 text-white"
                             : "hover:bg-white/10 text-white/70 hover:text-white"
                         )}
+                        aria-label={`${track.title} 재생`}
                       >
                         <div className="flex items-center space-x-2">
                           <span className="text-xs font-medium font-pretendard tracking-ko-normal">
@@ -401,7 +422,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                         step="0.01"
                         value={isMuted ? 0 : volume}
                         onChange={handleVolumeChange}
-                        className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                        className={cn(DESIGN_TOKENS.SLIDER_BASE, "w-full h-2")}
+                        aria-label="볼륨 조절"
                       />
                     </div>
                     <div className="flex items-center space-x-4">
