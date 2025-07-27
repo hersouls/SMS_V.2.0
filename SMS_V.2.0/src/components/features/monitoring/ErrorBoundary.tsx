@@ -1,6 +1,4 @@
 
-import { Component } from 'react';
-import type { ReactNode } from 'react';
 
 interface ErrorInfo {
   componentStack: string;
