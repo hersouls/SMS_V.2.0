@@ -45,7 +45,7 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="w-full max-w-7xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2 break-keep-ko">
