@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 interface StatItem {
   name: string;
@@ -17,8 +18,8 @@ interface StatsProps {
 
 const Stats: React.FC<StatsProps> = ({ stats, className }) => {
   return (
-    <div className={className}>
-      <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={cn("@container", className)}>
+      <dl className="mt-5 grid grid-cols-1 gap-5 @sm:grid-cols-2 @lg:grid-cols-4">
         {stats.map((item) => (
           <div key={item.name} className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
             <dt>
@@ -29,12 +30,18 @@ const Stats: React.FC<StatsProps> = ({ stats, className }) => {
                   </svg>
                 )}
               </div>
-              <p className="ml-16 truncate text-sm font-medium text-gray-500 font-pretendard tracking-ko-normal break-keep-ko">
+              <p className={cn(
+                DESIGN_TOKENS.KOREAN_TEXT_BASE,
+                "ml-16 truncate text-sm font-medium text-gray-500"
+              )}>
                 {item.name}
               </p>
             </dt>
             <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-              <p className="text-2xl font-semibold text-gray-900 font-pretendard tracking-ko-normal">
+              <p className={cn(
+                DESIGN_TOKENS.KOREAN_TEXT_BASE,
+                "text-2xl font-semibold text-gray-900"
+              )}>
                 {item.stat}
               </p>
               {item.change && (
@@ -42,7 +49,8 @@ const Stats: React.FC<StatsProps> = ({ stats, className }) => {
                   className={cn(
                     item.changeType === 'increase' ? 'text-green-600' : 
                     item.changeType === 'decrease' ? 'text-red-600' : 'text-gray-500',
-                    'ml-2 flex items-baseline text-sm font-semibold font-pretendard tracking-ko-normal'
+                    'ml-2 flex items-baseline text-sm font-semibold',
+                  DESIGN_TOKENS.KOREAN_TEXT_BASE
                   )}
                 >
                   {item.changeType === 'increase' ? (

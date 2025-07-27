@@ -36,11 +36,11 @@ interface TableHeadProps {
 
 const Table: React.FC<TableProps> = ({ children, className }) => {
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <div className="@container px-4 @sm:px-6 @lg:px-8">
       <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <div className="-mx-4 -my-2 overflow-x-auto @sm:-mx-6 @lg:-mx-8">
+          <div className="inline-block min-w-full py-2 align-middle @sm:px-6 @lg:px-8">
+            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 @sm:rounded-lg">
               <table className={cn(
                 'min-w-full divide-y divide-gray-300',
                 'moonwave-table',
@@ -99,7 +99,7 @@ const TableHead: React.FC<TableHeadProps> = ({ children, className, align = 'lef
       scope="col" 
       className={cn(
         'py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6',
-        'font-pretendard tracking-ko-normal break-keep-ko',
+        'font-sans tracking-ko-normal break-keep-ko',
         alignClasses[align],
         className
       )}
@@ -120,7 +120,7 @@ const TableCell: React.FC<TableCellProps> = ({ children, className, align = 'lef
     <td 
       className={cn(
         'whitespace-nowrap px-3 py-4 text-sm text-gray-500',
-        'font-pretendard tracking-ko-normal break-keep-ko',
+        'font-sans tracking-ko-normal break-keep-ko',
         alignClasses[align],
         className
       )}

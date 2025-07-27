@@ -26,7 +26,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   onDebugClick
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="@container min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Main Layout Frame */}
       <div className="frame-container">
         {/* Header Frame */}

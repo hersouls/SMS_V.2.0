@@ -51,7 +51,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ children, className }) => {
 const CardTitle: React.FC<CardTitleProps> = ({ children, className }) => {
   return (
     <h3 className={cn(
-      'text-lg font-semibold font-pretendard tracking-ko-normal break-keep-ko',
+      'text-lg font-semibold font-sans tracking-ko-normal break-keep-ko',
       'text-gray-900',
       className
     )}>

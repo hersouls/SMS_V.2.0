@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
+import { DESIGN_TOKENS, ICON_SIZES } from '../../lib/design-tokens';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -13,10 +14,10 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   text 
 }) => {
   const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8',
-    xl: 'w-12 h-12',
+    sm: ICON_SIZES.sm,
+    md: ICON_SIZES.md,
+    lg: ICON_SIZES.lg,
+    xl: ICON_SIZES.xl,
   };
 
   return (
@@ -32,7 +33,10 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         <span className="sr-only">로딩 중...</span>
       </div>
       {text && (
-        <p className="mt-2 text-sm text-gray-600 font-pretendard tracking-ko-normal break-keep-ko">
+        <p className={cn(
+          DESIGN_TOKENS.KOREAN_TEXT_BASE,
+          "mt-2 text-sm text-gray-600"
+        )}>
           {text}
         </p>
       )}
