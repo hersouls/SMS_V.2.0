@@ -151,7 +151,6 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
 
       const result = await onSubmit({
         ...formData,
-        service_image_url: logoUrl
       });
 
       if (result.success) {
@@ -294,8 +293,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             </label>
             <select
               value={formData.auto_renewal ? 'true' : 'false'}
-              onChange={(e) => handleInputChange('auto_renewal', e.target.value === 'true')}
-              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+
             >
               <option value="true">Yes</option>
               <option value="false">No</option>

@@ -107,8 +107,6 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
                   alt={subscription.service_name}
                   className="w-full h-full object-cover rounded-lg"
                   onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const nextSibling = e.currentTarget.nextElementSibling as HTMLElement;
                     if (nextSibling) {
                       nextSibling.style.display = 'flex';
                     }

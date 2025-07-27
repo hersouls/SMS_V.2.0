@@ -16,6 +16,7 @@ export interface Subscription {
   payment_method?: string;
   start_date?: string;
   end_date?: string;
+  next_payment_date?: string;
   auto_renewal?: boolean;
   alarm_days?: number[];
   tier?: string;
@@ -81,6 +82,7 @@ export interface SubscriptionFormData {
   status?: 'active' | 'paused' | 'canceled';
   payment_method?: string;
   start_date?: string;
+  next_payment_date?: string;
   auto_renewal?: boolean;
   memo?: string;
 }

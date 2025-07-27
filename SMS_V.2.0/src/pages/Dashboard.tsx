@@ -257,8 +257,7 @@ const Dashboard: React.FC = () => {
                           alt={subscription.service_name}
                           className="w-10 h-10 rounded-lg object-cover"
                           onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            const nextSibling = e.currentTarget.nextElementSibling as HTMLElement;
+
                             if (nextSibling) {
                               nextSibling.style.display = 'flex';
                             }

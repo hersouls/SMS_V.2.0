@@ -5,6 +5,7 @@ import { Button } from '../components/ui';
 import { useSubscriptions } from '../hooks/useSubscriptions';
 import SubscriptionCard from '../components/features/subscription/SubscriptionCard';
 import SubscriptionForm from '../components/features/subscription/SubscriptionForm';
+
 import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
 const Subscriptions: React.FC = () => {
@@ -26,6 +27,7 @@ const Subscriptions: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [showForm, setShowForm] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
+
 
   // Categories and statuses for filters
   const categories = ['Streaming', 'Music', 'Software', 'Gaming', 'Education', 'Productivity', 'Entertainment', 'Other'];
@@ -68,8 +70,7 @@ const Subscriptions: React.FC = () => {
           bValue = b.amount;
           break;
         case 'date':
-          aValue = new Date(a.next_payment_date || new Date());
-          bValue = new Date(b.next_payment_date || new Date());
+
           break;
         case 'category':
           aValue = a.category || '';
