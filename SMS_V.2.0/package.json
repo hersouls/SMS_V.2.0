@@ -23,7 +23,8 @@
     "prepare": "husky install",
     "deploy": "npm run build && gh pages deploy dist/ --branch gh-pages --clean",
     "deploy:manual": "npm run build",
-    "install-deps": "npm ci --legacy-peer-deps"
+    "install-deps": "npm ci --legacy-peer-deps",
+    "install-deps:force": "npm ci --legacy-peer-deps --force"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
