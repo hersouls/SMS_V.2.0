@@ -1,9 +1,6 @@
 import React, { Suspense, lazy, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
-import MusicPlayer from './components/layout/MusicPlayer'
-import FloatingActionButtons from './components/layout/FloatingActionButtons'
+import { MainLayout } from './components/layout'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 import { ErrorBoundary } from './components/features/monitoring/ErrorBoundary'
 import { PerformanceMonitor } from './components/features/performance/PerformanceMonitor'
@@ -97,113 +94,75 @@ function AppRoutes() {
         {/* Protected routes */}
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-              <Header />
-              <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                  <Dashboard />
-                </div>
-              </main>
-              <Footer />
-              <MusicPlayer />
-              <FloatingActionButtons 
-                onAddClick={handleAddSubscription}
-                onEmergencyClick={handleEmergencyClick}
-                onDebugClick={handleDebugClick}
-              />
-            </div>
+            <MainLayout
+              onAddClick={handleAddSubscription}
+              onEmergencyClick={handleEmergencyClick}
+              onDebugClick={handleDebugClick}
+            >
+              <Dashboard />
+            </MainLayout>
           </ProtectedRoute>
         } />
         
         <Route path="/subscriptions" element={
           <ProtectedRoute>
-            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-              <Header />
-              <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                  <Subscriptions />
-                </div>
-              </main>
-              <Footer />
-              <MusicPlayer />
-              <FloatingActionButtons 
-                onAddClick={handleAddSubscription}
-                onEmergencyClick={handleEmergencyClick}
-                onDebugClick={handleDebugClick}
-              />
-            </div>
+            <MainLayout
+              onAddClick={handleAddSubscription}
+              onEmergencyClick={handleEmergencyClick}
+              onDebugClick={handleDebugClick}
+            >
+              <Subscriptions />
+            </MainLayout>
           </ProtectedRoute>
         } />
         
         <Route path="/subscriptions/:id" element={
           <ProtectedRoute>
-            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-              <Header />
-              <main className="flex-1 pt-16 pb-32">
-                <SubscriptionDetail />
-              </main>
-              <Footer />
-              <MusicPlayer />
-              <FloatingActionButtons 
-                onAddClick={handleAddSubscription}
-                onEmergencyClick={handleEmergencyClick}
-                onDebugClick={handleDebugClick}
-              />
-            </div>
+            <MainLayout
+              onAddClick={handleAddSubscription}
+              onEmergencyClick={handleEmergencyClick}
+              onDebugClick={handleDebugClick}
+            >
+              <SubscriptionDetail />
+            </MainLayout>
           </ProtectedRoute>
         } />
         
         <Route path="/calendar" element={
           <ProtectedRoute>
-            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-              <Header />
-              <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                  <Calendar />
-                </div>
-              </main>
-              <Footer />
-              <MusicPlayer />
-              <FloatingActionButtons 
-                onAddClick={handleAddSubscription}
-                onEmergencyClick={handleEmergencyClick}
-                onDebugClick={handleDebugClick}
-              />
-            </div>
+            <MainLayout
+              onAddClick={handleAddSubscription}
+              onEmergencyClick={handleEmergencyClick}
+              onDebugClick={handleDebugClick}
+            >
+              <Calendar />
+            </MainLayout>
           </ProtectedRoute>
         } />
         
         <Route path="/settings" element={
           <ProtectedRoute>
-            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-              <Header />
-              <main className="flex-1 pt-16 pb-32">
-                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                  <Settings />
-                </div>
-              </main>
-              <Footer />
-              <MusicPlayer />
-              <FloatingActionButtons 
-                onAddClick={handleAddSubscription}
-                onEmergencyClick={handleEmergencyClick}
-                onDebugClick={handleDebugClick}
-              />
-            </div>
+            <MainLayout
+              onAddClick={handleAddSubscription}
+              onEmergencyClick={handleEmergencyClick}
+              onDebugClick={handleDebugClick}
+            >
+              <Settings />
+            </MainLayout>
           </ProtectedRoute>
         } />
         
         {/* Test route for data verification */}
         <Route path="/test" element={
-          <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-            <Header />
-            <main className="flex-1 pt-16 pb-32">
-              <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                <DataTest />
-              </div>
-            </main>
-            <Footer />
-          </div>
+          <ProtectedRoute>
+            <MainLayout
+              onAddClick={handleAddSubscription}
+              onEmergencyClick={handleEmergencyClick}
+              onDebugClick={handleDebugClick}
+            >
+              <DataTest />
+            </MainLayout>
+          </ProtectedRoute>
         } />
         
         {/* Default redirect */}
