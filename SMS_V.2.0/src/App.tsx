@@ -8,6 +8,8 @@ import { AuthProvider } from './contexts/AuthContext.tsx'
 import { useAuth } from './hooks/useAuth'
 import { ExchangeRateProvider } from './contexts/ExchangeRateContext'
 import SubscriptionModal from './components/features/subscription/SubscriptionModal'
+import { useSubscriptions } from './hooks/useSubscriptions'
+import { supabase } from './lib/supabase'
 
 
 // Lazy load pages for code splitting
@@ -52,28 +54,198 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 function AppRoutes() {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<import('./types/database.types').Subscription | undefined>(undefined);
+  const { addSubscription, updateSubscription, deleteSubscription, toggleSubscriptionStatus } = useSubscriptions();
 
   const handleAddSubscription = () => {
     setEditingSubscription(undefined);
     setShowSubscriptionModal(true);
   };
 
+  const handleEditSubscription = (subscription: import('./types/database.types').Subscription) => {
+    setEditingSubscription(subscription);
+    setShowSubscriptionModal(true);
+  };
+
+  const handleDeleteSubscription = async (subscriptionId: string) => {
+    if (confirm('정말 이 구독을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+      try {
+        const { success, error } = await deleteSubscription(subscriptionId);
+        if (success) {
+          console.log('구독이 성공적으로 삭제되었습니다.');
+        } else {
+          console.error('구독 삭제 실패:', error);
+          alert('구독 삭제에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('구독 삭제 중 오류 발생:', error);
+        alert('구독 삭제 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
+  const handleToggleSubscriptionStatus = async (subscriptionId: string, currentStatus: string) => {
+    try {
+      const { success, error } = await toggleSubscriptionStatus(subscriptionId, currentStatus);
+      if (success) {
+        const newStatus = currentStatus === 'active' ? '일시정지' : '활성화';
+        console.log(`구독이 ${newStatus}되었습니다.`);
+      } else {
+        console.error('구독 상태 변경 실패:', error);
+        alert('구독 상태 변경에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('구독 상태 변경 중 오류 발생:', error);
+      alert('구독 상태 변경 중 오류가 발생했습니다.');
+    }
+  };
 
 
-  const handleSubscriptionSubmit = (data: import('./types/database.types').SubscriptionFormData) => {
-    // TODO: 구독 추가/편집 로직 구현
-    console.log('구독 데이터:', data);
-    setShowSubscriptionModal(false);
+
+  const handleSubscriptionSubmit = async (data: import('./types/database.types').SubscriptionFormData) => {
+    try {
+      // 구독 추가/편집 로직 구현
+      if (editingSubscription) {
+        // 편집 모드
+        const { success, error } = await updateSubscription(editingSubscription.id, data);
+        if (success) {
+          console.log('구독이 성공적으로 수정되었습니다.');
+        } else {
+          console.error('구독 수정 실패:', error);
+        }
+      } else {
+        // 추가 모드
+        const { success, error } = await addSubscription(data);
+        if (success) {
+          console.log('구독이 성공적으로 추가되었습니다.');
+        } else {
+          console.error('구독 추가 실패:', error);
+        }
+      }
+    } catch (error) {
+      console.error('구독 처리 중 오류 발생:', error);
+    } finally {
+      setShowSubscriptionModal(false);
+      setEditingSubscription(undefined);
+    }
   };
 
   const handleEmergencyClick = () => {
-    // TODO: 긴급 상황 처리
-    console.log('긴급 상황 버튼 클릭됨');
+    // 긴급 상황 처리 - 구독 일시정지 및 알림
+    const emergencyAction = async () => {
+      try {
+        // 모든 활성 구독을 일시정지로 변경
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: activeSubscriptions } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('status', 'active');
+
+        if (activeSubscriptions && activeSubscriptions.length > 0) {
+          // 일시정지 처리
+          const updatePromises = activeSubscriptions.map(sub => 
+            supabase
+              .from('subscriptions')
+              .update({ status: 'paused', updated_at: new Date().toISOString() })
+              .eq('id', sub.id)
+          );
+
+          await Promise.all(updatePromises);
+          
+          // 긴급 상황 알림
+          alert('긴급 상황: 모든 구독이 일시정지되었습니다.');
+          console.log('긴급 상황 처리 완료: 모든 구독 일시정지');
+        } else {
+          alert('활성 구독이 없습니다.');
+        }
+      } catch (error) {
+        console.error('긴급 상황 처리 중 오류:', error);
+        alert('긴급 상황 처리 중 오류가 발생했습니다.');
+      }
+    };
+
+    if (confirm('정말 긴급 상황을 처리하시겠습니까?\n모든 활성 구독이 일시정지됩니다.')) {
+      emergencyAction();
+    }
   };
 
   const handleDebugClick = () => {
-    // TODO: 디버그 모드 활성화
-    console.log('디버그 버튼 클릭됨');
+    // 디버그 모드 활성화 - 개발자 도구 및 진단 정보
+    const debugMode = async () => {
+      try {
+        // 현재 사용자 정보 가져오기
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        // 구독 데이터 진단
+        const { data: subscriptions } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', user?.id || '');
+
+        // 환율 데이터 진단
+        const { data: exchangeRate } = await supabase
+          .from('exchange_rates')
+          .select('*')
+          .eq('user_id', user?.id || '')
+          .single();
+
+        // 디버그 정보 수집
+        const debugInfo = {
+          user: user ? { id: user.id, email: user.email } : null,
+          subscriptions: {
+            total: subscriptions?.length || 0,
+            active: subscriptions?.filter(s => s.status === 'active').length || 0,
+            paused: subscriptions?.filter(s => s.status === 'paused').length || 0,
+            canceled: subscriptions?.filter(s => s.status === 'canceled').length || 0
+          },
+          exchangeRate: exchangeRate?.usd_krw || 'Not set',
+          browser: navigator.userAgent,
+          timestamp: new Date().toISOString(),
+          localStorage: {
+            moonwave_user: localStorage.getItem('moonwave_user'),
+            moonwave_session_id: sessionStorage.getItem('moonwave_session_id')
+          }
+        };
+
+        // 디버그 정보를 콘솔에 출력
+        console.group('🔧 Moonwave Debug Mode');
+        console.log('User Info:', debugInfo.user);
+        console.log('Subscriptions:', debugInfo.subscriptions);
+        console.log('Exchange Rate:', debugInfo.exchangeRate);
+        console.log('Browser:', debugInfo.browser);
+        console.log('Local Storage:', debugInfo.localStorage);
+        console.groupEnd();
+
+        // 디버그 정보를 alert로 표시 (간단한 버전)
+        const debugSummary = `
+🔧 Moonwave Debug Mode
+
+사용자: ${debugInfo.user?.email || 'Not logged in'}
+구독 수: ${debugInfo.subscriptions.total}
+- 활성: ${debugInfo.subscriptions.active}
+- 일시정지: ${debugInfo.subscriptions.paused}
+- 해지: ${debugInfo.subscriptions.canceled}
+환율: ${debugInfo.exchangeRate} KRW/USD
+
+자세한 정보는 개발자 도구 콘솔을 확인하세요.
+        `;
+        
+        alert(debugSummary);
+        
+        // 개발자 도구 열기 (지원하는 브라우저에서)
+        if (window.open) {
+          window.open('', '_blank')?.focus();
+        }
+        
+      } catch (error) {
+        console.error('디버그 모드 실행 중 오류:', error);
+        alert('디버그 모드 실행 중 오류가 발생했습니다.');
+      }
+    };
+
+    debugMode();
   };
 
   return (

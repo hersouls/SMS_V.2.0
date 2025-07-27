@@ -4,6 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
 
 interface ModalProps {
+  isOpen: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
@@ -12,16 +13,16 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ 
+  isOpen,
   onClose, 
   title, 
   children, 
   className,
   showCloseButton = true 
 }) => {
-  const isModalOpen = open ?? isOpen ?? false;
   
   return (
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-10" open={isOpen} onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
