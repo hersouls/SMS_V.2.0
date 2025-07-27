@@ -72,7 +72,7 @@ class Analytics {
       const entries = list.getEntries();
 
       for (const entry of entries) {
-        const layoutShiftEntry = entry as LayoutShift;
+        const layoutShiftEntry = entry as unknown as LayoutShift;
         if (!layoutShiftEntry.hadRecentInput) {
           clsValue += layoutShiftEntry.value;
         }

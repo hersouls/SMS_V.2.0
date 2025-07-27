@@ -6,7 +6,7 @@ import MusicPlayer from './components/layout/MusicPlayer'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 import { ErrorBoundary } from './components/features/monitoring/ErrorBoundary'
 import { PerformanceMonitor } from './components/features/performance/PerformanceMonitor'
-import { AuthProvider } from './contexts/AuthContext'
+import { AuthProvider } from './contexts/AuthContext.tsx'
 import { useAuth } from './hooks/useAuth'
 import { ExchangeRateProvider } from './contexts/ExchangeRateContext'
 
