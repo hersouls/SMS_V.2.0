@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
@@ -12,7 +12,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -84,4 +84,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };

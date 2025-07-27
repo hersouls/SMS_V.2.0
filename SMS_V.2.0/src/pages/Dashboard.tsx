@@ -20,10 +20,6 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, [fetchDashboardData]);
-
   const fetchDashboardData = useCallback(async () => {
     try {
       // Fetch user's subscriptions
@@ -57,6 +53,10 @@ const Dashboard: React.FC = () => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const calculateStats = (subscriptions: Subscription[], rate: number) => {
     const totalSubscriptions = subscriptions.length;

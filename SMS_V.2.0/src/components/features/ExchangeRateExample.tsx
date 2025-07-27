@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CurrencyDollarIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
+import { CurrencyDollarIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
 import { useExchangeRateContext } from '../../contexts/ExchangeRateContext';
 
