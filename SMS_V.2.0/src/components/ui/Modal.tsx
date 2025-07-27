@@ -4,7 +4,8 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
 
 interface ModalProps {
-  open: boolean;
+  open?: boolean;
+  isOpen?: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
@@ -14,14 +15,17 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ 
   open, 
+  isOpen,
   onClose, 
   title, 
   children, 
   className,
   showCloseButton = true 
 }) => {
+  const isModalOpen = open ?? isOpen ?? false;
+  
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={isModalOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}

@@ -5,6 +5,7 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   hover?: boolean;
+  onClick?: () => void;
 }
 
 interface CardHeaderProps {
@@ -22,14 +23,18 @@ interface CardContentProps {
   className?: string;
 }
 
-const Card: React.FC<CardProps> = ({ children, className, hover = true }) => {
+const Card: React.FC<CardProps> = ({ children, className, hover = true, onClick }) => {
   return (
-    <div className={cn(
-      'bg-white rounded-xl border border-gray-200 shadow-sm',
-      hover && 'hover:shadow-lg transition-shadow duration-200',
-      '@container',
-      className
-    )}>
+    <div 
+      className={cn(
+        'bg-white rounded-xl border border-gray-200 shadow-sm',
+        hover && 'hover:shadow-lg transition-shadow duration-200',
+        onClick && 'cursor-pointer',
+        '@container',
+        className
+      )}
+      onClick={onClick}
+    >
       {children}
     </div>
   );

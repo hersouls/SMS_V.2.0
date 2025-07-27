@@ -4,7 +4,7 @@ import { cn } from '../../lib/utils';
 import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 interface FloatingActionButtonsProps {
-  onAddClick: () => void;
+  onAddClick?: () => void;
   onEmergencyClick?: () => void;
   onDebugClick?: () => void;
 }

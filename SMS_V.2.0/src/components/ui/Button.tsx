@@ -6,6 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   className?: string;
+  loading?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({ 
@@ -13,12 +14,15 @@ const Button: React.FC<ButtonProps> = ({
   size = 'md', 
   children,
   className,
+  loading = false,
+  disabled,
   ...props 
 }) => {
   const baseClasses = cn(
     'font-pretendard font-semibold rounded-lg transition-colors duration-200',
     'focus:outline-none focus:ring-2 focus:ring-offset-2',
-    'tracking-ko-normal break-keep-ko antialiased'
+    'tracking-ko-normal break-keep-ko antialiased',
+    'relative'
   );
   
   const variants = {
@@ -37,9 +41,17 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button 
       className={cn(baseClasses, variants[variant], sizes[size], className)}
+      disabled={disabled || loading}
       {...props}
     >
-      {children}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+        </div>
+      )}
+      <span className={loading ? 'opacity-0' : ''}>
+        {children}
+      </span>
     </button>
   );
 };
