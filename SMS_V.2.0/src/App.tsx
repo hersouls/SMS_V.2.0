@@ -5,6 +5,8 @@ import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import MusicPlayer from './components/layout/MusicPlayer'
 import LoadingSpinner from './components/ui/LoadingSpinner'
+import { ErrorBoundary } from './components/features/monitoring/ErrorBoundary'
+import { PerformanceMonitor } from './components/features/performance/PerformanceMonitor'
 
 // Lazy load pages for code splitting
 const Login = lazy(() => import('./pages/auth/Login'))
@@ -122,11 +124,14 @@ function AppRoutes() {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <AuthProvider>
+          <PerformanceMonitor enableReporting={process.env.NODE_ENV === 'production'} />
+          <AppRoutes />
+        </AuthProvider>
+      </Router>
+    </ErrorBoundary>
   )
 }
 
