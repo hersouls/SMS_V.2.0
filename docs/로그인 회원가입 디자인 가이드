@@ -1,0 +1,454 @@
+## 요약
+
+Moonwave 디자인가이드 2.1을 기반으로 이메일/구글 로그인을 지원하는 심플한 인증 페이지 표준 가이드를 제작합니다. Utility-First CSS, Pretendard 폰트, Container Queries를 활용하여 일관된 사용자 경험을 제공합니다.
+
+## 분석
+
+### 핵심 디자인 원칙
+- **Utility-First CSS**: Tailwind CSS 클래스 조합으로 스타일링
+- **아이콘 중심 UI**: 텍스트 최소화, 아이콘으로 명확한 의미 전달
+- **Pretendard 폰트**: 한글 최적화된 가변 폰트 사용
+- **Container Queries**: 컨테이너 기반 반응형 디자인
+- **Glass Effect**: 배경에 글래스모피즘 효과 적용
+
+### 컴포넌트 구조
+- 로그인 폼: 이메일/비밀번호 입력
+- 소셜 로그인: 구글 OAuth
+- 회원가입 전환: 심플한 링크 제공
+- 에러/성공 메시지: 상태별 피드백
+
+## 실행
+
+# Moonwave 로그인/회원가입 디자인 가이드
+
+## 1. 레이아웃 구조
+
+### 1.1 전체 페이지 구조
+```tsx
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* 배경 그라디언트 */}
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+      
+      {/* Wave 효과 */}
+      <div className="fixed inset-x-0 bottom-0 h-64 overflow-hidden">
+        <svg className="absolute bottom-0 w-full h-full wave-single opacity-10" viewBox="0 0 1440 320">
+          <path fill="#3b82f6" d="M0,192L48,181.3C96,171,192,149,288,154.7..." />
+        </svg>
+      </div>
+      
+      {/* 메인 콘텐츠 */}
+      <main className="relative flex-1 flex items-center justify-center p-4">
+        {children}
+      </main>
+    </div>
+  );
+};
+```
+
+### 1.2 인증 카드 컨테이너
+```tsx
+const AuthCard = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="@container w-full max-w-md">
+      <div className={cn(
+        "bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20",
+        "p-8 @sm:p-10 space-y-6"
+      )}>
+        {children}
+      </div>
+    </div>
+  );
+};
+```
+
+## 2. 로그인 페이지 컴포넌트
+
+### 2.1 로그인 폼
+```tsx
+import { useState } from 'react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <AuthLayout>
+      <AuthCard>
+        {/* 로고 */}
+        <div className="text-center">
+          <h1 className={cn(
+            "text-3xl font-bold font-pretendard",
+            "bg-gradient-to-r from-blue-600 to-purple-600",
+            "bg-clip-text text-transparent"
+          )}>
+            Moonwave
+          </h1>
+        </div>
+
+        {/* 이메일 입력 */}
+        <div className="space-y-4">
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={cn(
+                "w-full pl-10 pr-4 py-3 rounded-lg",
+                "font-pretendard tracking-ko-normal",
+                "border border-gray-200 focus:border-blue-500",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "transition-all duration-200"
+              )}
+              placeholder="이메일"
+            />
+          </div>
+
+          {/* 비밀번호 입력 */}
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={cn(
+                "w-full pl-10 pr-12 py-3 rounded-lg",
+                "font-pretendard tracking-ko-normal",
+                "border border-gray-200 focus:border-blue-500",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "transition-all duration-200"
+              )}
+              placeholder="비밀번호"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* 로그인 버튼 */}
+        <button
+          onClick={() => setLoading(true)}
+          disabled={loading}
+          className={cn(
+            "w-full py-3 rounded-lg font-pretendard font-semibold",
+            "bg-gradient-to-r from-blue-600 to-purple-600",
+            "text-white hover:shadow-lg transform hover:scale-[1.02]",
+            "transition-all duration-200",
+            "focus:outline-none focus:ring-2 focus:ring-purple-500/50",
+            loading && "opacity-70 cursor-not-allowed"
+          )}
+        >
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              로그인 중...
+            </span>
+          ) : (
+            "로그인"
+          )}
+        </button>
+
+        {/* 구분선 */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-4 text-gray-500 font-pretendard">또는</span>
+          </div>
+        </div>
+
+        {/* 구글 로그인 */}
+        <button
+          className={cn(
+            "w-full py-3 rounded-lg border border-gray-200",
+            "flex items-center justify-center gap-3",
+            "font-pretendard font-medium text-gray-700",
+            "hover:bg-gray-50 transition-colors duration-200",
+            "focus:outline-none focus:ring-2 focus:ring-gray-500/20"
+          )}
+        >
+          <GoogleIcon className="w-5 h-5" />
+          구글로 계속하기
+        </button>
+
+        {/* 회원가입 링크 */}
+        <p className="text-center text-sm text-gray-600 font-pretendard">
+          계정이 없으신가요?{' '}
+          <a href="/signup" className="text-blue-600 hover:underline font-medium">
+            회원가입
+          </a>
+        </p>
+      </AuthCard>
+    </AuthLayout>
+  );
+};
+```
+
+## 3. 회원가입 페이지 컴포넌트
+
+### 3.1 회원가입 폼
+```tsx
+const SignupPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <AuthLayout>
+      <AuthCard>
+        {/* 로고 */}
+        <div className="text-center">
+          <h1 className={cn(
+            "text-3xl font-bold font-pretendard",
+            "bg-gradient-to-r from-blue-600 to-purple-600",
+            "bg-clip-text text-transparent"
+          )}>
+            Moonwave
+          </h1>
+        </div>
+
+        {/* 입력 필드 */}
+        <div className="space-y-4">
+          {/* 이메일 */}
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              className={cn(
+                "w-full pl-10 pr-4 py-3 rounded-lg",
+                "font-pretendard tracking-ko-normal",
+                "border border-gray-200 focus:border-blue-500",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "transition-all duration-200"
+              )}
+              placeholder="이메일"
+            />
+          </div>
+
+          {/* 비밀번호 */}
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              className={cn(
+                "w-full pl-10 pr-12 py-3 rounded-lg",
+                "font-pretendard tracking-ko-normal",
+                "border border-gray-200 focus:border-blue-500",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "transition-all duration-200"
+              )}
+              placeholder="비밀번호"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+
+          {/* 비밀번호 확인 */}
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+              className={cn(
+                "w-full pl-10 pr-4 py-3 rounded-lg",
+                "font-pretendard tracking-ko-normal",
+                "border border-gray-200 focus:border-blue-500",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "transition-all duration-200"
+              )}
+              placeholder="비밀번호 확인"
+            />
+          </div>
+        </div>
+
+        {/* 회원가입 버튼 */}
+        <button
+          onClick={() => setLoading(true)}
+          disabled={loading}
+          className={cn(
+            "w-full py-3 rounded-lg font-pretendard font-semibold",
+            "bg-gradient-to-r from-blue-600 to-purple-600",
+            "text-white hover:shadow-lg transform hover:scale-[1.02]",
+            "transition-all duration-200",
+            "focus:outline-none focus:ring-2 focus:ring-purple-500/50",
+            loading && "opacity-70 cursor-not-allowed"
+          )}
+        >
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              가입 중...
+            </span>
+          ) : (
+            "회원가입"
+          )}
+        </button>
+
+        {/* 구분선 */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-4 text-gray-500 font-pretendard">또는</span>
+          </div>
+        </div>
+
+        {/* 구글 회원가입 */}
+        <button
+          className={cn(
+            "w-full py-3 rounded-lg border border-gray-200",
+            "flex items-center justify-center gap-3",
+            "font-pretendard font-medium text-gray-700",
+            "hover:bg-gray-50 transition-colors duration-200",
+            "focus:outline-none focus:ring-2 focus:ring-gray-500/20"
+          )}
+        >
+          <GoogleIcon className="w-5 h-5" />
+          구글로 계속하기
+        </button>
+
+        {/* 로그인 링크 */}
+        <p className="text-center text-sm text-gray-600 font-pretendard">
+          이미 계정이 있으신가요?{' '}
+          <a href="/login" className="text-blue-600 hover:underline font-medium">
+            로그인
+          </a>
+        </p>
+      </AuthCard>
+    </AuthLayout>
+  );
+};
+```
+
+## 4. 공통 컴포넌트
+
+### 4.1 구글 아이콘
+```tsx
+const GoogleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  </svg>
+);
+```
+
+### 4.2 에러/성공 메시지
+```tsx
+// 에러 메시지
+const ErrorMessage = ({ message }: { message: string }) => (
+  <div className={cn(
+    "p-3 rounded-lg bg-red-50 border border-red-200",
+    "flex items-center gap-2 text-sm text-red-700 font-pretendard"
+  )}>
+    <XCircle className="w-4 h-4 flex-shrink-0" />
+    <span>{message}</span>
+  </div>
+);
+
+// 성공 메시지
+const SuccessMessage = ({ message }: { message: string }) => (
+  <div className={cn(
+    "p-3 rounded-lg bg-green-50 border border-green-200",
+    "flex items-center gap-2 text-sm text-green-700 font-pretendard"
+  )}>
+    <CheckCircle className="w-4 h-4 flex-shrink-0" />
+    <span>{message}</span>
+  </div>
+);
+```
+
+## 5. 반응형 디자인
+
+### 5.1 Container Queries 활용
+```css
+/* 모바일 (기본) */
+@container (max-width: 384px) {
+  .auth-card { padding: 1.5rem; }
+  .input-field { font-size: 0.875rem; }
+}
+
+/* 태블릿 이상 */
+@container (min-width: 384px) {
+  .auth-card { padding: 2.5rem; }
+  .input-field { font-size: 1rem; }
+}
+```
+
+## 6. 디자인 토큰
+
+```typescript
+const AUTH_DESIGN_TOKENS = {
+  // 카드 스타일
+  CARD_BASE: "bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20",
+  
+  // 입력 필드
+  INPUT_BASE: cn(
+    "w-full pl-10 pr-4 py-3 rounded-lg",
+    "font-pretendard tracking-ko-normal",
+    "border border-gray-200 focus:border-blue-500",
+    "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+    "transition-all duration-200"
+  ),
+  
+  // 버튼
+  BUTTON_PRIMARY: cn(
+    "w-full py-3 rounded-lg font-pretendard font-semibold",
+    "bg-gradient-to-r from-blue-600 to-purple-600",
+    "text-white hover:shadow-lg transform hover:scale-[1.02]",
+    "transition-all duration-200",
+    "focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+  ),
+  
+  BUTTON_SECONDARY: cn(
+    "w-full py-3 rounded-lg border border-gray-200",
+    "flex items-center justify-center gap-3",
+    "font-pretendard font-medium text-gray-700",
+    "hover:bg-gray-50 transition-colors duration-200",
+    "focus:outline-none focus:ring-2 focus:ring-gray-500/20"
+  )
+};
+```
+
+## 7. 접근성 체크리스트
+
+- [ ] 모든 입력 필드에 적절한 placeholder
+- [ ] 비밀번호 표시/숨기기 버튼에 aria-label
+- [ ] 포커스 상태 시각적 표시 (ring)
+- [ ] 키보드 네비게이션 지원
+- [ ] 에러/성공 메시지 명확한 표시
+- [ ] 로딩 상태 표시
+
+---
+
+*이 가이드는 Moonwave Design System v2.1 기반의 인증 페이지 표준입니다.*
