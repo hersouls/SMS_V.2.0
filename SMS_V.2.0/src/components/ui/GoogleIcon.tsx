@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
+import { ICON_SIZES } from '../../lib/design-tokens';
 
 interface GoogleIconProps {
   className?: string;
@@ -8,9 +9,9 @@ interface GoogleIconProps {
 
 const GoogleIcon: React.FC<GoogleIconProps> = ({ className, size = 'md' }) => {
   const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-5 h-5',
-    lg: 'w-6 h-6',
+    sm: ICON_SIZES.sm,
+    md: ICON_SIZES.md,
+    lg: ICON_SIZES.lg,
   };
 
   return (

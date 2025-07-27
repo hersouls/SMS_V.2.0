@@ -26,7 +26,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   onDebugClick
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="@container min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Main Layout Frame */}
       <div className="frame-container">
         {/* Header Frame */}
@@ -42,6 +42,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           <div className="frame-content">
             {/* Content Frame with improved centering */}
             <div className="frame-content-inner flex flex-col items-center justify-center min-h-full">
+              {children}
             </div>
           </div>
         </main>

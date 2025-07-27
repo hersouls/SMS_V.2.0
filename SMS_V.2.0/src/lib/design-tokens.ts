@@ -3,13 +3,13 @@
 
 export const DESIGN_TOKENS = {
   // 버튼 패턴
-  BUTTON_BASE: "font-pretendard antialiased tracking-korean-normal font-semibold px-4 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
+  BUTTON_BASE: "font-sans antialiased tracking-ko-normal font-semibold px-4 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
   
   // 카드 패턴
-  CARD_BASE: "font-pretendard antialiased bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-200",
+  CARD_BASE: "font-sans antialiased bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-200",
   
   // 한글 텍스트
-  KOREAN_TEXT_BASE: "font-pretendard antialiased tracking-korean-normal break-keep-ko",
+  KOREAN_TEXT_BASE: "font-sans antialiased tracking-ko-normal break-keep-ko",
   
   // 컨테이너 반응형
   CONTAINER_RESPONSIVE: "@container @lg:flex-row @lg:gap-6 @lg:items-center flex flex-col gap-4",
@@ -22,7 +22,7 @@ export const DESIGN_TOKENS = {
   GLASS_BUTTON: "p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200 transform active:scale-95",
   
   // 플로팅 액션 버튼
-  FAB_BASE: "w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 transform active:scale-95 font-pretendard font-semibold",
+  FAB_BASE: "w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 transform active:scale-95 font-sans font-semibold",
   
   // 레이아웃 관련 토큰
   LAYOUT_CENTER: "flex items-center justify-center",
@@ -42,7 +42,7 @@ export const DESIGN_TOKENS = {
   BUTTON_GROUP_CENTERED: "flex items-center justify-center gap-2 @sm:gap-3 @lg:gap-4",
   
   // 입력 필드
-  INPUT_BASE: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-pretendard tracking-ko-normal",
+  INPUT_BASE: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-sans tracking-ko-normal",
   
   // 모달
   MODAL_BASE: "relative transform overflow-hidden rounded-2xl bg-white/90 backdrop-blur-md px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 border border-white/20",
@@ -181,9 +181,9 @@ export const ACCESSIBILITY = {
 
 // 한글 최적화
 export const KOREAN_OPTIMIZATION = {
-  textBase: 'font-pretendard antialiased tracking-ko-normal break-keep-ko',
-  textTight: 'font-pretendard antialiased tracking-ko-tight break-keep-ko',
-  textWide: 'font-pretendard antialiased tracking-ko-wide break-keep-ko',
+  textBase: 'font-sans antialiased tracking-ko-normal break-keep-ko',
+  textTight: 'font-sans antialiased tracking-ko-tight break-keep-ko',
+  textWide: 'font-sans antialiased tracking-ko-wide break-keep-ko',
   numeric: 'font-variant-numeric tabular-nums font-feature-settings: "tnum"',
 };
 

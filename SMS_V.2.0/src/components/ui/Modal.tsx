@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
+import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 interface ModalProps {
   isOpen: boolean;
@@ -48,7 +49,8 @@ const Modal: React.FC<ModalProps> = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className={cn(
-                "relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6",
+                DESIGN_TOKENS.MODAL_BASE,
+                "@container",
                 className
               )}>
                 {showCloseButton && (
@@ -66,7 +68,10 @@ const Modal: React.FC<ModalProps> = ({
                 )}
                 
                 {title && (
-                  <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 font-pretendard tracking-ko-normal break-keep-ko mb-4">
+                  <Dialog.Title as="h3" className={cn(
+                    DESIGN_TOKENS.KOREAN_TEXT_BASE,
+                    "text-lg font-semibold leading-6 text-gray-900 mb-4"
+                  )}>
                     {title}
                   </Dialog.Title>
                 )}

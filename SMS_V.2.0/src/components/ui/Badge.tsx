@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
+import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ const Badge: React.FC<BadgeProps> = ({
 }) => {
   const baseClasses = cn(
     'inline-flex items-center rounded-md font-medium ring-1 ring-inset',
-    'font-pretendard tracking-ko-normal break-keep-ko',
+    DESIGN_TOKENS.KOREAN_TEXT_BASE,
     'moonwave-badge'
   );
 

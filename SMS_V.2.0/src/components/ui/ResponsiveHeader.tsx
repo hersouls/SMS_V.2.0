@@ -1,6 +1,7 @@
 import React from 'react';
 import { HomeIcon, BellIcon, UserIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
+import { DESIGN_TOKENS, ICON_SIZES } from '../../lib/design-tokens';
 
 interface ResponsiveHeaderProps {
   title?: string;
@@ -17,7 +18,7 @@ const ResponsiveHeader: React.FC<ResponsiveHeaderProps> = ({
 }) => {
   return (
     <div className={cn(
-      'relative bg-gradient-to-r from-blue-400 to-purple-400 overflow-hidden',
+      'relative @container bg-gradient-to-r from-blue-400 to-purple-400 overflow-hidden',
       className
     )}>
       {/* Wave Effect */}
@@ -29,18 +30,23 @@ const ResponsiveHeader: React.FC<ResponsiveHeaderProps> = ({
       <div className="relative px-4 py-3">
         <div className="flex items-center justify-between">
           {showIcons && (
-            <div className="flex items-center space-x-4 sm:space-x-6">
-              <HomeIcon className="w-6 h-6 text-white hover:text-white/80 transition-colors cursor-pointer" />
-              <BellIcon className="w-6 h-6 text-white hover:text-white/80 transition-colors cursor-pointer" />
-              <UserIcon className="w-6 h-6 text-white hover:text-white/80 transition-colors cursor-pointer" />
+            <div className="flex items-center space-x-4 @sm:space-x-6">
+              <HomeIcon className={cn(ICON_SIZES.lg, "text-white hover:text-white/80 transition-colors cursor-pointer")} />
+              <BellIcon className={cn(ICON_SIZES.lg, "text-white hover:text-white/80 transition-colors cursor-pointer")} />
+              <UserIcon className={cn(ICON_SIZES.lg, "text-white hover:text-white/80 transition-colors cursor-pointer")} />
             </div>
           )}
           
           <div className="flex-1"></div>
           
           {/* Center title for larger screens */}
-          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
-            <h1 className="text-xl font-semibold text-white">Subscriptions</h1>
+          <div className="hidden @md:block absolute left-1/2 transform -translate-x-1/2">
+            <h1 className={cn(
+              DESIGN_TOKENS.KOREAN_TEXT_BASE,
+              "text-xl font-semibold text-white"
+            )}>
+              Subscriptions
+            </h1>
           </div>
           
           {/* Right side space for potential future elements */}
@@ -50,12 +56,18 @@ const ResponsiveHeader: React.FC<ResponsiveHeaderProps> = ({
         {(title || subtitle) && (
           <div className="mt-4 text-center">
             {title && (
-              <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+              <h1 className={cn(
+                DESIGN_TOKENS.KOREAN_TEXT_BASE,
+                "text-2xl @md:text-3xl font-bold text-white mb-2"
+              )}>
                 {title}
               </h1>
             )}
             {subtitle && (
-              <p className="text-white/90 text-sm md:text-base">
+              <p className={cn(
+                DESIGN_TOKENS.KOREAN_TEXT_BASE,
+                "text-white/90 text-sm @md:text-base"
+              )}>
                 {subtitle}
               </p>
             )}
