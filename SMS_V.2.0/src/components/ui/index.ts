@@ -8,3 +8,7 @@ export { default as Modal } from './Modal';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as GoogleIcon } from './GoogleIcon';
 export { default as AuthCard } from './AuthCard';
+export { default as Typography } from './Typography';
+export { default as Stats } from './Stats';
+export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './Table';
+export { default as Badge } from './Badge';

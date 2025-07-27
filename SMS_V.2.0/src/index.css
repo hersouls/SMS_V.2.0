@@ -10,6 +10,7 @@
   }
 
   body {
+    @apply font-pretendard antialiased;
   }
 
   /* 한글 텍스트 최적화 */
@@ -18,155 +19,125 @@
     overflow-wrap: break-word;
   }
 
-  .tracking-korean-normal {
-    letter-spacing: -0.01em;
+  /* 한글 자간 최적화 */
+  .tracking-ko-tight { letter-spacing: -0.02em; }
+  .tracking-ko-normal { letter-spacing: -0.01em; }
+  .tracking-ko-wide { letter-spacing: 0; }
+  
+  /* 숫자 최적화 */
+  .text-numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
   }
 
-  /* Container queries 지원 */
-  @container (min-width: 640px) {
-    .@sm\:flex-row {
-      flex-direction: row;
-    }
-    
-    .@sm\:justify-between {
-      justify-content: space-between;
-    }
-    
-    .@sm\:items-center {
-      align-items: center;
-    }
-    
-    .@sm\:gap-6 {
-      gap: 1.5rem;
-    }
+  /* Container Queries - Design Guide 표준 */
+  @container (min-width: 16rem) {
+    .@2xs\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .@2xs\:p-4 { padding: 1rem; }
   }
 
-  @container (min-width: 768px) {
-    .@md\:flex-row {
-      flex-direction: row;
-    }
-    
-    .@md\:justify-between {
-      justify-content: space-between;
-    }
-    
-    .@md\:items-center {
-      align-items: center;
-    }
-    
-    .@md\:gap-6 {
-      gap: 1.5rem;
-    }
+  @container (min-width: 20rem) {
+    .@xs\:text-base { font-size: 1rem; line-height: 1.5rem; }
+    .@xs\:p-6 { padding: 1.5rem; }
   }
 
-  @container (min-width: 1024px) {
-    .@lg\:flex-row {
-      flex-direction: row;
-    }
-    
-    .@lg\:justify-between {
-      justify-content: space-between;
-    }
-    
-    .@lg\:items-center {
-      align-items: center;
-    }
-    
-    .@lg\:gap-6 {
-      gap: 1.5rem;
-    }
-    
-    .@lg\:order-1 {
-      order: 1;
-    }
-    
-    .@lg\:order-2 {
-      order: 2;
-    }
-    
-    .@lg\:justify-end {
-      justify-content: flex-end;
-    }
-    
-    .@lg\:text-left {
-      text-align: left;
-    }
-    
-    .@lg\:mt-0 {
-      margin-top: 0;
-    }
+  @container (min-width: 24rem) {
+    .@sm\:text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .@sm\:p-8 { padding: 2rem; }
+    .@sm\:flex-row { flex-direction: row; }
+    .@sm\:justify-between { justify-content: space-between; }
+    .@sm\:items-center { align-items: center; }
+    .@sm\:gap-6 { gap: 1.5rem; }
   }
 
-  @container (min-width: 1280px) {
-    .@xl\:justify-between {
-      justify-content: space-between;
-    }
-    
-    .@xl\:items-center {
-      align-items: center;
-    }
-    
-    .@xl\:gap-6 {
-      gap: 1.5rem;
-    }
+  @container (min-width: 28rem) {
+    .@md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .@md\:p-10 { padding: 2.5rem; }
+    .@md\:flex-row { flex-direction: row; }
+    .@md\:justify-between { justify-content: space-between; }
+    .@md\:items-center { align-items: center; }
+    .@md\:gap-6 { gap: 1.5rem; }
+  }
+
+  @container (min-width: 32rem) {
+    .@lg\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .@lg\:p-12 { padding: 3rem; }
+    .@lg\:flex-row { flex-direction: row; }
+    .@lg\:justify-between { justify-content: space-between; }
+    .@lg\:items-center { align-items: center; }
+    .@lg\:gap-6 { gap: 1.5rem; }
+    .@lg\:order-1 { order: 1; }
+    .@lg\:order-2 { order: 2; }
+    .@lg\:justify-end { justify-content: flex-end; }
+    .@lg\:text-left { text-align: left; }
+    .@lg\:mt-0 { margin-top: 0; }
+  }
+
+  @container (min-width: 36rem) {
+    .@xl\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .@xl\:justify-between { justify-content: space-between; }
+    .@xl\:items-center { align-items: center; }
+    .@xl\:gap-6 { gap: 1.5rem; }
+  }
+
+  @container (min-width: 42rem) {
+    .@2xl\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
   }
 }
 
 @layer components {
+  /* Design Guide 표준 버튼 컴포넌트 */
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50;
-  }
-
-  .btn-primary:hover {
-    @apply transform hover:scale-[1.02];
-  }
-
-  .btn-primary:focus {
-    @apply ring-2 ring-purple-500/50;
+    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply tracking-ko-normal break-keep-ko antialiased;
+    @apply bg-blue-500 hover:bg-blue-600 text-white focus:ring-blue-500;
   }
 
   .btn-secondary {
-    @apply bg-gray-200 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500/20;
+    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply tracking-ko-normal break-keep-ko antialiased;
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500;
   }
 
-  .btn-secondary:hover {
-    @apply bg-gray-300;
-  }
-
-  .btn-secondary:focus {
-    @apply ring-2 ring-gray-500/20;
+  .btn-destructive {
+    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply tracking-ko-normal break-keep-ko antialiased;
+    @apply bg-red-500 hover:bg-red-600 text-white focus:ring-red-500;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-gray-700 font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500/20;
+    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply tracking-ko-normal break-keep-ko antialiased;
+    @apply bg-transparent hover:bg-gray-100 text-gray-700;
   }
 
-  .btn-ghost:hover {
-    @apply bg-gray-100;
-  }
-
-  .btn-ghost:focus {
-    @apply ring-2 ring-gray-500/20;
-  }
-
+  /* Design Guide 표준 카드 컴포넌트 */
   .card-glass {
     @apply bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20;
+    @apply hover:shadow-lg transition-shadow duration-200;
+    @apply @container;
   }
 
   .card-gradient {
     @apply bg-gradient-to-br from-purple-500 to-blue-500 text-white;
   }
 
-  /* 글래스 버튼 스타일 */
+  /* 글래스 버튼 스타일 - Design Guide 표준 */
   .glass-button {
-    @apply p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200 transform active:scale-95;
+    @apply p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30;
+    @apply hover:bg-white/30 transition-all duration-200 transform active:scale-95;
   }
 
-  /* 웨이브 효과 */
+  /* 웨이브 효과 - Design Guide 표준 */
   .wave-single {
     @apply absolute bottom-0 w-full;
   }
 
+  /* 한글 타이포그래피 컴포넌트 - Design Guide 표준 */
   .text-korean {
     @apply font-pretendard tracking-ko-normal break-keep-ko;
   }
@@ -179,23 +150,41 @@
     @apply font-pretendard text-lg tracking-ko-normal break-keep-ko;
   }
 
-  /* 한글 타이포그래피 유틸리티 */
-  .break-keep-ko {
-    word-break: keep-all;
-    overflow-wrap: break-word;
+  /* Design Guide 표준 입력 필드 */
+  .input-field {
+    @apply w-full px-3 py-2 border rounded-md;
+    @apply font-pretendard tracking-ko-normal;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply transition-all duration-200;
   }
 
-  .tracking-ko-tight { letter-spacing: -0.02em; }
-  .tracking-ko-normal { letter-spacing: -0.01em; }
-  .tracking-ko-wide { letter-spacing: 0; }
-
-  /* 숫자 최적화 */
-  .text-numeric {
-    font-variant-numeric: tabular-nums;
-    font-feature-settings: 'tnum';
+  /* Design Guide 표준 그림자 시스템 */
+  .shadow-soft {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
-  /* 애니메이션 */
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+
+  .shadow-premium {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Design Guide 표준 그라디언트 */
+  .gradient-moonwave {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .gradient-sunset {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .gradient-ocean {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  /* 애니메이션 - Design Guide 표준 */
   .animate-fade-in {
     animation: fadeIn 0.5s ease-in-out;
   }
@@ -208,30 +197,31 @@
     animation: bounceGentle 2s infinite;
   }
 
-  /* 그라디언트 */
-  .gradient-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Moonwave 표준 컴포넌트 클래스 */
+  .moonwave-card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm 
+           hover:shadow-lg transition-shadow duration-200 @container;
   }
 
-  .gradient-secondary {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  .moonwave-button {
+    @apply font-pretendard font-semibold rounded-lg px-4 py-2
+           transition-colors duration-200 focus:outline-none 
+           focus:ring-2 focus:ring-offset-2 tracking-ko-normal;
   }
 
-  .gradient-accent {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  .moonwave-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md
+           focus:outline-none focus:ring-2 focus:ring-blue-500
+           font-pretendard tracking-ko-normal;
   }
 
-  /* 그림자 */
-  .shadow-soft {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  .moonwave-table {
+    @apply min-w-full divide-y divide-gray-300;
   }
 
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-  }
-
-  .shadow-premium {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  .moonwave-badge {
+    @apply inline-flex items-center rounded-md px-2 py-1 text-xs 
+           font-medium ring-1 ring-inset;
   }
 }
 
@@ -282,7 +272,7 @@
   background: #a8a8a8;
 }
 
-/* 포커스 스타일 */
+/* 포커스 스타일 - Design Guide 표준 */
 *:focus {
   outline: none;
 }
