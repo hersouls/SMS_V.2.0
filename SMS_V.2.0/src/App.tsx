@@ -54,7 +54,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 function AppRoutes() {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<import('./types/database.types').Subscription | undefined>(undefined);
-  const { addSubscription, updateSubscription, deleteSubscription, toggleSubscriptionStatus } = useSubscriptions();
+  const { addSubscription, updateSubscription } = useSubscriptions();
 
   const handleAddSubscription = () => {
     setEditingSubscription(undefined);

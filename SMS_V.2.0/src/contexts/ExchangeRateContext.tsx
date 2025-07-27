@@ -158,7 +158,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
         setError('실시간 환율을 가져올 수 없습니다. 네트워크 연결을 확인해주세요.');
         return false;
       }
-    } catch (err) {
+    } catch {
       setError('실시간 환율 업데이트에 실패했습니다.');
       return false;
     } finally {
