@@ -22,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
     'font-pretendard font-semibold rounded-lg transition-colors duration-200',
     'focus:outline-none focus:ring-2 focus:ring-offset-2',
     'tracking-ko-normal break-keep-ko antialiased',
+    'inline-flex items-center justify-center',
   );
   
   const variants = {
@@ -32,9 +33,9 @@ const Button: React.FC<ButtonProps> = ({
   };
   
   const sizes = {
-    sm: 'py-1.5 px-3 text-sm',
-    md: 'py-2 px-4 text-base',
-    lg: 'py-3 px-6 text-lg'
+    sm: 'py-1.5 px-3 text-sm gap-1.5',
+    md: 'py-2 px-4 text-base gap-2',
+    lg: 'py-3 px-6 text-lg gap-2.5'
   };
   
   return (
@@ -44,6 +45,9 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {loading && (
+        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+      )}
+      {children}
     </button>
   );
 };

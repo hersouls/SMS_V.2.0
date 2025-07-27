@@ -28,23 +28,23 @@ const Header: React.FC = () => {
       {/* Glass Card Navigation - Design Guide 표준 */}
       <nav className="relative" role="navigation" aria-label="메인 네비게이션">
         <div className="mx-auto max-w-7xl px-4 @sm:px-6 @lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Home Button - Design Guide 표준 */}
-            <Link
-              to="/dashboard"
-              className={cn(
-                DESIGN_TOKENS.GLASS_BUTTON,
-                "focus:outline-none focus:ring-2 focus:ring-white/50",
-                location.pathname === '/dashboard' && "bg-white/30"
-              )}
-              aria-label="홈으로 가기"
-              aria-current={location.pathname === '/dashboard' ? 'page' : undefined}
-            >
-              <Home className="w-5 h-5 text-white" aria-hidden="true" />
-            </Link>
-            
-            {/* Right Side Buttons - Design Guide 표준 */}
-            <div className="flex items-center gap-3">
+          <div className="flex h-16 items-center justify-center">
+            {/* Navigation Container with proper spacing */}
+            <div className="flex items-center justify-center gap-6 @sm:gap-8 @lg:gap-10">
+              {/* Home Button - Design Guide 표준 */}
+              <Link
+                to="/dashboard"
+                className={cn(
+                  DESIGN_TOKENS.GLASS_BUTTON,
+                  "focus:outline-none focus:ring-2 focus:ring-white/50",
+                  location.pathname === '/dashboard' && "bg-white/30"
+                )}
+                aria-label="홈으로 가기"
+                aria-current={location.pathname === '/dashboard' ? 'page' : undefined}
+              >
+                <Home className="w-5 h-5 text-white" aria-hidden="true" />
+              </Link>
+              
               {/* Notifications Button */}
               <Link
                 to="/notifications"
