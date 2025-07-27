@@ -24,8 +24,8 @@ Moonwave v2.0 개발 작업을 Cursor AI 중심 워크플로우로 재구성합�
 #### 🤖 Cursor에서 실행할 명령어와 작업
 - [x] ```bash
 # Cursor 터미널에서 실행
-npm create vite@latest moonwave-v2 -- --template react-ts
-cd moonwave-v2
+npm create vite@latest SMS_V.2.0 -- --template react-ts
+cd SMS_V.2.0
 git init
 ```
 
@@ -34,9 +34,9 @@ git init
 "Create a comprehensive .gitignore for React TypeScript Vite project with Supabase, including .env.local, dist, and common IDE files"
 ```
 
-- [ ] **Cursor 프롬프트 2**:
+- [x] **Cursor 프롬프트 2**:
 ```
-"Set up git remote with URL: https://github.com/YOUR_USERNAME/moonwave-v2.git and make initial commit"
+"Set up git remote with URL: https://github.com/hersouls/SMS_V.2.0.git and make initial commit"
 ```
 
 ### 1.2 개발 환경 설정
@@ -58,7 +58,7 @@ npm install @supabase/supabase-js
 npm install react-router-dom
 
 # Tailwind 초기화
-npx tailwindcss init -p
+tailwindcss init -p
 ```
 
 - [x] **Cursor 프롬프트 3**:
@@ -73,7 +73,7 @@ npx tailwindcss init -p
 
 - [x] **Cursor 프롬프트 4**:
 ```
-"Create src/styles/globals.css with Tailwind directives, Pretendard font import, and Korean text optimization utilities (break-keep-ko, tracking-ko)"
+"Create src/index.css with Tailwind directives, Pretendard font import, and Korean text optimization utilities (break-keep-ko, tracking-ko)"
 ```
 
 ### 1.3 프로젝트 구조 생성
@@ -152,7 +152,7 @@ and add .env.local to .gitignore"
 
 - [x] **Cursor 프롬프트 9**:
 ```
-"Create SQL schema for Moonwave based on the ERD:
+"Create SQL schema for SMS v2.0 based on the ERD:
 1. subscriptions table with user_id, service_name, amount, currency, payment_cycle, etc.
 2. exchange_rates table with user_id and usd_krw rate
 3. subscription_alarms table
