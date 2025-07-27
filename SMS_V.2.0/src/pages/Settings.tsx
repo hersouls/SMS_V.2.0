@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { User, Bell, CreditCard, LogOut, Trash2, Shield } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
 import { ExchangeRateModal } from '../components/features/ExchangeRateModal';
+import { ExchangeRateDisplay } from '../components/features/ExchangeRateDisplay';
 import NotificationSettings from '../components/features/settings/NotificationSettings';
 import AccountDeletionModal from '../components/features/settings/AccountDeletionModal';
 import { useAuth } from '../hooks/useAuth';
@@ -101,15 +102,13 @@ const Settings: React.FC = () => {
           <CardContent>
             <div className="space-y-4">
               <p className="text-gray-600 break-keep-ko">
-                구독료 계산에 사용되는 USD/KRW 환율을 설정하세요.
+                구독료 계산에 사용되는 USD/KRW 환율을 설정하세요. 환율에 마우스를 올리면 연필 아이콘이 나타나며, 클릭하여 직접 수정할 수 있습니다.
               </p>
-              <Button
-                onClick={() => setIsExchangeRateModalOpen(true)}
-                variant="primary"
-                className="w-full @sm:w-auto"
-              >
-                환율 설정하기
-              </Button>
+              <ExchangeRateDisplay
+                onEditClick={() => setIsExchangeRateModalOpen(true)}
+                showRefreshButton={true}
+                enableInlineEdit={true}
+              />
             </div>
           </CardContent>
         </Card>
