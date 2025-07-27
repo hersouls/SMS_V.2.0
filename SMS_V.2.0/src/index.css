@@ -122,58 +122,58 @@
 @layer components {
   /* Moonwave 디자인 토큰 */
   .btn-primary {
-    background: linear-gradient(to right, theme(colors.purple.600), theme(colors.blue.600));
+    background: linear-gradient(to right, #9333ea, #2563eb);
     color: white;
     font-weight: 600;
-    padding: theme(spacing.2) theme(spacing.4);
-    border-radius: theme(borderRadius.lg);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
     transition: all 0.2s;
   }
   
   .btn-primary:hover {
-    background: linear-gradient(to right, theme(colors.purple.700), theme(colors.blue.700));
+    background: linear-gradient(to right, #7c3aed, #1d4ed8);
   }
   
   .btn-primary:focus {
     outline: none;
-    box-shadow: 0 0 0 2px theme(colors.purple.500), 0 0 0 4px theme(colors.white);
+    box-shadow: 0 0 0 2px #a855f7, 0 0 0 4px white;
   }
 
   .btn-secondary {
     background: white;
-    color: theme(colors.gray.700);
+    color: #374151;
     font-weight: 600;
-    padding: theme(spacing.2) theme(spacing.4);
-    border-radius: theme(borderRadius.lg);
-    border: 1px solid theme(colors.gray.300);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
     transition: all 0.2s;
   }
   
   .btn-secondary:hover {
-    background: theme(colors.gray.50);
+    background: #f9fafb;
   }
   
   .btn-secondary:focus {
     outline: none;
-    box-shadow: 0 0 0 2px theme(colors.blue.500), 0 0 0 4px theme(colors.white);
+    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px white;
   }
 
   .btn-ghost {
-    color: theme(colors.gray.600);
+    color: #4b5563;
     font-weight: 600;
-    padding: theme(spacing.2) theme(spacing.4);
-    border-radius: theme(borderRadius.lg);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
     transition: all 0.2s;
   }
   
   .btn-ghost:hover {
-    color: theme(colors.gray.900);
-    background: theme(colors.gray.100);
+    color: #111827;
+    background: #f3f4f6;
   }
   
   .btn-ghost:focus {
     outline: none;
-    box-shadow: 0 0 0 2px theme(colors.blue.500), 0 0 0 4px theme(colors.white);
+    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px white;
   }
 
   .card-glass {
@@ -184,7 +184,7 @@
   }
 
   .card-gradient {
-    background: linear-gradient(to bottom right, theme(colors.purple.50), theme(colors.blue.50));
+    background: linear-gradient(to bottom right, theme(colors.purple.50), theme(colors.primary.50));
     border: 1px solid theme(colors.purple.100);
     box-shadow: theme(boxShadow.sm);
   }

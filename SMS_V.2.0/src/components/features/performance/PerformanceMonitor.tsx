@@ -100,7 +100,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
-        entries.forEach((entry) => {
+        entries.forEach((entry: any) => {
           const fid = entry.processingStart - entry.startTime;
           const fidScore = calculateScore(fid, { good: 100, needsImprovement: 300 });
           
