@@ -1,13 +1,10 @@
-# DISABLED: This workflow is disabled due to repository ownership restrictions
-# To re-enable, transfer repository ownership to "hersouls" organization
+name: Security & Dependencies
 
-name: Security & Dependencies (DISABLED)
-
-# on:
-#   schedule:
-#     # 매주 월요일 오전 9시에 실행
-#     - cron: '0 9 * * 1'
-#   workflow_dispatch: # 수동 실행 가능
+on:
+  schedule:
+    # 매주 월요일 오전 9시에 실행
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # 수동 실행 가능
 
 jobs:
   # 보안 취약점 검사

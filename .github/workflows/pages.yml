@@ -1,8 +1,4 @@
-# DISABLED: This workflow is disabled due to repository ownership restrictions
-# To re-enable, transfer repository ownership to "hersouls" organization
-# or use the alternative deployment methods in DEPLOYMENT.md
-
-name: Deploy to GitHub Pages (DISABLED)
+name: Deploy to GitHub Pages
 
 on:
   push:
