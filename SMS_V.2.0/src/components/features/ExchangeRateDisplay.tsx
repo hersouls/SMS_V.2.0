@@ -37,7 +37,7 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
     <div className={cn("@container", className)}>
       <div
         className={cn(
-          "bg-white/80 backdrop-blur-md rounded-xl border border-white/20 p-4",
+          "card-glass rounded-xl p-4",
           "hover:bg-white/90 transition-all duration-200",
           onEditClick && "cursor-pointer hover:shadow-lg",
           "group"
@@ -61,7 +61,7 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
             
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-semibold font-pretendard text-gray-900">
+                <h3 className="text-lg font-semibold font-pretendard tracking-ko-normal text-gray-900">
                   USD → KRW 환율
                 </h3>
                 {isLoading && (
@@ -70,21 +70,21 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
               </div>
               
               {error ? (
-                <p className="text-sm text-red-600 font-pretendard">
+                <p className="text-sm text-red-600 font-pretendard tracking-ko-normal">
                   {error}
                 </p>
               ) : (
                 <div className="flex items-center gap-2">
-                  <p className="text-2xl font-bold text-gray-900 font-pretendard">
+                  <p className="text-2xl font-bold text-gray-900 font-pretendard tracking-ko-normal">
                     {rate.toLocaleString()}
                   </p>
-                  <span className="text-sm text-gray-500 font-pretendard">
+                  <span className="text-sm text-gray-500 font-pretendard tracking-ko-normal">
                     KRW
                   </span>
                 </div>
               )}
               
-              <p className="text-xs text-gray-500 font-pretendard">
+              <p className="text-xs text-gray-500 font-pretendard tracking-ko-normal">
                 마지막 업데이트: {getFormattedLastUpdated()}
               </p>
             </div>
@@ -105,7 +105,7 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
               aria-label="실시간 환율로 업데이트"
             >
               <ArrowPathIcon className={cn(
-                "w-4 h-4 text-gray-600",
+                "w-5 h-5 text-gray-600",
                 isLoading && "animate-spin"
               )} />
             </button>
@@ -113,7 +113,7 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
 
           {onEditClick && (
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <div className="text-xs text-gray-500 font-pretendard">
+              <div className="text-xs text-gray-500 font-pretendard tracking-ko-normal">
                 클릭하여 편집
               </div>
             </div>
@@ -124,14 +124,14 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
         <div className="mt-3 pt-3 border-t border-gray-200">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-gray-500 font-pretendard">현재 환율</p>
-              <p className="font-medium text-gray-900 font-pretendard">
+              <p className="text-gray-500 font-pretendard tracking-ko-normal">현재 환율</p>
+              <p className="font-medium text-gray-900 font-pretendard tracking-ko-normal">
                 {getFormattedRate()}
               </p>
             </div>
             <div>
-              <p className="text-gray-500 font-pretendard">실시간 환율</p>
-              <p className="font-medium text-gray-900 font-pretendard">
+              <p className="text-gray-500 font-pretendard tracking-ko-normal">실시간 환율</p>
+              <p className="font-medium text-gray-900 font-pretendard tracking-ko-normal">
                 1,298 KRW
               </p>
             </div>
