@@ -1,3 +1,4 @@
+
 import { useExchangeRateContext } from '../contexts/ExchangeRateContext';
 
 // Re-export the interface for backward compatibility

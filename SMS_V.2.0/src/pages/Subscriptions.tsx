@@ -5,7 +5,7 @@ import { Button } from '../components/ui';
 import { useSubscriptions } from '../hooks/useSubscriptions';
 import SubscriptionCard from '../components/features/subscription/SubscriptionCard';
 import SubscriptionForm from '../components/features/subscription/SubscriptionForm';
-import type { Subscription } from '../types/database.types';
+import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
 const Subscriptions: React.FC = () => {
   const {
@@ -55,8 +55,8 @@ const Subscriptions: React.FC = () => {
 
     // Sort
     filtered.sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number | Date;
+      let bValue: string | number | Date;
 
       switch (sortBy) {
         case 'name':
@@ -89,7 +89,7 @@ const Subscriptions: React.FC = () => {
     return filtered;
   }, [subscriptions, searchTerm, selectedCategory, selectedStatus, sortBy, sortOrder]);
 
-  const handleAddSubscription = async (data: any) => {
+  const handleAddSubscription = async (data: SubscriptionFormData) => {
     const result = await addSubscription(data);
     if (result.success) {
       setShowForm(false);
@@ -97,7 +97,7 @@ const Subscriptions: React.FC = () => {
     return result;
   };
 
-  const handleEditSubscription = async (data: any) => {
+  const handleEditSubscription = async (data: SubscriptionFormData) => {
     if (!editingSubscription) return { success: false, error: 'No subscription to edit' };
     
     const result = await updateSubscription(editingSubscription.id, data);
@@ -216,8 +216,8 @@ const Subscriptions: React.FC = () => {
               value={`${sortBy}-${sortOrder}`}
               onChange={(e) => {
                 const [field, order] = e.target.value.split('-');
-                setSortBy(field as any);
-                setSortOrder(order as any);
+                setSortBy(field as 'name' | 'amount' | 'date' | 'category');
+                setSortOrder(order as 'asc' | 'desc');
               }}
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
