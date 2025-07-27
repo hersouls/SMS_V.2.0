@@ -335,7 +335,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 onChange={handleVolumeChange}
                 className={cn(DESIGN_TOKENS.SLIDER_BASE, "w-12 @sm:w-16")}
                 aria-label="볼륨 조절"
-                aria-valuenow={isMuted ? 0 : Math.round(volume * 100)}
                 aria-valuemin={0}
                 aria-valuemax={100}
               />
