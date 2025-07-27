@@ -320,4 +320,5 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
   // This component doesn't render anything
   return null;
+};
 

@@ -58,8 +58,10 @@ class Analytics {
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
 
+      for (const entry of entries) {
+        const firstInputEntry = entry as PerformanceEventTiming;
         this.trackPerformance('fid', firstInputEntry.processingStart - entry.startTime);
-      });
+      }
     });
     observer.observe({ entryTypes: ['first-input'] });
   }
@@ -69,10 +71,12 @@ class Analytics {
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
 
+      for (const entry of entries) {
+        const layoutShiftEntry = entry as LayoutShift;
         if (!layoutShiftEntry.hadRecentInput) {
           clsValue += layoutShiftEntry.value;
         }
-      });
+      }
       this.trackPerformance('cls', clsValue);
     });
     observer.observe({ entryTypes: ['layout-shift'] });

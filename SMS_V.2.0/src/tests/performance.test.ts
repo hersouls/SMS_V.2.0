@@ -321,7 +321,7 @@ describe('Performance Monitoring', () => {
         controller: null,
         addEventListener: vi.fn(),
         removeEventListener: vi.fn()
-      } as any;
+      } as ServiceWorkerContainer;
 
       expect(navigator.serviceWorker.register).toBeDefined();
     });
