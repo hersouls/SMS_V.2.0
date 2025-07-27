@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ExchangeRateContext } from '../contexts/ExchangeRateContext';
+import { ExchangeRateContext } from '../contexts/ExchangeRateContextDefinition';
 
 export const useExchangeRateContext = () => {
   const context = useContext(ExchangeRateContext);

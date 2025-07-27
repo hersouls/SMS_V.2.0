@@ -1,4 +1,13 @@
 
+import React, { useState, useEffect, useCallback } from 'react';
+import type { ReactNode } from 'react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../hooks/useAuth';
+import { ExchangeRateContext } from './ExchangeRateContextDefinition';
+import type { ExchangeRateContextType, ExchangeRate } from './ExchangeRateContextDefinition';
+import { DEFAULT_RATE } from '../constants/exchangeRate';
+import { convertCurrency as convertCurrencyUtil, getFormattedRate as getFormattedRateUtil, getFormattedLastUpdated as getFormattedLastUpdatedUtil } from '../utils/exchangeRateUtils';
+
 interface ExchangeRateProviderProps {
   children: ReactNode;
 }
@@ -201,12 +210,5 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   );
 };
 
-// Export the hook for use in other components
-export const useExchangeRateContext = () => {
-  const context = React.useContext(ExchangeRateContext);
-  if (context === undefined) {
-    throw new Error('useExchangeRateContext must be used within an ExchangeRateProvider');
-  }
-  return context;
-};
+
 
