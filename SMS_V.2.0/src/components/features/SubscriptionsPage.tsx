@@ -9,9 +9,6 @@ import {
   PauseIcon,
   XMarkIcon,
   ExternalLinkIcon,
-  HomeIcon,
-  BellIcon,
-  UserIcon,
   Bars3Icon,
   ArrowLeftIcon
 } from '@heroicons/react/24/outline';
@@ -212,7 +209,6 @@ interface SubscriptionCardProps {
 }
 
 const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription, viewMode }) => {
-  const isActive = subscription.status === 'active';
   const statusColors = {
     active: 'text-green-600',
     paused: 'text-yellow-600',
