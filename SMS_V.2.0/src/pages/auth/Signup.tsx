@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Chrome, User } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui';
 import { Input } from '../../components/ui';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui';

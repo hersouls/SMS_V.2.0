@@ -89,7 +89,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof SubscriptionFormData, value: any) => {
+  const handleInputChange = (field: keyof SubscriptionFormData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));

@@ -1,7 +1,5 @@
 import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider, useAuth } from './contexts/AuthContext'
-import { ExchangeRateProvider } from './contexts/ExchangeRateContext'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import MusicPlayer from './components/layout/MusicPlayer'
