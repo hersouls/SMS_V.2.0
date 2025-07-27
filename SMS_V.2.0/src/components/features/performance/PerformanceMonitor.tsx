@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 interface FirstInputEntry extends PerformanceEntry {
   processingStart: number;
@@ -132,6 +132,9 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
+        entries.forEach((entry) => {
+          const fidEntry = entry as FirstInputEntry;
+          const fid = fidEntry.processingStart - fidEntry.startTime;
           const fidScore = calculateScore(fid, { good: 100, needsImprovement: 300 });
           
           metricsRef.current.fid = fid;

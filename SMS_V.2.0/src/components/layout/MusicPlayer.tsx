@@ -93,6 +93,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   }, [isPlaying, volume, isMuted]);
 
+  const nextTrack = useCallback(() => {
+    setCurrentTrack(prev => 
+      prev === playlist.length - 1 ? 0 : prev + 1
+    );
+  }, [playlist.length]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -134,12 +140,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       prev === 0 ? playlist.length - 1 : prev - 1
     );
   };
-
-  const nextTrack = useCallback(() => {
-    setCurrentTrack(prev => 
-      prev === playlist.length - 1 ? 0 : prev + 1
-    );
-  }, [playlist.length]);
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
