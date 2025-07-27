@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Calendar, TrendingUp, CreditCard, Users, DollarSign } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
+import { Calendar, TrendingUp, CreditCard, Users, DollarSign, Plus } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
 import { ExchangeRateDisplay } from '../components/features/ExchangeRateDisplay';
 import { ExchangeRateModal } from '../components/features/ExchangeRateModal';
 import { supabase } from '../lib/supabase';
@@ -19,33 +19,54 @@ const Dashboard: React.FC = () => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
+  const [isAddingSampleData, setIsAddingSampleData] = useState(false);
 
   const fetchDashboardData = useCallback(async () => {
     try {
-      // Fetch user's subscriptions
+      setLoading(true);
+      
+      // Fetch user's subscriptions (all statuses)
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        console.log('No user found, redirecting to login...');
+        return;
+      }
 
-      const { data: subscriptions } = await supabase
+      console.log('Fetching data for user:', user.email);
+
+      // Fetch all subscriptions for the user
+      const { data: subscriptions, error: subError } = await supabase
         .from('subscriptions')
         .select('*')
-        .eq('user_id', user.id)
-        .eq('status', 'active');
+        .eq('user_id', user.id);
+
+      if (subError) {
+        console.error('Error fetching subscriptions:', subError);
+      } else {
+        console.log('Fetched subscriptions:', subscriptions?.length || 0);
+      }
 
       // Fetch exchange rate
-      const { data: rateData } = await supabase
+      const { data: rateData, error: rateError } = await supabase
         .from('exchange_rates')
         .select('usd_krw')
         .eq('user_id', user.id)
         .single();
 
-      if (rateData) {
-        setExchangeRate(rateData.usd_krw);
+      if (rateError && rateError.code !== 'PGRST116') {
+        console.error('Error fetching exchange rate:', rateError);
       }
 
+      const currentRate = rateData?.usd_krw || 1300;
+      setExchangeRate(currentRate);
+
       if (subscriptions) {
-        setActiveSubscriptions(subscriptions.slice(0, 5));
-        calculateStats(subscriptions, rateData?.usd_krw || 1300);
+        const activeSubs = subscriptions.filter(sub => sub.status === 'active');
+        setActiveSubscriptions(activeSubs.slice(0, 5));
+        calculateStats(subscriptions, currentRate);
+      } else {
+        setActiveSubscriptions([]);
+        calculateStats([], currentRate);
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -86,6 +107,128 @@ const Dashboard: React.FC = () => {
       totalCostKRW,
       totalCostUSD
     });
+  };
+
+  const addSampleData = async () => {
+    setIsAddingSampleData(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert('Please sign in first');
+        return;
+      }
+
+      const sampleSubscriptions = [
+        {
+          user_id: user.id,
+          service_name: 'Netflix',
+          service_url: 'https://netflix.com',
+          service_image_url: 'https://logo.clearbit.com/netflix.com',
+          category: 'Streaming',
+          status: 'active',
+          amount: 17000,
+          currency: 'KRW',
+          payment_cycle: 'monthly',
+          payment_day: 15,
+          payment_method: 'Credit Card',
+          start_date: '2024-01-15',
+          auto_renewal: true,
+          alarm_days: [10, 13],
+          tier: 'Standard',
+          benefits: '4K streaming, 4 screens',
+          tags: ['entertainment', 'streaming'],
+          memo: '주요 엔터테인먼트 서비스'
+        },
+        {
+          user_id: user.id,
+          service_name: 'Spotify Premium',
+          service_url: 'https://spotify.com',
+          service_image_url: 'https://logo.clearbit.com/spotify.com',
+          category: 'Music',
+          status: 'active',
+          amount: 13900,
+          currency: 'KRW',
+          payment_cycle: 'monthly',
+          payment_day: 20,
+          payment_method: 'Credit Card',
+          start_date: '2024-02-20',
+          auto_renewal: true,
+          alarm_days: [15, 18],
+          tier: 'Premium',
+          benefits: 'Ad-free music, offline downloads',
+          tags: ['music', 'audio'],
+          memo: '음악 스트리밍 서비스'
+        },
+        {
+          user_id: user.id,
+          service_name: 'Adobe Creative Cloud',
+          service_url: 'https://adobe.com',
+          service_image_url: 'https://logo.clearbit.com/adobe.com',
+          category: 'Software',
+          status: 'active',
+          amount: 29.99,
+          currency: 'USD',
+          payment_cycle: 'monthly',
+          payment_day: 5,
+          payment_method: 'Credit Card',
+          start_date: '2024-01-05',
+          auto_renewal: true,
+          alarm_days: [1, 3],
+          tier: 'Creative Cloud',
+          benefits: 'Photoshop, Illustrator, Premiere Pro',
+          tags: ['design', 'creative'],
+          memo: '디자인 작업용 소프트웨어'
+        },
+        {
+          user_id: user.id,
+          service_name: 'GitHub Pro',
+          service_url: 'https://github.com',
+          service_image_url: 'https://logo.clearbit.com/github.com',
+          category: 'Software',
+          status: 'active',
+          amount: 4,
+          currency: 'USD',
+          payment_cycle: 'monthly',
+          payment_day: 10,
+          payment_method: 'Credit Card',
+          start_date: '2024-03-10',
+          auto_renewal: true,
+          alarm_days: [5, 8],
+          tier: 'Pro',
+          benefits: 'Private repositories, advanced features',
+          tags: ['development', 'coding'],
+          memo: '코드 저장소 및 협업 도구'
+        }
+      ];
+
+      // Insert sample subscriptions
+      for (const subscription of sampleSubscriptions) {
+        const { error } = await supabase
+          .from('subscriptions')
+          .insert(subscription);
+
+        if (error) {
+          console.error(`Error inserting ${subscription.service_name}:`, error);
+        }
+      }
+
+      // Set exchange rate
+      await supabase
+        .from('exchange_rates')
+        .upsert({
+          user_id: user.id,
+          usd_krw: 1350
+        });
+
+      // Refresh data
+      await fetchDashboardData();
+      alert('Sample data added successfully!');
+    } catch (error) {
+      console.error('Error adding sample data:', error);
+      alert('Failed to add sample data');
+    } finally {
+      setIsAddingSampleData(false);
+    }
   };
 
   const formatCurrency = (amount: number, currency: 'KRW' | 'USD' = 'KRW') => {
@@ -207,11 +350,20 @@ const Dashboard: React.FC = () => {
               <div className="text-center py-8">
                 <CreditCard className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-500 break-keep-ko">
-                  No active subscriptions yet.
+                  No active subscriptions found.
                 </p>
                 <p className="text-sm text-gray-400 mt-1 break-keep-ko">
                   Add your first subscription to get started.
                 </p>
+                <div className="mt-4">
+                  <Button
+                    onClick={() => window.location.href = '/subscriptions'}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Subscription
+                  </Button>
+                </div>
               </div>
             ) : (
               <div className="space-y-4">
@@ -219,9 +371,21 @@ const Dashboard: React.FC = () => {
                   <div
                     key={subscription.id}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                    onClick={() => window.location.href = `/subscriptions`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                      {subscription.service_image_url ? (
+                        <img 
+                          src={subscription.service_image_url} 
+                          alt={subscription.service_name}
+                          className="w-10 h-10 rounded-lg object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling!.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div className={`w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center ${subscription.service_image_url ? 'hidden' : ''}`}>
                         <span className="text-white font-bold text-sm">
                           {subscription.service_name.charAt(0).toUpperCase()}
                         </span>
@@ -231,7 +395,7 @@ const Dashboard: React.FC = () => {
                           {subscription.service_name}
                         </h3>
                         <p className="text-sm text-gray-500 break-keep-ko">
-                          {subscription.payment_cycle} • {formatCurrency(subscription.amount, subscription.currency)}
+                          {subscription.payment_cycle} • {subscription.category || 'Uncategorized'}
                         </p>
                       </div>
                     </div>
@@ -240,7 +404,7 @@ const Dashboard: React.FC = () => {
                         {formatCurrency(subscription.amount, subscription.currency)}
                       </p>
                       <p className="text-xs text-gray-500 break-keep-ko">
-                        Next: {new Date(subscription.next_payment_date).toLocaleDateString()}
+                        {subscription.payment_day ? `Day ${subscription.payment_day}` : 'No payment day set'}
                       </p>
                     </div>
                   </div>

@@ -26,13 +26,17 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
     amount: subscription?.amount || 0,
     currency: subscription?.currency || 'KRW',
     payment_cycle: subscription?.payment_cycle || 'monthly',
-    next_payment_date: subscription?.next_payment_date ? 
-      new Date(subscription.next_payment_date).toISOString().split('T')[0] : 
-      new Date().toISOString().split('T')[0],
+    payment_day: subscription?.payment_day || 1,
     service_url: subscription?.service_url || '',
-    logo_url: subscription?.logo_url || '',
+    service_image_url: subscription?.service_image_url || '',
     category: subscription?.category || '',
-    status: subscription?.status || 'active'
+    status: subscription?.status || 'active',
+    payment_method: subscription?.payment_method || '',
+    start_date: subscription?.start_date ? 
+      new Date(subscription.start_date).toISOString().split('T')[0] : 
+      new Date().toISOString().split('T')[0],
+    auto_renewal: subscription?.auto_renewal ?? true,
+    memo: subscription?.memo || ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -81,8 +85,8 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
       newErrors.amount = 'Amount must be greater than 0';
     }
 
-    if (!formData.next_payment_date) {
-      newErrors.next_payment_date = 'Next payment date is required';
+    if (formData.payment_day < 1 || formData.payment_day > 31) {
+      newErrors.payment_day = 'Payment day must be between 1 and 31';
     }
 
     setErrors(newErrors);
@@ -234,7 +238,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
           </div>
         </div>
 
-        {/* Payment Cycle and Next Payment Date */}
+        {/* Payment Cycle and Payment Day */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
@@ -253,23 +257,70 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             </select>
           </div>
           <Input
-            label="Next Payment Date"
-            type="date"
-            value={formData.next_payment_date}
-            onChange={(e) => handleInputChange('next_payment_date', e.target.value)}
-            error={errors.next_payment_date}
+            label="Payment Day (1-31)"
+            type="number"
+            min="1"
+            max="31"
+            value={formData.payment_day}
+            onChange={(e) => handleInputChange('payment_day', parseInt(e.target.value) || 1)}
+            placeholder="15"
+            error={errors.payment_day}
             required
           />
         </div>
 
-        {/* Service URL */}
-        <Input
-          label="Service URL (Optional)"
-          type="url"
-          value={formData.service_url}
-          onChange={(e) => handleInputChange('service_url', e.target.value)}
-          placeholder="https://example.com"
-        />
+        {/* Service URL and Start Date */}
+        <div className="grid grid-cols-2 gap-4">
+          <Input
+            label="Service URL (Optional)"
+            type="url"
+            value={formData.service_url}
+            onChange={(e) => handleInputChange('service_url', e.target.value)}
+            placeholder="https://example.com"
+          />
+          <Input
+            label="Start Date"
+            type="date"
+            value={formData.start_date}
+            onChange={(e) => handleInputChange('start_date', e.target.value)}
+          />
+        </div>
+
+        {/* Payment Method and Auto Renewal */}
+        <div className="grid grid-cols-2 gap-4">
+          <Input
+            label="Payment Method (Optional)"
+            value={formData.payment_method}
+            onChange={(e) => handleInputChange('payment_method', e.target.value)}
+            placeholder="Credit Card, PayPal, etc."
+          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+              Auto Renewal
+            </label>
+            <select
+              value={formData.auto_renewal ? 'true' : 'false'}
+              onChange={(e) => handleInputChange('auto_renewal', e.target.value === 'true')}
+              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Memo */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+            Memo (Optional)
+          </label>
+          <textarea
+            value={formData.memo}
+            onChange={(e) => handleInputChange('memo', e.target.value)}
+            placeholder="Add any notes about this subscription..."
+            className="w-full h-20 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          />
+        </div>
 
         {/* Category and Status */}
         <div className="grid grid-cols-2 gap-4">

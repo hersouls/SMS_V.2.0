@@ -5,6 +5,7 @@ import { Button } from '../components/ui';
 import { useSubscriptions } from '../hooks/useSubscriptions';
 import SubscriptionCard from '../components/features/subscription/SubscriptionCard';
 import SubscriptionForm from '../components/features/subscription/SubscriptionForm';
+import { supabase } from '../lib/supabase';
 import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
 const Subscriptions: React.FC = () => {
@@ -26,6 +27,7 @@ const Subscriptions: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [showForm, setShowForm] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
+  const [isAddingSampleData, setIsAddingSampleData] = useState(false);
 
   // Categories and statuses for filters
   const categories = ['Streaming', 'Music', 'Software', 'Gaming', 'Education', 'Productivity', 'Entertainment', 'Other'];

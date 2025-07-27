@@ -24,7 +24,8 @@
     "deploy": "npm run build && gh pages deploy dist/ --branch gh-pages --clean",
     "deploy:manual": "npm run build",
     "install-deps": "npm ci --legacy-peer-deps",
-    "install-deps:force": "npm ci --legacy-peer-deps --force"
+    "install-deps:force": "npm ci --legacy-peer-deps --force",
+    "seed": "node scripts/seed-data.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
@@ -55,6 +56,7 @@
     "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "compression-webpack-plugin": "^11.1.0",
+    "dotenv": "^17.2.1",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
