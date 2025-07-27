@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CalendarIcon, CurrencyDollarIcon, ClockIcon } from '@heroicons/react/24/outline';
-import { cn } from '../lib/utils';
 import { CalendarGrid } from '../components/features/calendar/CalendarGrid';
 import { 
   generatePaymentEvents,
@@ -12,10 +11,9 @@ import {
   formatDate
 } from '../utils/calendar';
 import { useSubscriptions } from '../hooks/useSubscriptions';
-import { useAuth } from '../contexts/AuthContext';
+
 
 export default function Calendar() {
-  const { user } = useAuth();
   const { subscriptions, loading } = useSubscriptions();
   const [currentDate, setCurrentDate] = useState(() => {
     const now = new Date();

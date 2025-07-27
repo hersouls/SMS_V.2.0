@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
     totalCostKRW: 0,
     totalCostUSD: 0
   });
-  const [exchangeRate, setExchangeRate] = useState<number>(1300);
+  const [, setExchangeRate] = useState<number>(1300);
   const [activeSubscriptions, setActiveSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);

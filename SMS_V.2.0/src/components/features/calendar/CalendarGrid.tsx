@@ -2,9 +2,8 @@ import React from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../../lib/utils';
 import { 
-  CalendarGrid as CalendarGridType, 
-  CalendarDay, 
-  CalendarEvent,
+  type CalendarGrid as CalendarGridType, 
+  type CalendarDay, 
   formatMonthName,
   formatAmount,
   formatDate
@@ -71,7 +70,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
 
     return (
       <div className="absolute bottom-1 left-1 right-1 flex flex-wrap gap-0.5">
-        {day.events.slice(0, 3).map((event, index) => (
+        {day.events.slice(0, 3).map((event) => (
           <div
             key={event.id}
             className="flex items-center gap-1 bg-blue-100 text-blue-800 text-xs px-1 py-0.5 rounded"
