@@ -157,10 +157,10 @@ const Subscriptions: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 break-keep-ko">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 break-keep-ko font-pretendard tracking-ko-tight">
             Subscriptions
           </h1>
-          <p className="text-gray-600 break-keep-ko">
+          <p className="text-base text-gray-600 break-keep-ko font-pretendard tracking-ko-normal">
             Manage your subscription services
           </p>
         </div>

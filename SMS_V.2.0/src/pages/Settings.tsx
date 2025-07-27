@@ -48,10 +48,10 @@ const Settings: React.FC = () => {
     <div className="w-full max-w-7xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 break-keep-ko">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2 break-keep-ko font-pretendard tracking-ko-tight">
           설정
         </h1>
-        <p className="text-gray-600 break-keep-ko">
+        <p className="text-base text-gray-600 break-keep-ko font-pretendard tracking-ko-normal">
           계정 정보와 앱 설정을 관리하세요
         </p>
       </div>

@@ -237,10 +237,10 @@ const Dashboard: React.FC = () => {
     return (
       <div className="w-full max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 break-keep-ko">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 break-keep-ko font-pretendard tracking-ko-tight">
             Dashboard
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 break-keep-ko">
+          <p className="text-base text-gray-600 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
             Welcome back! Here's an overview of your subscriptions.
           </p>
         </div>
@@ -253,10 +253,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200">
+              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 font-pretendard tracking-ko-tight">
                 오류가 발생했습니다
               </h3>
-              <p className="text-red-700 dark:text-red-300 mt-1">
+              <p className="text-base text-red-700 dark:text-red-300 mt-1 font-pretendard tracking-ko-normal">
                 {error}
               </p>
             </div>
@@ -278,10 +278,10 @@ const Dashboard: React.FC = () => {
     <div className="w-full max-w-7xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 break-keep-ko">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 break-keep-ko font-pretendard tracking-ko-tight">
           Dashboard
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 break-keep-ko">
+        <p className="text-base text-gray-600 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
           Welcome back! Here's an overview of your subscriptions.
         </p>
       </div>
@@ -295,10 +295,10 @@ const Dashboard: React.FC = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 break-keep-ko">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
                       {card.title}
                     </p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1 font-pretendard tracking-ko-tight text-numeric">
                       {card.value}
                     </p>
                   </div>
@@ -326,7 +326,7 @@ const Dashboard: React.FC = () => {
         {/* Active Subscriptions */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 font-pretendard tracking-ko-tight">
               <Users className="w-5 h-5 text-blue-600" />
               Active Subscriptions
             </CardTitle>
@@ -337,10 +337,10 @@ const Dashboard: React.FC = () => {
                 <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CreditCard className="w-10 h-10 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 break-keep-ko">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 break-keep-ko font-pretendard tracking-ko-tight">
                   No active subscriptions found
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6 break-keep-ko">
+                <p className="text-base text-gray-500 dark:text-gray-400 mb-6 break-keep-ko font-pretendard tracking-ko-normal">
                   Add your first subscription to start managing your services.
                 </p>
                 <Button
@@ -383,7 +383,7 @@ const Dashboard: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate break-keep-ko">
+                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate break-keep-ko font-pretendard tracking-ko-tight">
                             {subscription.service_name}
                           </h3>
                           <div className="flex items-center gap-1 mt-1">
@@ -397,19 +397,19 @@ const Dashboard: React.FC = () => {
                       {/* Price and Details */}
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500 dark:text-gray-400 break-keep-ko">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
                             {subscription.payment_cycle}
                           </span>
-                          <span className="text-lg font-bold text-gray-900 dark:text-white">
+                          <span className="text-lg font-bold text-gray-900 dark:text-white font-pretendard tracking-ko-tight text-numeric">
                             {formatCurrency(subscription.amount, subscription.currency)}
                           </span>
                         </div>
                         
                         <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                          <span className="break-keep-ko">
+                          <span className="break-keep-ko font-pretendard tracking-ko-normal">
                             {subscription.category || 'Uncategorized'}
                           </span>
-                          <span className="break-keep-ko">
+                          <span className="break-keep-ko font-pretendard tracking-ko-normal">
                             {subscription.payment_day ? `Day ${subscription.payment_day}` : 'No date'}
                           </span>
                         </div>
@@ -418,7 +418,7 @@ const Dashboard: React.FC = () => {
                       {/* Action Buttons */}
                       <div className="flex gap-2 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
                         <button 
-                          className="flex-1 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                          className="flex-1 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors font-pretendard tracking-ko-normal"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.location.href = `/subscriptions`;
@@ -427,7 +427,7 @@ const Dashboard: React.FC = () => {
                           Manage
                         </button>
                         <button 
-                          className="flex-1 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                          className="flex-1 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors font-pretendard tracking-ko-normal"
                           onClick={(e) => {
                             e.stopPropagation();
                             // TODO: Implement cancel subscription
@@ -448,7 +448,7 @@ const Dashboard: React.FC = () => {
       {/* Mini Calendar */}
       <Card className="mt-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white font-pretendard tracking-ko-tight">
             <Calendar className="w-5 h-5 text-purple-600" />
             Upcoming Payments
           </CardTitle>
@@ -456,7 +456,7 @@ const Dashboard: React.FC = () => {
         <CardContent>
           <div className="text-center py-8">
             <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 dark:text-gray-400 break-keep-ko">
+            <p className="text-base text-gray-500 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
               Calendar view coming soon...
             </p>
           </div>

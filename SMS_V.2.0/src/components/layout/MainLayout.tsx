@@ -42,7 +42,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           <div className="frame-content">
             {/* Content Frame with improved centering */}
             <div className="frame-content-inner flex flex-col items-center justify-center min-h-full">
-              {children}
             </div>
           </div>
         </main>
