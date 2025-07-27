@@ -36,12 +36,12 @@ export interface SubscriptionAlarm {
 // Supabase response types
 export interface SupabaseResponse<T> {
   data: T | null;
-  error: any;
+  error: Error | null;
 }
 
-export interface SupabaseSubscriptionResponse extends SupabaseResponse<Subscription[]> {}
-export interface SupabaseExchangeRateResponse extends SupabaseResponse<ExchangeRate> {}
-export interface SupabaseAlarmResponse extends SupabaseResponse<SubscriptionAlarm[]> {}
+export type SupabaseSubscriptionResponse = SupabaseResponse<Subscription[]>;
+export type SupabaseExchangeRateResponse = SupabaseResponse<ExchangeRate>;
+export type SupabaseAlarmResponse = SupabaseResponse<SubscriptionAlarm[]>;
 
 // Form types
 export interface SubscriptionFormData {

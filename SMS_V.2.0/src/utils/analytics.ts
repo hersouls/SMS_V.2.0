@@ -46,8 +46,9 @@ class Analytics {
   private observeFID() {
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      entries.forEach((entry: any) => {
-        this.trackPerformance('fid', (entry as any).processingStart - entry.startTime);
+      entries.forEach((entry: PerformanceEntry) => {
+        const firstInputEntry = entry as PerformanceEventTiming;
+        this.trackPerformance('fid', firstInputEntry.processingStart - entry.startTime);
       });
     });
     observer.observe({ entryTypes: ['first-input'] });
@@ -57,9 +58,10 @@ class Analytics {
     let clsValue = 0;
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      entries.forEach((entry: any) => {
-        if (!entry.hadRecentInput) {
-          clsValue += entry.value;
+      entries.forEach((entry: PerformanceEntry) => {
+        const layoutShiftEntry = entry as LayoutShift;
+        if (!layoutShiftEntry.hadRecentInput) {
+          clsValue += layoutShiftEntry.value;
         }
       });
       this.trackPerformance('cls', clsValue);
@@ -116,7 +118,7 @@ class Analytics {
     this.trackEvent('error', 'exception', context || error.message);
   }
 
-  public trackUserAction(action: string, details?: any) {
+  public trackUserAction(action: string, details?: Record<string, unknown>) {
     this.trackEvent('user', action, JSON.stringify(details));
   }
 

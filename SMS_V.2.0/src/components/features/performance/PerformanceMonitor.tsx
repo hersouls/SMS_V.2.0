@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface FirstInputEntry extends PerformanceEntry {
   processingStart: number;
@@ -132,6 +132,9 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
+        entries.forEach((entry) => {
+          const fidEntry = entry as FirstInputEntry;
+          const fid = fidEntry.processingStart - fidEntry.startTime;
           const fidScore = calculateScore(fid, { good: 100, needsImprovement: 300 });
           
           metricsRef.current.fid = fid;
@@ -316,47 +319,4 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
   // This component doesn't render anything
   return null;
-};
-
-// Hook for using performance metrics in components
-export const usePerformanceMetrics = () => {
-  const [metrics, setMetrics] = useState<PerformanceMetrics>({
-    fcp: null,
-    lcp: null,
-    fid: null,
-    cls: null,
-    ttfb: null,
-    fcpScore: null,
-    lcpScore: null,
-    fidScore: null,
-    clsScore: null,
-    ttfbScore: null
-  });
-
-  return {
-    metrics,
-    PerformanceMonitor: () => (
-      <PerformanceMonitor
-        onMetricsUpdate={setMetrics}
-        enableReporting={true}
-      />
-    )
-  };
-};
-
-// Utility function to get performance grade
-export const getPerformanceGrade = (score: number): string => {
-  if (score >= 90) return 'A';
-  if (score >= 80) return 'B';
-  if (score >= 70) return 'C';
-  if (score >= 60) return 'D';
-  return 'F';
-};
-
-// Utility function to get performance color
-export const getPerformanceColor = (score: number): string => {
-  if (score >= 90) return '#10b981'; // Green
-  if (score >= 80) return '#f59e0b'; // Yellow
-  if (score >= 70) return '#f97316'; // Orange
-  return '#ef4444'; // Red
 };
