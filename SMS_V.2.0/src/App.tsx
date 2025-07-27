@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -10,12 +10,15 @@ import { PerformanceMonitor } from './components/features/performance/Performanc
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { useAuth } from './hooks/useAuth'
 import { ExchangeRateProvider } from './contexts/ExchangeRateContext'
+import SubscriptionModal from './components/features/subscription/SubscriptionModal'
+import type { Subscription, SubscriptionFormData } from './types/subscription'
 
 // Lazy load pages for code splitting
 const Login = lazy(() => import('./pages/auth/Login'))
 const Signup = lazy(() => import('./pages/auth/Signup'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Subscriptions = lazy(() => import('./pages/Subscriptions'))
+const SubscriptionDetail = lazy(() => import('./pages/SubscriptionDetail'))
 const Calendar = lazy(() => import('./pages/Calendar'))
 const Settings = lazy(() => import('./pages/Settings'))
 const DataTest = lazy(() => import('./components/features/DataTest'))
@@ -50,9 +53,23 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 }
 
 function AppRoutes() {
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [editingSubscription, setEditingSubscription] = useState<import('./types/database.types').Subscription | null>(null);
+
   const handleAddSubscription = () => {
-    // TODO: 구독 추가 모달 또는 페이지로 이동
-    console.log('구독 추가 버튼 클릭됨');
+    setEditingSubscription(null);
+    setShowSubscriptionModal(true);
+  };
+
+  const handleEditSubscription = (subscription: import('./types/database.types').Subscription) => {
+    setEditingSubscription(subscription);
+    setShowSubscriptionModal(true);
+  };
+
+  const handleSubscriptionSubmit = (data: import('./types/database.types').SubscriptionFormData) => {
+    // TODO: 구독 추가/편집 로직 구현
+    console.log('구독 데이터:', data);
+    setShowSubscriptionModal(false);
   };
 
   const handleEmergencyClick = () => {
@@ -107,8 +124,26 @@ function AppRoutes() {
               <Header />
               <main className="flex-1 pt-16 pb-32">
                 <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                  <Subscriptions />
+                  <Subscriptions onEditSubscription={handleEditSubscription} />
                 </div>
+              </main>
+              <Footer />
+              <MusicPlayer />
+              <FloatingActionButtons 
+                onAddClick={handleAddSubscription}
+                onEmergencyClick={handleEmergencyClick}
+                onDebugClick={handleDebugClick}
+              />
+            </div>
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/subscriptions/:id" element={
+          <ProtectedRoute>
+            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
+              <Header />
+              <main className="flex-1 pt-16 pb-32">
+                <SubscriptionDetail />
               </main>
               <Footer />
               <MusicPlayer />
@@ -178,6 +213,15 @@ function AppRoutes() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
+      
+      {/* Subscription Modal */}
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        onSubmit={handleSubscriptionSubmit}
+        subscription={editingSubscription}
+        title={editingSubscription ? '구독 편집' : '구독 추가'}
+      />
     </Suspense>
   )
 }

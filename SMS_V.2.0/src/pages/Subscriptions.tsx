@@ -7,7 +7,11 @@ import SubscriptionCard from '../components/features/subscription/SubscriptionCa
 import SubscriptionForm from '../components/features/subscription/SubscriptionForm';
 import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
-const Subscriptions: React.FC = () => {
+interface SubscriptionsProps {
+  onEditSubscription?: (subscription: import('../types/database.types').Subscription) => void;
+}
+
+const Subscriptions: React.FC<SubscriptionsProps> = ({ onEditSubscription }) => {
   const {
     subscriptions,
     loading,
@@ -109,8 +113,12 @@ const Subscriptions: React.FC = () => {
   };
 
   const handleEdit = (subscription: Subscription) => {
-    setEditingSubscription(subscription);
-    setShowForm(true);
+    if (onEditSubscription) {
+      onEditSubscription(subscription);
+    } else {
+      setEditingSubscription(subscription);
+      setShowForm(true);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -313,7 +321,6 @@ const Subscriptions: React.FC = () => {
             <SubscriptionCard
               key={subscription.id}
               subscription={subscription}
-              onEdit={handleEdit}
               onToggleStatus={handleToggleStatus}
               onDelete={handleDelete}
               className={viewMode === 'list' ? 'flex-row' : ''}

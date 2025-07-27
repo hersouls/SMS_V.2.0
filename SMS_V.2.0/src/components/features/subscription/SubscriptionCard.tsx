@@ -1,12 +1,12 @@
 import React from 'react';
 import { ExternalLink, Play, Pause, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '../../ui';
 import type { Subscription } from '../../../types/database.types';
 import { cn } from '../../../lib/utils';
 
 interface SubscriptionCardProps {
   subscription: Subscription;
-  onEdit?: (subscription: Subscription) => void;
   onToggleStatus?: (id: string, currentStatus: string) => void;
   onDelete?: (id: string) => void;
   className?: string;
@@ -14,11 +14,11 @@ interface SubscriptionCardProps {
 
 const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   subscription,
-  onEdit,
   onToggleStatus,
   onDelete,
   className
 }) => {
+  const navigate = useNavigate();
   const formatCurrency = (amount: number, currency: 'KRW' | 'USD') => {
     if (currency === 'USD') {
       return new Intl.NumberFormat('en-US', {
@@ -65,9 +65,8 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   };
 
   const handleCardClick = () => {
-    if (onEdit) {
-      onEdit(subscription);
-    }
+    // Navigate to subscription detail page
+    navigate(`/subscriptions/${subscription.id}`);
   };
 
   const handleToggleStatus = (e: React.MouseEvent) => {
@@ -101,10 +100,10 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
               className="relative w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
               onClick={handleServiceClick}
             >
-              {subscription.service_image_url ? (
+              {subscription.imageUrl ? (
                 <img 
-                  src={subscription.service_image_url} 
-                  alt={subscription.service_name}
+                  src={subscription.imageUrl} 
+                  alt={subscription.name}
                   className="w-full h-full object-cover rounded-lg"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
