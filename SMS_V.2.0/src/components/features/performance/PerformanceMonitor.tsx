@@ -91,7 +91,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
           
           onMetricsUpdate?.(metricsRef.current);
           
-          if (enableReporting) {
+          if (enableReporting && process.env.NODE_ENV === 'development') {
             console.log('FCP:', fcp, 'Score:', fcpScore);
           }
         }
@@ -117,7 +117,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
           
           onMetricsUpdate?.(metricsRef.current);
           
-          if (enableReporting) {
+          if (enableReporting && process.env.NODE_ENV === 'development') {
             console.log('LCP:', lcp, 'Score:', lcpScore);
           }
         }
@@ -143,7 +143,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
           
           onMetricsUpdate?.(metricsRef.current);
           
-          if (enableReporting) {
+          if (enableReporting && process.env.NODE_ENV === 'development') {
             console.log('FID:', fid, 'Score:', fidScore);
           }
         });
@@ -175,7 +175,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
         
         onMetricsUpdate?.(metricsRef.current);
         
-        if (enableReporting) {
+        if (enableReporting && process.env.NODE_ENV === 'development') {
           console.log('CLS:', clsValue, 'Score:', clsScore);
         }
       });
@@ -201,7 +201,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
             
             onMetricsUpdate?.(metricsRef.current);
             
-            if (enableReporting) {
+            if (enableReporting && process.env.NODE_ENV === 'development') {
               console.log('TTFB:', ttfb, 'Score:', ttfbScore);
             }
           }
@@ -214,7 +214,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
   // Measure memory usage
   const measureMemory = () => {
-    if ('memory' in performance) {
+    if ('memory' in performance && process.env.NODE_ENV === 'development') {
       const memory = (performance as Performance & { memory: PerformanceMemory }).memory;
       console.log('Memory Usage:', {
         usedJSHeapSize: memory.usedJSHeapSize,
@@ -226,7 +226,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
   // Measure network information
   const measureNetwork = () => {
-    if ('connection' in navigator) {
+    if ('connection' in navigator && process.env.NODE_ENV === 'development') {
       const connection = (navigator as Navigator & { connection: NetworkConnection }).connection;
       console.log('Network Info:', {
         effectiveType: connection.effectiveType,
@@ -271,10 +271,12 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
     }
 
     // Log to console for development
-    console.log('Performance Metrics:', {
-      ...metrics,
-      overallScore: Math.round(overallScore * 100)
-    });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Performance Metrics:', {
+        ...metrics,
+        overallScore: Math.round(overallScore * 100)
+      });
+    }
   }, [enableReporting]);
 
   useEffect(() => {
