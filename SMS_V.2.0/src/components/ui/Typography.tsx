@@ -8,7 +8,7 @@ interface TypographyProps {
 
 const H1: React.FC<TypographyProps> = ({ children, className }) => (
   <h1 className={cn(
-    'text-4xl sm:text-5xl lg:text-6xl',
+    'text-3xl @sm:text-4xl @lg:text-5xl @xl:text-6xl',
     'font-bold tracking-ko-tight',
     'text-gray-900 break-keep-ko font-pretendard',
     className
@@ -19,7 +19,7 @@ const H1: React.FC<TypographyProps> = ({ children, className }) => (
 
 const H2: React.FC<TypographyProps> = ({ children, className }) => (
   <h2 className={cn(
-    'text-3xl sm:text-4xl lg:text-5xl',
+    'text-2xl @sm:text-3xl @lg:text-4xl @xl:text-5xl',
     'font-bold tracking-ko-tight',
     'text-gray-900 break-keep-ko font-pretendard',
     className
@@ -30,7 +30,7 @@ const H2: React.FC<TypographyProps> = ({ children, className }) => (
 
 const H3: React.FC<TypographyProps> = ({ children, className }) => (
   <h3 className={cn(
-    'text-2xl sm:text-3xl lg:text-4xl',
+    'text-xl @sm:text-2xl @lg:text-3xl @xl:text-4xl',
     'font-semibold tracking-ko-normal',
     'text-gray-900 break-keep-ko font-pretendard',
     className
@@ -41,7 +41,7 @@ const H3: React.FC<TypographyProps> = ({ children, className }) => (
 
 const Body: React.FC<TypographyProps> = ({ children, className }) => (
   <p className={cn(
-    'text-base lg:text-lg',
+    'text-sm @sm:text-base @lg:text-lg',
     'font-normal tracking-ko-normal',
     'text-gray-700 leading-relaxed break-keep-ko font-pretendard',
     className
@@ -52,7 +52,7 @@ const Body: React.FC<TypographyProps> = ({ children, className }) => (
 
 const Caption: React.FC<TypographyProps> = ({ children, className }) => (
   <p className={cn(
-    'text-sm',
+    'text-xs @sm:text-sm',
     'font-normal tracking-ko-normal',
     'text-gray-600 break-keep-ko font-pretendard',
     className

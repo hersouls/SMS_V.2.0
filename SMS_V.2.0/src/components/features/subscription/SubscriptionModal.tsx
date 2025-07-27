@@ -112,22 +112,22 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold font-pretendard tracking-ko-normal">
+        <div className="flex items-center justify-between p-4 @sm:p-6 border-b">
+          <h2 className="text-lg @sm:text-xl @lg:text-2xl font-semibold font-pretendard tracking-ko-normal">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1.5 @sm:p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 @sm:w-5 @sm:h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-4 @sm:p-6 space-y-4 @sm:space-y-6">
           {/* Service Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+            <label className="block text-sm @sm:text-base font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
               서비스명 *
             </label>
             <input
@@ -135,22 +135,22 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
               value={formData.service_name}
               onChange={(e) => handleInputChange('service_name', e.target.value)}
               className={cn(
-                "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal",
+                "w-full px-3 py-2 @sm:px-4 @sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal text-sm @sm:text-base",
                 errors.service_name ? "border-red-500" : "border-gray-300"
               )}
               placeholder="서비스명을 입력하세요"
             />
             {errors.service_name && (
-              <p className="text-red-500 text-sm mt-1 font-pretendard tracking-ko-normal">
+              <p className="text-red-500 text-xs @sm:text-sm mt-1 font-pretendard tracking-ko-normal">
                 {errors.service_name}
               </p>
             )}
           </div>
 
           {/* Amount and Currency */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 @sm:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              <label className="block text-sm @sm:text-base font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
                 금액 *
               </label>
               <input
@@ -160,25 +160,25 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                 value={formData.amount}
                 onChange={(e) => handleInputChange('amount', parseFloat(e.target.value) || 0)}
                 className={cn(
-                  "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal",
+                  "w-full px-3 py-2 @sm:px-4 @sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal text-sm @sm:text-base",
                   errors.amount ? "border-red-500" : "border-gray-300"
                 )}
                 placeholder="0"
               />
               {errors.amount && (
-                <p className="text-red-500 text-sm mt-1 font-pretendard tracking-ko-normal">
+                <p className="text-red-500 text-xs @sm:text-sm mt-1 font-pretendard tracking-ko-normal">
                   {errors.amount}
                 </p>
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              <label className="block text-sm @sm:text-base font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
                 통화
               </label>
               <select
                 value={formData.currency}
                 onChange={(e) => handleInputChange('currency', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+                className="w-full px-3 py-2 @sm:px-4 @sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal text-sm @sm:text-base"
               >
                 <option value="KRW">KRW</option>
                 <option value="USD">USD</option>
@@ -188,13 +188,13 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
 
           {/* Payment Cycle */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+            <label className="block text-sm @sm:text-base font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
               결제 주기
             </label>
             <select
               value={formData.payment_cycle}
               onChange={(e) => handleInputChange('payment_cycle', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+              className="w-full px-3 py-2 @sm:px-4 @sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal text-sm @sm:text-base"
             >
               <option value="monthly">월간</option>
               <option value="yearly">연간</option>
@@ -205,7 +205,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
 
           {/* Payment Day */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+            <label className="block text-sm @sm:text-base font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
               결제일
             </label>
             <input
@@ -215,13 +215,13 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
               value={formData.payment_day || ''}
               onChange={(e) => handleInputChange('payment_day', parseInt(e.target.value) || 1)}
               className={cn(
-                "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal",
+                "w-full px-3 py-2 @sm:px-4 @sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal text-sm @sm:text-base",
                 errors.payment_day ? "border-red-500" : "border-gray-300"
               )}
               placeholder="1-31"
             />
             {errors.payment_day && (
-              <p className="text-red-500 text-sm mt-1 font-pretendard tracking-ko-normal">
+              <p className="text-red-500 text-xs @sm:text-sm mt-1 font-pretendard tracking-ko-normal">
                 {errors.payment_day}
               </p>
             )}
