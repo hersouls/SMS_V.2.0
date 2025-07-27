@@ -87,6 +87,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           setIsPlaying(true);
         } catch (error) {
           console.log('자동 재생 실패 (브라우저 정책):', error);
+          // 사용자에게 자동재생이 차단되었음을 알림
+          setIsPlaying(false);
         } finally {
           setIsLoading(false);
         }
@@ -104,7 +106,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     audio.volume = isMuted ? 0 : volume;
 
     if (isPlaying) {
-      audio.play().catch(console.error);
+      audio.play().catch((error) => {
+        console.error('음악 재생 실패:', error);
+        setIsPlaying(false);
+      });
     } else {
       audio.pause();
     }
@@ -136,7 +141,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const handleEnded = () => {
       if (repeatMode === 'one') {
         audio.currentTime = 0;
-        audio.play().catch(console.error);
+        audio.play().catch((error) => {
+          console.error('음악 재생 실패:', error);
+          setIsPlaying(false);
+        });
       } else if (repeatMode === 'all') {
         nextTrack();
       } else {
@@ -464,7 +472,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         ref={audioRef}
         src={currentTrackData.url}
         preload="metadata"
-        onError={(e) => console.error('Audio error:', e)}
+        onError={(e) => {
+          console.error('Audio error:', e);
+          setIsPlaying(false);
+          setIsLoading(false);
+        }}
       />
 
       {/* Custom slider styles */}

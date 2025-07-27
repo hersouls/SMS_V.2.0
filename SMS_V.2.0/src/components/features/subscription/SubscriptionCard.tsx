@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Play, Pause, X } from 'lucide-react';
+import { ExternalLink, Play, Pause, X, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '../../ui';
 import type { Subscription } from '../../../types/database.types';
@@ -9,6 +9,7 @@ interface SubscriptionCardProps {
   subscription: Subscription;
   onToggleStatus?: (id: string, currentStatus: string) => void;
   onDelete?: (id: string) => void;
+  onEdit?: (subscription: Subscription) => void;
   className?: string;
 }
 
@@ -16,6 +17,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   subscription,
   onToggleStatus,
   onDelete,
+  onEdit,
   className
 }) => {
   const navigate = useNavigate();
@@ -80,6 +82,13 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
     e.stopPropagation();
     if (onDelete) {
       onDelete(subscription.id);
+    }
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onEdit) {
+      onEdit(subscription);
     }
   };
 
@@ -155,6 +164,13 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
             {/* Action Buttons */}
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={handleEdit}
+                className="p-1 rounded hover:bg-blue-100 transition-colors"
+                title="Edit"
+              >
+                <Edit className="w-5 h-5 text-blue-600" />
+              </button>
               <button
                 onClick={handleToggleStatus}
                 className="p-1 rounded hover:bg-gray-100 transition-colors"

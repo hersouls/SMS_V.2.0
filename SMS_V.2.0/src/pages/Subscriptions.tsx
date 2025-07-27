@@ -110,10 +110,15 @@ const Subscriptions: React.FC = () => {
     return result;
   };
 
+  const handleEditClick = (subscription: Subscription) => {
+    setEditingSubscription(subscription);
+    setShowForm(true);
+  };
+
 
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this subscription?')) {
+    if (window.confirm('정말 이 구독을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
       await deleteSubscription(id);
     }
   };
@@ -314,6 +319,7 @@ const Subscriptions: React.FC = () => {
               subscription={subscription}
               onToggleStatus={handleToggleStatus}
               onDelete={handleDelete}
+              onEdit={handleEditClick}
               className={viewMode === 'list' ? 'flex-row' : ''}
             />
           ))}
