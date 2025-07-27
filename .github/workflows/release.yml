@@ -1,9 +1,12 @@
-name: Release
+# DISABLED: This workflow is disabled due to repository ownership restrictions
+# To re-enable, transfer repository ownership to "hersouls" organization
 
-on:
-  push:
-    tags:
-      - 'v*' # v1.0.0, v1.1.0 등
+name: Release (DISABLED)
+
+# on:
+#   push:
+#     tags:
+#       - 'v*' # v1.0.0, v1.1.0 등
 
 jobs:
   release:

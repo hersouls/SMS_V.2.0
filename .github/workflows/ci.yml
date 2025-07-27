@@ -1,10 +1,14 @@
-name: CI/CD Pipeline
+# DISABLED: This workflow is disabled due to repository ownership restrictions
+# To re-enable, transfer repository ownership to "hersouls" organization
+# or use the alternative deployment methods in DEPLOYMENT.md
 
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+name: CI/CD Pipeline (DISABLED)
+
+# on:
+#   push:
+#     branches: [ main, develop ]
+#   pull_request:
+#     branches: [ main, develop ]
 
 jobs:
   # 코드 품질 검사
