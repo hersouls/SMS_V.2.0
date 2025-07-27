@@ -100,7 +100,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
     }
   };
 
-  const handleInputChange = (field: keyof SubscriptionFormData, value: string | number) => {
+  const handleInputChange = (field: keyof SubscriptionFormData, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));

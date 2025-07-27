@@ -4,7 +4,7 @@ import { cn } from '../../lib/utils';
 import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
 interface FloatingActionButtonsProps {
-  onAddClick: () => void;
+  onAddClick?: () => void;
   onEmergencyClick?: () => void;
   onDebugClick?: () => void;
 }
@@ -50,17 +50,19 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
       )}
       
       {/* 메인 액션 버튼 - Footer 디자인 가이드 표준 */}
-      <button
-        onClick={onAddClick}
-        className={cn(
-          DESIGN_TOKENS.FAB_BASE,
-          DESIGN_TOKENS.GRADIENT_ACCENT,
-          "text-white focus:ring-purple-400"
-        )}
-        aria-label="새 구독 추가"
-      >
-        <Plus className="w-5 h-5 @sm:w-6 @sm:h-6" />
-      </button>
+      {onAddClick && (
+        <button
+          onClick={onAddClick}
+          className={cn(
+            DESIGN_TOKENS.FAB_BASE,
+            DESIGN_TOKENS.GRADIENT_ACCENT,
+            "text-white focus:ring-purple-400"
+          )}
+          aria-label="새 구독 추가"
+        >
+          <Plus className="w-5 h-5 @sm:w-6 @sm:h-6" />
+        </button>
+      )}
     </div>
   );
 };
