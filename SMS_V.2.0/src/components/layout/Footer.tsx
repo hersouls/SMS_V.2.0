@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Twitter, Instagram, Mail, Heart, Facebook } from 'lucide-react';
+import { Github, Twitter, Instagram, Heart, Facebook } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { DESIGN_TOKENS } from '../../lib/design-tokens';
 
