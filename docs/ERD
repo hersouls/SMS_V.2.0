@@ -1,0 +1,140 @@
+# Moonwave 구독관리 ERD (2025/최신)
+
+## 1. 전체 ERD 구조 요약
+
+[auth.users]
+    │ 1
+    │
+    │───< (N) [subscriptions]
+    │              │
+    │              │───< (N) [subscription_alarms]
+    │
+    │───< (1) [exchange_rates]
+
+- [auth.users] (유저) : Supabase/Firebase 등 인증 시스템의 사용자 테이블
+- [subscriptions] (구독카드) : 유저별 구독 관리(개인전용, 공유 불가)
+- [exchange_rates] (환율정보) : 유저별 1:1 환율값 저장
+- [subscription_alarms] (알람) : 구독카드별 커스텀 알람 옵션/이력
+
+---
+
+## 2. 엔터티 상세 정의
+
+### (1) auth.users (인증유저)
+- **id (UUID)** : PK, 모든 테이블의 user_id FK로 연동
+- 기타 인증/프로필 필드 (별도 관리)
+
+---
+
+### (2) subscriptions (구독카드)
+- **id (UUID)** : PK, 각 구독 고유값
+- **user_id (UUID)** : FK → auth.users.id  
+  (로그인 유저별로 완전 분리, 반드시 소유자 존재)
+- **service_name (TEXT)** : 서비스명(직접입력)
+- **service_url (TEXT)** : 서비스 URL
+- **service_image_url (TEXT)** : 서비스 로고/썸네일(직접업로드/URL)
+- **category (TEXT[])** : 카테고리 다중선택(배열)
+- **status (TEXT)** : 구독상태 (active/paused/canceled)
+- **amount (NUMERIC)** : 결제금액(숫자)
+- **currency (TEXT)** : 'KRW' 또는 'USD'
+- **payment_cycle (TEXT)** : 'monthly', 'yearly', 'once'
+- **payment_day (INTEGER)** : 결제일(1~31)
+- **payment_method (TEXT)** : 결제수단(카드사/직접입력)
+- **start_date (DATE)** : 시작일
+- **end_date (DATE)** : 만료/갱신일
+- **auto_renewal (BOOLEAN)** : 자동갱신
+- **alarm_days (INTEGER[])** : 결제알람 (N일 전/당일 등)
+- **tier (TEXT)** : 티어/등급
+- **benefits (TEXT)** : 주요 혜택
+- **tags (TEXT[])** : 태그(배열)
+- **memo (TEXT)** : 메모/비고
+- **created_at, updated_at (TIMESTAMPTZ)** : 생성/수정일
+
+- **관계**:
+    - user_id → users.id (N:1)
+    - 1:N으로 subscription_alarms와 연결
+
+---
+
+### (3) exchange_rates (환율정보)
+- **user_id (UUID)** : PK, users.id와 1:1 (각 유저별 한 행)
+- **usd_krw (NUMERIC)** : 현재 적용 환율(원/$)
+- **updated_at (TIMESTAMPTZ)** : 수정일
+
+- **관계**:
+    - user_id → users.id (1:1)
+
+---
+
+### (4) subscription_alarms (알람/알림)
+- **id (UUID)** : PK
+- **user_id (UUID)** : FK → users.id
+- **subscription_id (UUID)** : FK → subscriptions.id
+- **alarm_type (TEXT)** : 결제예정/자동연장/만료/실패/변동 등
+- **alarm_day (INTEGER)** : N일 전/당일
+- **alarm_time (TIME)** : 알람 시각(옵션)
+- **is_active (BOOLEAN)** : 활성화 여부
+- **created_at (TIMESTAMPTZ)** : 생성일
+
+- **관계**:
+    - user_id → users.id (N:1)
+    - subscription_id → subscriptions.id (N:1)
+
+---
+
+## 3. 관계도 (ERD Mermaid 다이어그램)
+
+```mermaid
+erDiagram
+
+  auth_users {
+    UUID id PK
+    // ... (생략: 인증/프로필)
+  }
+
+  subscriptions {
+    UUID id PK
+    UUID user_id FK
+    TEXT service_name
+    TEXT service_url
+    TEXT service_image_url
+    TEXT[] category
+    TEXT status
+    NUMERIC amount
+    TEXT currency
+    TEXT payment_cycle
+    INTEGER payment_day
+    TEXT payment_method
+    DATE start_date
+    DATE end_date
+    BOOLEAN auto_renewal
+    INTEGER[] alarm_days
+    TEXT tier
+    TEXT benefits
+    TEXT[] tags
+    TEXT memo
+    TIMESTAMPTZ created_at
+    TIMESTAMPTZ updated_at
+  }
+
+  exchange_rates {
+    UUID user_id PK
+    NUMERIC usd_krw
+    TIMESTAMPTZ updated_at
+  }
+
+  subscription_alarms {
+    UUID id PK
+    UUID user_id FK
+    UUID subscription_id FK
+    TEXT alarm_type
+    INTEGER alarm_day
+    TIME alarm_time
+    BOOLEAN is_active
+    TIMESTAMPTZ created_at
+  }
+
+  auth_users ||--o{ subscriptions : "1:N"
+  auth_users ||--|| exchange_rates : "1:1"
+  subscriptions ||--o{ subscription_alarms : "1:N"
+  auth_users ||--o{ subscription_alarms : "1:N"
