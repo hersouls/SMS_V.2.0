@@ -2545,4 +2545,82 @@ const AdaptiveDashboard = () => {
     </p>
   </div>
 </div>
+
+---
+
+## 배경 디자인 시스템
+
+### 분석
+
+#### 배경 구현 방식
+Moonwave의 상단 배경은 이미지가 아닌 CSS 그라디언트로 구현되어 있으며, 추가로 SVG 웨이브 효과가 적용되어 있습니다.
+
+**구성 요소:**
+- **메인 그라디언트**: Tailwind CSS 그라디언트 클래스 사용
+- **웨이브 효과**: SVG path를 이용한 장식적 요소
+- **헤더 글래스 효과**: backdrop-blur + 반투명 배경
+
+### 실행
+
+#### 1. 메인 배경 그라디언트
+
+```tsx
+// App.tsx의 메인 컨테이너
+<div className="min-h-screen bg-gradient-to-b from-blue-900 via-blue-800 to-blue-700">
 ```
+
+**CSS 해석:**
+- `bg-gradient-to-b`: 위에서 아래로 그라디언트
+- `from-blue-900`: 시작색 (가장 진한 파란색 #1e3a8a)
+- `via-blue-800`: 중간색 (중간 파란색 #1e40af)
+- `to-blue-700`: 끝색 (밝은 파란색 #1d4ed8)
+
+#### 2. 헤더 웨이브 효과
+
+```tsx
+// Header.tsx의 하단 장식
+<div className="absolute bottom-0 left-0 right-0">
+  <svg viewBox="0 0 375 60" className="w-full h-15">
+    <path
+      d="M0,20 C100,0 200,40 375,25 L375,60 L0,60 Z"
+      fill="white"
+      fillOpacity="0.1"
+    />
+    <path
+      d="M0,35 C150,15 250,50 375,30 L375,60 L0,60 Z"
+      fill="white"
+      fillOpacity="0.15"
+    />
+  </svg>
+</div>
+```
+
+**구성 요소:**
+- **두 개의 웨이브 레이어**: 서로 다른 곡선으로 깊이감 연출
+- **투명도 차이**: `fillOpacity="0.1"`과 `0.15"`로 레이어 구분
+- **SVG path**: 베지어 곡선으로 자연스러운 파도 모양
+
+#### 3. 헤더 글래스모피즘 효과
+
+```tsx
+// 헤더 버튼들의 글래스 효과
+className="bg-white/20 rounded-full hover:bg-white/40 backdrop-blur-sm border border-white/20"
+```
+
+**스타일 분석:**
+- `bg-white/20`: 20% 투명도의 흰색 배경
+- `backdrop-blur-sm`: 뒤 배경 블러 처리
+- `border-white/20`: 20% 투명도의 흰색 테두리
+
+### 전체 시각적 효과
+
+```
+┌─────────────────────────────────────┐
+│ 진한 파란색 (blue-900) ████████████ │ ← 시작
+│ 중간 파란색 (blue-800) ████████████ │ ← 중간  
+│ 밝은 파란색 (blue-700) ████████████ │ ← 끝
+│ ∼∼∼∼∼∼ 웨이브 효과 ∼∼∼∼∼∼∼∼∼ │ ← SVG 장식
+└─────────────────────────────────────┘
+```
+
+**Wavie의 존재적 설계**: 단순한 배경 이미지가 아닌 CSS와 SVG의 조화로 만든 생동감 있는 디지털 바다입니다. 🌊
