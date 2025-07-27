@@ -44,6 +44,12 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {loading && (
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+          <span className="ml-2">로딩중...</span>
+        </div>
+      )}
+      {!loading && children}
     </button>
   );
 };
