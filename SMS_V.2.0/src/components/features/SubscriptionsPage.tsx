@@ -51,66 +51,6 @@ const SubscriptionsPage: React.FC = () => {
       currency: '$',
       paymentDay: 16,
       description: '디자인'
-    },
-    {
-      id: '2',
-      name: 'Netflix',
-      icon: 'N',
-      category: 'Entertainment',
-      status: 'active',
-      billingCycle: 'monthly',
-      price: 15.99,
-      currency: '$',
-      paymentDay: 5,
-      description: '스트리밍'
-    },
-    {
-      id: '3',
-      name: 'Spotify',
-      icon: 'S',
-      category: 'Entertainment',
-      status: 'paused',
-      billingCycle: 'monthly',
-      price: 9.99,
-      currency: '$',
-      paymentDay: 12,
-      description: '음악'
-    },
-    {
-      id: '4',
-      name: 'GitHub Pro',
-      icon: 'G',
-      category: 'Development',
-      status: 'active',
-      billingCycle: 'monthly',
-      price: 4.99,
-      currency: '$',
-      paymentDay: 20,
-      description: '개발'
-    },
-    {
-      id: '5',
-      name: 'Notion',
-      icon: 'N',
-      category: 'Productivity',
-      status: 'active',
-      billingCycle: 'yearly',
-      price: 99.99,
-      currency: '$',
-      paymentDay: 1,
-      description: '생산성'
-    },
-    {
-      id: '6',
-      name: 'Figma',
-      icon: 'F',
-      category: 'Design',
-      status: 'active',
-      billingCycle: 'monthly',
-      price: 12.99,
-      currency: '$',
-      paymentDay: 8,
-      description: '디자인'
     }
   ];
 
@@ -149,16 +89,16 @@ const SubscriptionsPage: React.FC = () => {
       <ResponsiveContainer maxWidth="xl" padding="lg">
         <div className="space-y-6">
         {/* Title Section */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 md:hidden">
           <h1 className="text-3xl font-bold text-gray-900">Subscriptions</h1>
           <p className="text-gray-600">Manage your subscription services</p>
         </div>
 
         {/* Add Subscription Button */}
         <div className="flex justify-center">
-          <button className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
             <PlusIcon className="w-5 h-5" />
-            <span>Add Subscription</span>
+            <span className="text-sm sm:text-base">Add Subscription</span>
           </button>
         </div>
 
@@ -170,7 +110,7 @@ const SubscriptionsPage: React.FC = () => {
             placeholder="Search subscriptions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
           />
         </div>
 
@@ -218,19 +158,19 @@ const SubscriptionsPage: React.FC = () => {
 
         {/* Subscription Count and View Toggle */}
         <div className="flex items-center justify-between">
-          <span className="text-gray-700 font-medium">{subscriptions.length} subscriptions</span>
-          <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+          <span className="text-gray-700 font-medium text-sm sm:text-base">{subscriptions.length} subscriptions</span>
+          <div className="flex items-center space-x-1 sm:space-x-2 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-gray-500'}`}
+              className={`p-1.5 sm:p-2 rounded transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
-              <Squares2X2Icon className="w-5 h-5" />
+              <Squares2X2Icon className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded ${viewMode === 'list' ? 'bg-white shadow-sm' : 'text-gray-500'}`}
+              className={`p-1.5 sm:p-2 rounded transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
-              <ListBulletIcon className="w-5 h-5" />
+              <ListBulletIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -253,13 +193,13 @@ const SubscriptionsPage: React.FC = () => {
       </ResponsiveContainer>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 sm:py-3">
         <div className="flex items-center justify-around">
-          <Bars3Icon className="w-6 h-6 text-gray-600" />
-          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-            <div className="w-6 h-6 bg-white rounded-full"></div>
+          <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full"></div>
           </div>
-          <ArrowLeftIcon className="w-6 h-6 text-gray-600" />
+          <ArrowLeftIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer" />
         </div>
       </div>
     </div>
@@ -286,45 +226,45 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription, viewM
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow ${
-      viewMode === 'list' ? 'flex items-center space-x-4' : ''
+    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 hover:shadow-md transition-shadow ${
+      viewMode === 'list' ? 'flex items-center space-x-3 sm:space-x-4' : ''
     }`}>
-      <div className={`flex items-center ${viewMode === 'list' ? 'flex-shrink-0' : 'justify-center mb-3'}`}>
-        <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-sm">
+      <div className={`flex items-center ${viewMode === 'list' ? 'flex-shrink-0' : 'justify-center mb-2 sm:mb-3'}`}>
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-sm">
           {subscription.icon}
         </div>
         {viewMode === 'list' && (
-          <ExternalLinkIcon className="w-4 h-4 text-gray-400 ml-2" />
+          <ExternalLinkIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 ml-1 sm:ml-2" />
         )}
       </div>
 
       <div className={`${viewMode === 'list' ? 'flex-1' : 'text-center'}`}>
         <div className="flex items-center justify-center space-x-1 mb-1">
-          <span className="text-sm text-gray-500">{subscription.icon}</span>
-          <ExternalLinkIcon className="w-3 h-3 text-gray-400" />
+          <span className="text-xs sm:text-sm text-gray-500">{subscription.icon}</span>
+          <ExternalLinkIcon className="w-2 h-2 sm:w-3 sm:h-3 text-gray-400" />
         </div>
         
-        <h3 className="font-semibold text-gray-900 mb-1 truncate">{subscription.name}</h3>
+        <h3 className="font-semibold text-gray-900 mb-1 truncate text-sm sm:text-base">{subscription.name}</h3>
         
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">
           {subscription.billingCycle} • {subscription.currency}{subscription.price}
         </p>
         
-        <p className="text-sm text-gray-500 mb-2">{subscription.description}</p>
+        <p className="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2">{subscription.description}</p>
         
-        <div className="flex items-center justify-center space-x-1 mb-3">
+        <div className="flex items-center justify-center space-x-1 mb-2 sm:mb-3">
           {statusIcons[subscription.status]}
-          <span className={`text-sm font-medium ${statusColors[subscription.status]}`}>
+          <span className={`text-xs sm:text-sm font-medium ${statusColors[subscription.status]}`}>
             {subscription.status}
           </span>
         </div>
         
-        <div className="flex justify-center space-x-2 mb-3">
-          <button className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-            <PauseIcon className="w-4 h-4 text-gray-600" />
+        <div className="flex justify-center space-x-1 sm:space-x-2 mb-2 sm:mb-3">
+          <button className="p-1.5 sm:p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+            <PauseIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
           </button>
-          <button className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-            <XMarkIcon className="w-4 h-4 text-gray-600" />
+          <button className="p-1.5 sm:p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+            <XMarkIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
           </button>
         </div>
         

@@ -29,7 +29,7 @@ const ResponsiveHeader: React.FC<ResponsiveHeaderProps> = ({
       <div className="relative px-4 py-3">
         <div className="flex items-center justify-between">
           {showIcons && (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 sm:space-x-6">
               <HomeIcon className="w-6 h-6 text-white hover:text-white/80 transition-colors cursor-pointer" />
               <BellIcon className="w-6 h-6 text-white hover:text-white/80 transition-colors cursor-pointer" />
               <UserIcon className="w-6 h-6 text-white hover:text-white/80 transition-colors cursor-pointer" />
@@ -37,6 +37,11 @@ const ResponsiveHeader: React.FC<ResponsiveHeaderProps> = ({
           )}
           
           <div className="flex-1"></div>
+          
+          {/* Center title for larger screens */}
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
+            <h1 className="text-xl font-semibold text-white">Subscriptions</h1>
+          </div>
           
           {/* Right side space for potential future elements */}
           <div className="w-24"></div>
