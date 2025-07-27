@@ -10,8 +10,101 @@ export default {
         sans: ['Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif'],
         pretendard: ['Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif'],
       },
+      // Design Guide 표준 Spacing Scale
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      // Design Guide 표준 Border Radius
+      borderRadius: {
+        'none': '0',
+        'sm': '0.125rem',     // 2px
+        'DEFAULT': '0.25rem', // 4px
+        'md': '0.375rem',     // 6px
+        'lg': '0.5rem',       // 8px
+        'xl': '0.75rem',      // 12px
+        '2xl': '1rem',        // 16px
+        '3xl': '1.5rem',      // 24px
+        'full': '9999px',
+      },
+      // Design Guide 표준 Shadow System
+      boxShadow: {
+        'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'DEFAULT': '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+        'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        'glow': '0 0 20px rgba(59, 130, 246, 0.3)',
+        'premium': '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+      },
+      // Design Guide 표준 아이콘 크기
+      width: {
+        'icon-xs': '0.75rem',   // 12px
+        'icon-sm': '1rem',      // 16px
+        'icon-md': '1.25rem',   // 20px (기본)
+        'icon-lg': '1.5rem',    // 24px
+        'icon-xl': '2rem',      // 32px
+      },
+      height: {
+        'icon-xs': '0.75rem',   // 12px
+        'icon-sm': '1rem',      // 16px
+        'icon-md': '1.25rem',   // 20px (기본)
+        'icon-lg': '1.5rem',    // 24px
+        'icon-xl': '2rem',      // 32px
+      },
       colors: {
-        // Moonwave color system
+        // Moonwave 브랜드 컬러 - Design Guide 표준
+        moonwave: {
+          primary: {
+            50: '#eff6ff',
+            100: '#dbeafe',
+            200: '#bfdbfe',
+            300: '#93c5fd',
+            400: '#60a5fa',
+            500: '#3b82f6', // 주요 색상
+            600: '#2563eb',
+            700: '#1d4ed8',
+            800: '#1e40af',
+            900: '#1e3a8a',
+          },
+          secondary: {
+            50: '#faf5ff',
+            100: '#f3e8ff',
+            200: '#e9d5ff',
+            300: '#d8b4fe',
+            400: '#c084fc',
+            500: '#a855f7', // 보조 색상
+            600: '#9333ea',
+            700: '#7e22ce',
+            800: '#6b21a8',
+            900: '#581c87',
+          },
+        },
+        // 시맨틱 컬러 - Design Guide 표준
+        success: {
+          light: '#d1fae5',
+          DEFAULT: '#10b981',
+          dark: '#065f46',
+        },
+        warning: {
+          light: '#fed7aa',
+          DEFAULT: '#f59e0b',
+          dark: '#92400e',
+        },
+        error: {
+          light: '#fee2e2',
+          DEFAULT: '#ef4444',
+          dark: '#991b1b',
+        },
+        info: {
+          light: '#dbeafe',
+          DEFAULT: '#3b82f6',
+          dark: '#1e40af',
+        },
+        // 기존 컬러 시스템 유지
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',
@@ -36,7 +129,6 @@ export default {
           800: '#6b21a8',
           900: '#581c87',
         },
-        // Korean text colors
         gray: {
           50: '#f9fafb',
           100: '#f3f4f6',
@@ -49,7 +141,6 @@ export default {
           800: '#1f2937',
           900: '#111827',
         },
-        // Default Tailwind colors
         blue: {
           50: '#eff6ff',
           100: '#dbeafe',
@@ -123,15 +214,36 @@ export default {
           900: '#312e81',
         },
       },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
+      // Design Guide 표준 타이포그래피 스케일
+      fontSize: {
+        'xs': ['0.75rem', { lineHeight: '1rem' }],      // 12px
+        'sm': ['0.875rem', { lineHeight: '1.25rem' }],  // 14px
+        'base': ['1rem', { lineHeight: '1.5rem' }],     // 16px
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],  // 18px
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],   // 20px
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],      // 24px
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }], // 30px
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],   // 36px
+        '5xl': ['3rem', { lineHeight: '1' }],           // 48px
+        '6xl': ['3.75rem', { lineHeight: '1' }],        // 60px
+        '7xl': ['4.5rem', { lineHeight: '1' }],         // 72px
       },
-      boxShadow: {
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        'glow': '0 0 20px rgba(59, 130, 246, 0.3)',
-        'premium': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      // Design Guide 표준 자간
+      letterSpacing: {
+        'ko-tight': '-0.02em',
+        'ko-normal': '-0.01em',
+        'ko-wide': '0',
+        'korean-normal': '-0.01em',
+      },
+      // Container Queries 설정 - Design Guide 표준
+      containers: {
+        '2xs': '16rem',
+        'xs': '20rem',
+        'sm': '24rem',
+        'md': '28rem',
+        'lg': '32rem',
+        'xl': '36rem',
+        '2xl': '42rem',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -151,10 +263,6 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5px)' },
         },
-      },
-      // Korean typography utilities
-      letterSpacing: {
-        'korean-normal': '-0.01em',
       },
     },
   },

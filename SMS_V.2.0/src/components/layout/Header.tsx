@@ -8,13 +8,14 @@ const Header: React.FC = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Wave Effect Background */}
+      {/* Wave Effect Background - Design Guide 표준 */}
       <div className="absolute inset-0 h-20 overflow-hidden">
         <svg 
           className="absolute bottom-0 w-full wave-single"
           style={{ height: '80px', opacity: 0.3 }}
           viewBox="0 0 1440 320"
           preserveAspectRatio="none"
+          aria-hidden="true"
         >
           <path 
             fill="#3b82f6" 
@@ -23,43 +24,55 @@ const Header: React.FC = () => {
         </svg>
       </div>
       
-      {/* Glass Card Navigation */}
-      <nav className="relative">
+      {/* Glass Card Navigation - Design Guide 표준 */}
+      <nav className="relative" role="navigation" aria-label="메인 네비게이션">
         <div className="mx-auto max-w-7xl px-4 @sm:px-6 @lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            {/* Home Button */}
+            {/* Home Button - Design Guide 표준 */}
             <Link
               to="/dashboard"
-              className="glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200"
+              className={cn(
+                "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30",
+                "hover:bg-white/30 transition-all duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-white/50",
+                location.pathname === '/dashboard' && "bg-white/30"
+              )}
               aria-label="홈으로 가기"
+              aria-current={location.pathname === '/dashboard' ? 'page' : undefined}
             >
-              <Home className="w-5 h-5 text-white" />
+              <Home className="w-5 h-5 text-white" aria-hidden="true" />
             </Link>
             
-            {/* Right Side Buttons */}
+            {/* Right Side Buttons - Design Guide 표준 */}
             <div className="flex items-center gap-3">
               {/* Notifications Button */}
               <Link
                 to="/notifications"
                 className={cn(
-                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200",
+                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30",
+                  "hover:bg-white/30 transition-all duration-200",
+                  "focus:outline-none focus:ring-2 focus:ring-white/50",
                   location.pathname === '/notifications' && "bg-white/30"
                 )}
                 aria-label="알림"
+                aria-current={location.pathname === '/notifications' ? 'page' : undefined}
               >
-                <Bell className="w-5 h-5 text-white" />
+                <Bell className="w-5 h-5 text-white" aria-hidden="true" />
               </Link>
               
               {/* Profile Button */}
               <Link
                 to="/settings"
                 className={cn(
-                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200",
+                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30",
+                  "hover:bg-white/30 transition-all duration-200",
+                  "focus:outline-none focus:ring-2 focus:ring-white/50",
                   location.pathname === '/settings' && "bg-white/30"
                 )}
-                aria-label="프로필"
+                aria-label="프로필 설정"
+                aria-current={location.pathname === '/settings' ? 'page' : undefined}
               >
-                <User className="w-5 h-5 text-white" />
+                <User className="w-5 h-5 text-white" aria-hidden="true" />
               </Link>
             </div>
           </div>

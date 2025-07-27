@@ -1,49 +1,43 @@
-import React from 'react'
-import { cn } from '../../lib/utils'
+import React from 'react';
+import { cn } from '../../lib/utils';
 
 interface LoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl'
-  className?: string
-  text?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+  text?: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
   size = 'md', 
   className,
-  text = '로딩 중...'
+  text 
 }) => {
   const sizeClasses = {
-    sm: 'h-4 w-4',
-    md: 'h-5 w-5',
-    lg: 'h-12 w-12',
-    xl: 'h-16 w-16'
-  }
-
-  const textSizes = {
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
-    xl: 'text-lg'
-  }
+    sm: 'w-4 h-4',
+    md: 'w-6 h-6',
+    lg: 'w-8 h-8',
+    xl: 'w-12 h-12',
+  };
 
   return (
     <div className={cn('flex flex-col items-center justify-center', className)}>
       <div
         className={cn(
-          'animate-spin rounded-full border-2 border-gray-300 border-t-indigo-600',
+          'animate-spin rounded-full border-2 border-gray-300 border-t-blue-600',
           sizeClasses[size]
         )}
-      />
+        role="status"
+        aria-label="로딩 중"
+      >
+        <span className="sr-only">로딩 중...</span>
+      </div>
       {text && (
-        <p className={cn(
-          'mt-2 text-gray-600 break-keep-ko tracking-ko-normal font-pretendard font-medium',
-          textSizes[size]
-        )}>
+        <p className="mt-2 text-sm text-gray-600 font-pretendard tracking-ko-normal break-keep-ko">
           {text}
         </p>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default LoadingSpinner
+export default LoadingSpinner;
