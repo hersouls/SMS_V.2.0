@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Subscription, SubscriptionFormData } from '../types/database.types';
+import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
 export const useSubscriptions = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -146,30 +146,34 @@ export const useSubscriptions = () => {
 
   // Real-time subscription
   useEffect(() => {
-    fetchSubscriptions();
+    const setupSubscription = async () => {
+      await fetchSubscriptions();
 
-    const { data: { user } } = supabase.auth.getUser();
-    if (!user) return;
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-    const subscription = supabase
-      .channel('subscriptions')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'subscriptions',
-          filter: `user_id=eq.${user.id}`
-        },
-        () => {
-          fetchSubscriptions();
-        }
-      )
-      .subscribe();
+      const subscription = supabase
+        .channel('subscriptions')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'subscriptions',
+            filter: `user_id=eq.${user.id}`
+          },
+          () => {
+            fetchSubscriptions();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      subscription.unsubscribe();
+      return () => {
+        subscription.unsubscribe();
+      };
     };
+
+    setupSubscription();
   }, []);
 
   return {

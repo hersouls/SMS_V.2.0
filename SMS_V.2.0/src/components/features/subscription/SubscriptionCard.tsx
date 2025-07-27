@@ -1,7 +1,7 @@
 import React from 'react';
 import { ExternalLink, Play, Pause, X } from 'lucide-react';
 import { Card, CardContent } from '../../ui';
-import { Subscription } from '../../../types/database.types';
+import type { Subscription } from '../../../types/database.types';
 import { cn } from '../../../lib/utils';
 
 interface SubscriptionCardProps {

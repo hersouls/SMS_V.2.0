@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Upload, X, Calendar } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import { Modal } from '../../ui';
 import { Button } from '../../ui';
 import { Input } from '../../ui';
 import { supabase } from '../../../lib/supabase';
-import { Subscription, SubscriptionFormData } from '../../../types/database.types';
+import type { Subscription, SubscriptionFormData } from '../../../types/database.types';
 
 interface SubscriptionFormProps {
   isOpen: boolean;
@@ -103,7 +103,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
     const fileExt = file.name.split('.').pop();
     const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('service-logos')
       .upload(fileName, file);
 
