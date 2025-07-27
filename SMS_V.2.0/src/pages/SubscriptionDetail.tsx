@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useSubscriptions } from '../hooks/useSubscriptions';
+import Typography from '../components/ui/Typography';
 
 import DeleteConfirmationModal from '../components/features/subscription/DeleteConfirmationModal';
 
@@ -99,7 +100,7 @@ const SubscriptionDetail: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">구독을 찾을 수 없습니다</h2>
+          <Typography.H2 className="text-gray-900 mb-4">구독을 찾을 수 없습니다</Typography.H2>
           <button
             onClick={handleBack}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
@@ -173,9 +174,9 @@ const SubscriptionDetail: React.FC = () => {
                   />
                 )}
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
+                  <Typography.H1 className="text-gray-900">
                     {subscription.service_name}
-                  </h1>
+                  </Typography.H1>
                   {subscription.service_url && (
                     <div className="flex items-center mt-2">
                       <Globe className="w-4 h-4 text-gray-400 mr-2" />

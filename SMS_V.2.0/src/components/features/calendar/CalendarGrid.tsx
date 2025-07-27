@@ -9,6 +9,7 @@ import {
   formatDate,
   getServiceIcon
 } from '../../../utils/calendar';
+import Typography from '../../ui/Typography';
 
 interface CalendarGridProps {
   calendar: CalendarGridType;
@@ -143,9 +144,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     <div className={cn("@container", className)}>
       {/* 캘린더 헤더 */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold font-pretendard text-gray-900 tracking-ko-normal">
+        <Typography.H2 className="text-gray-900">
           {formatMonthName(calendar.year, calendar.month)}
-        </h2>
+        </Typography.H2>
         
         <div className="flex items-center gap-2">
           <button

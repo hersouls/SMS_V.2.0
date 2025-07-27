@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Button } from '../ui';
+import Typography from '../ui/Typography';
 import type { Subscription } from '../../types/database.types';
 
 const DataTest: React.FC = () => {
@@ -113,13 +114,13 @@ const DataTest: React.FC = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 font-pretendard tracking-ko-normal">Supabase Data Test</h1>
+      <Typography.H2 className="mb-6">Supabase Data Test</Typography.H2>
       
       <div className="space-y-4 mb-6">
         <div className="p-4 card-gradient rounded-lg">
-          <h2 className="font-semibold mb-2 font-pretendard tracking-ko-normal">User Status</h2>
-          <p className="font-pretendard tracking-ko-normal">User: {user ? user.email || 'Anonymous' : 'Not signed in'}</p>
-          <p className="font-pretendard tracking-ko-normal">User ID: {user?.id || 'N/A'}</p>
+          <Typography.H3 className="mb-2">User Status</Typography.H3>
+          <Typography.Body>User: {user ? user.email || 'Anonymous' : 'Not signed in'}</Typography.Body>
+          <Typography.Body>User ID: {user?.id || 'N/A'}</Typography.Body>
         </div>
 
         <div className="flex gap-4">
@@ -138,26 +139,26 @@ const DataTest: React.FC = () => {
 
         {error && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 font-pretendard tracking-ko-normal">{error}</p>
+            <Typography.Body className="text-red-600">{error}</Typography.Body>
           </div>
         )}
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold font-pretendard tracking-ko-normal">Subscriptions ({subscriptions.length})</h2>
+        <Typography.H3>Subscriptions ({subscriptions.length})</Typography.H3>
         
         {subscriptions.length === 0 ? (
-          <p className="text-gray-500 font-pretendard tracking-ko-normal">No subscriptions found.</p>
+          <Typography.Body className="text-gray-500">No subscriptions found.</Typography.Body>
         ) : (
           <div className="grid gap-4">
             {subscriptions.map((sub) => (
               <div key={sub.id} className="p-4 card-glass rounded-lg">
-                <h3 className="font-semibold font-pretendard tracking-ko-normal">{sub.service_name}</h3>
-                <p className="font-pretendard tracking-ko-normal">Amount: {sub.amount} {sub.currency}</p>
-                <p className="font-pretendard tracking-ko-normal">Status: {sub.status}</p>
-                <p className="font-pretendard tracking-ko-normal">Category: {sub.category || 'None'}</p>
-                <p className="font-pretendard tracking-ko-normal">Payment Day: {sub.payment_day || 'Not set'}</p>
-                {sub.memo && <p className="font-pretendard tracking-ko-normal">Memo: {sub.memo}</p>}
+                <Typography.H3>{sub.service_name}</Typography.H3>
+                <Typography.Body>Amount: {sub.amount} {sub.currency}</Typography.Body>
+                <Typography.Body>Status: {sub.status}</Typography.Body>
+                <Typography.Body>Category: {sub.category || 'None'}</Typography.Body>
+                <Typography.Body>Payment Day: {sub.payment_day || 'Not set'}</Typography.Body>
+                {sub.memo && <Typography.Body>Memo: {sub.memo}</Typography.Body>}
               </div>
             ))}
           </div>

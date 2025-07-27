@@ -4,6 +4,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CurrencyDollarIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
 import { useExchangeRateContext } from '../../hooks/useExchangeRateContext';
+import Typography from '../ui/Typography';
 
 interface ExchangeRateModalProps {
   isOpen: boolean;
@@ -175,15 +176,15 @@ export const ExchangeRateModal: React.FC<ExchangeRateModalProps> = ({
                   <div className="bg-gray-50 rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-gray-900 font-pretendard">
+                        <Typography.Caption className="text-gray-900">
                           현재 환율
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900 font-pretendard">
+                        </Typography.Caption>
+                        <Typography.H2 className="text-gray-900">
                           1 USD = {rate.toLocaleString()} KRW
-                        </p>
-                        <p className="text-xs text-gray-500 font-pretendard">
+                        </Typography.H2>
+                        <Typography.Caption className="text-gray-500">
                           마지막 업데이트: {getFormattedLastUpdated()}
-                        </p>
+                        </Typography.Caption>
                       </div>
                       <button
                         onClick={handleUpdateWithLatest}
@@ -205,8 +206,10 @@ export const ExchangeRateModal: React.FC<ExchangeRateModalProps> = ({
 
                   {/* 환율 입력 */}
                   <div>
-                    <label htmlFor="exchange-rate" className="block text-sm font-medium text-gray-700 font-pretendard mb-2">
-                      새로운 환율 (KRW)
+                    <label htmlFor="exchange-rate" className="block mb-2">
+                      <Typography.Caption className="text-gray-700">
+                        새로운 환율 (KRW)
+                      </Typography.Caption>
                     </label>
                     <div className="relative">
                       <input
@@ -234,23 +237,23 @@ export const ExchangeRateModal: React.FC<ExchangeRateModalProps> = ({
                       </div>
                     </div>
                     {validationError && (
-                      <p id="exchange-rate-error" className="mt-2 text-sm text-red-600 font-pretendard">
+                      <Typography.Caption id="exchange-rate-error" className="mt-2 text-red-600">
                         {validationError}
-                      </p>
+                      </Typography.Caption>
                     )}
                   </div>
 
                   {/* 실시간 환율 정보 */}
                   <div className="bg-blue-50 rounded-lg p-4">
-                    <p className="text-sm font-medium text-blue-900 font-pretendard mb-1">
+                    <Typography.Caption className="text-blue-900 mb-1">
                       실시간 환율 정보
-                    </p>
-                    <p className="text-sm text-blue-700 font-pretendard">
+                    </Typography.Caption>
+                    <Typography.Caption className="text-blue-700">
                       위의 새로고침 버튼을 클릭하여 실시간 환율로 자동 업데이트할 수 있습니다.
-                    </p>
-                    <p className="text-xs text-blue-600 font-pretendard mt-1">
+                    </Typography.Caption>
+                    <Typography.Caption className="text-blue-600 mt-1">
                       실시간 환율은 외부 API에서 가져오며, 네트워크 상태에 따라 일시적으로 사용할 수 없을 수 있습니다.
-                    </p>
+                    </Typography.Caption>
                   </div>
                 </div>
 

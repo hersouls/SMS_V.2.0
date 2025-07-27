@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import type { ReactNode } from 'react';
+import Typography from '../../ui/Typography';
 
 
 interface ErrorInfo {
@@ -141,18 +142,20 @@ export class ErrorBoundary extends Component<Props, State> {
               </svg>
             </div>
             
-            <h1 className="text-2xl font-bold text-gray-900 mb-4 font-pretendard tracking-ko-normal">
+            <Typography.H2 className="text-gray-900 mb-4">
               문제가 발생했습니다
-            </h1>
+            </Typography.H2>
             
-            <p className="text-gray-600 mb-6 font-pretendard tracking-ko-normal break-keep-ko">
+            <Typography.Body className="text-gray-600 mb-6">
               예상치 못한 오류가 발생했습니다. 다시 시도하거나 페이지를 새로고침해주세요.
-            </p>
+            </Typography.Body>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mb-6 text-left">
-                <summary className="cursor-pointer text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
-                  개발자 정보 (클릭하여 확장)
+                <summary className="cursor-pointer mb-2">
+                  <Typography.Caption className="text-gray-700">
+                    개발자 정보 (클릭하여 확장)
+                  </Typography.Caption>
                 </summary>
                 <div className="bg-gray-50 rounded-lg p-4 text-xs font-mono text-gray-600 overflow-auto max-h-40">
                   <div className="mb-2">
@@ -190,11 +193,13 @@ export class ErrorBoundary extends Component<Props, State> {
               </button>
             </div>
 
-            <div className="mt-6 text-sm text-gray-500 font-pretendard tracking-ko-normal">
-              <p>문제가 지속되면 관리자에게 문의해주세요.</p>
-              <p className="mt-1">
+            <div className="mt-6">
+              <Typography.Caption className="text-gray-500">
+                문제가 지속되면 관리자에게 문의해주세요.
+              </Typography.Caption>
+              <Typography.Caption className="text-gray-500 mt-1">
                 오류 ID: {this.state.error?.message?.substring(0, 8) || 'unknown'}
-              </p>
+              </Typography.Caption>
             </div>
           </div>
         </div>

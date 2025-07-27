@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CurrencyDollarIcon, ArrowPathIcon, PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
 import { useExchangeRateContext } from '../../hooks/useExchangeRateContext';
+import Typography from '../ui/Typography';
 
 interface ExchangeRateDisplayProps {
   onEditClick?: () => void;
@@ -183,9 +184,9 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
                         step="0.01"
                         autoFocus
                       />
-                      <span className="text-sm text-gray-500 font-pretendard tracking-ko-normal">
+                      <Typography.Caption className="text-gray-500">
                         KRW
-                      </span>
+                      </Typography.Caption>
                       <div className="flex items-center gap-1">
                         <button
                           onClick={handleSaveEdit}
@@ -210,12 +211,12 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <p className="text-2xl font-bold text-gray-900 font-pretendard tracking-ko-normal">
+                      <Typography.H2 className="text-gray-900">
                         {rate.toLocaleString()}
-                      </p>
-                      <span className="text-sm text-gray-500 font-pretendard tracking-ko-normal">
+                      </Typography.H2>
+                      <Typography.Caption className="text-gray-500">
                         KRW
-                      </span>
+                      </Typography.Caption>
                       {enableInlineEdit && (
                         <button
                           onClick={startEditing}
@@ -231,14 +232,14 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
               )}
               
               {editError && (
-                <p className="text-sm text-red-600 font-pretendard tracking-ko-normal mt-1">
+                <Typography.Caption className="text-red-600 mt-1">
                   {editError}
-                </p>
+                </Typography.Caption>
               )}
               
-              <p className="text-xs text-gray-500 font-pretendard tracking-ko-normal">
+              <Typography.Caption className="text-gray-500">
                 마지막 업데이트: {getFormattedLastUpdated()}
-              </p>
+              </Typography.Caption>
             </div>
           </div>
 
@@ -265,9 +266,9 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
 
           {onEditClick && !enableInlineEdit && (
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <div className="text-xs text-gray-500 font-pretendard tracking-ko-normal">
+              <Typography.Caption className="text-gray-500">
                 클릭하여 편집
-              </div>
+              </Typography.Caption>
             </div>
           )}
         </div>

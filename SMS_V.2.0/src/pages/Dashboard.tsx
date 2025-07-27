@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar, TrendingUp, CreditCard, Users, DollarSign, Plus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, Button } from '../components/ui';
+import Typography from '../components/ui/Typography';
 import { ExchangeRateDisplay } from '../components/features/ExchangeRateDisplay';
 import { ExchangeRateModal } from '../components/features/ExchangeRateModal';
 import { supabase } from '../lib/supabase';
@@ -237,12 +238,12 @@ const Dashboard: React.FC = () => {
     return (
       <div className="w-full max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 break-keep-ko font-pretendard tracking-ko-tight">
+          <Typography.H1 className="text-gray-900 dark:text-white mb-2">
             Dashboard
-          </h1>
-          <p className="text-base text-gray-600 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
+          </Typography.H1>
+          <Typography.Body className="text-gray-600 dark:text-gray-400">
             Welcome back! Here's an overview of your subscriptions.
-          </p>
+          </Typography.Body>
         </div>
 
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 mb-8">
@@ -253,12 +254,12 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 font-pretendard tracking-ko-tight">
+              <Typography.H3 className="text-red-800 dark:text-red-200">
                 오류가 발생했습니다
-              </h3>
-              <p className="text-base text-red-700 dark:text-red-300 mt-1 font-pretendard tracking-ko-normal">
+              </Typography.H3>
+              <Typography.Body className="text-red-700 dark:text-red-300 mt-1">
                 {error}
-              </p>
+              </Typography.Body>
             </div>
           </div>
           <div className="mt-4">
@@ -278,12 +279,12 @@ const Dashboard: React.FC = () => {
     <div className="w-full max-w-7xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 break-keep-ko font-pretendard tracking-ko-tight">
+        <Typography.H1 className="text-gray-900 dark:text-white mb-2">
           Dashboard
-        </h1>
-        <p className="text-base text-gray-600 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
+        </Typography.H1>
+        <Typography.Body className="text-gray-600 dark:text-gray-400">
           Welcome back! Here's an overview of your subscriptions.
-        </p>
+        </Typography.Body>
       </div>
 
       {/* Stats Cards */}
@@ -295,12 +296,12 @@ const Dashboard: React.FC = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
+                    <Typography.Caption className="text-gray-600 dark:text-gray-400">
                       {card.title}
-                    </p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1 font-pretendard tracking-ko-tight text-numeric">
+                    </Typography.Caption>
+                    <Typography.H2 className="text-gray-900 dark:text-white mt-1 text-numeric">
                       {card.value}
-                    </p>
+                    </Typography.H2>
                   </div>
                   <div className={`p-3 rounded-lg ${card.bgColor} dark:bg-opacity-20`}>
                     <Icon className={`w-6 h-6 ${card.color}`} />
@@ -337,12 +338,12 @@ const Dashboard: React.FC = () => {
                 <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CreditCard className="w-10 h-10 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 break-keep-ko font-pretendard tracking-ko-tight">
+                <Typography.H3 className="text-gray-900 dark:text-white mb-2">
                   No active subscriptions found
-                </h3>
-                <p className="text-base text-gray-500 dark:text-gray-400 mb-6 break-keep-ko font-pretendard tracking-ko-normal">
+                </Typography.H3>
+                <Typography.Body className="text-gray-500 dark:text-gray-400 mb-6">
                   Add your first subscription to start managing your services.
-                </p>
+                </Typography.Body>
                 <Button
                   onClick={() => window.location.href = '/subscriptions'}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
@@ -383,9 +384,9 @@ const Dashboard: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 dark:text-white text-sm truncate break-keep-ko font-pretendard tracking-ko-tight">
+                          <Typography.H3 className="text-gray-900 dark:text-white text-sm truncate">
                             {subscription.service_name}
-                          </h3>
+                          </Typography.H3>
                           <div className="flex items-center gap-1 mt-1">
                             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                               Active
@@ -395,25 +396,25 @@ const Dashboard: React.FC = () => {
                       </div>
                       
                       {/* Price and Details */}
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
-                            {subscription.payment_cycle}
-                          </span>
-                          <span className="text-lg font-bold text-gray-900 dark:text-white font-pretendard tracking-ko-tight text-numeric">
-                            {formatCurrency(subscription.amount, subscription.currency)}
-                          </span>
+                                              <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Typography.Caption className="text-gray-500 dark:text-gray-400">
+                              {subscription.payment_cycle}
+                            </Typography.Caption>
+                            <Typography.H2 className="text-gray-900 dark:text-white text-numeric">
+                              {formatCurrency(subscription.amount, subscription.currency)}
+                            </Typography.H2>
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <Typography.Caption>
+                              {subscription.category || 'Uncategorized'}
+                            </Typography.Caption>
+                            <Typography.Caption>
+                              {subscription.payment_day ? `Day ${subscription.payment_day}` : 'No date'}
+                            </Typography.Caption>
+                          </div>
                         </div>
-                        
-                        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                          <span className="break-keep-ko font-pretendard tracking-ko-normal">
-                            {subscription.category || 'Uncategorized'}
-                          </span>
-                          <span className="break-keep-ko font-pretendard tracking-ko-normal">
-                            {subscription.payment_day ? `Day ${subscription.payment_day}` : 'No date'}
-                          </span>
-                        </div>
-                      </div>
                       
                       {/* Action Buttons */}
                       <div className="flex gap-2 mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
@@ -454,12 +455,12 @@ const Dashboard: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8">
-            <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-base text-gray-500 dark:text-gray-400 break-keep-ko font-pretendard tracking-ko-normal">
-              Calendar view coming soon...
-            </p>
-          </div>
+                      <div className="text-center py-8">
+              <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <Typography.Body className="text-gray-500 dark:text-gray-400">
+                Calendar view coming soon...
+              </Typography.Body>
+            </div>
         </CardContent>
       </Card>
 
