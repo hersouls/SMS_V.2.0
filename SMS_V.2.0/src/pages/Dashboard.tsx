@@ -20,7 +20,6 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
 
-
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
@@ -108,128 +107,6 @@ const Dashboard: React.FC = () => {
       totalCostUSD
     });
   };
-
-  // Sample data function (commented out for now)
-  /*
-  const addSampleData = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        alert('Please sign in first');
-        return;
-      }
-
-      const sampleSubscriptions = [
-        {
-          user_id: user.id,
-          service_name: 'Netflix',
-          service_url: 'https://netflix.com',
-          service_image_url: 'https://logo.clearbit.com/netflix.com',
-          category: 'Streaming',
-          status: 'active',
-          amount: 17000,
-          currency: 'KRW',
-          payment_cycle: 'monthly',
-          payment_day: 15,
-          payment_method: 'Credit Card',
-          start_date: '2024-01-15',
-          auto_renewal: true,
-          alarm_days: [10, 13],
-          tier: 'Standard',
-          benefits: '4K streaming, 4 screens',
-          tags: ['entertainment', 'streaming'],
-          memo: '주요 엔터테인먼트 서비스'
-        },
-        {
-          user_id: user.id,
-          service_name: 'Spotify Premium',
-          service_url: 'https://spotify.com',
-          service_image_url: 'https://logo.clearbit.com/spotify.com',
-          category: 'Music',
-          status: 'active',
-          amount: 13900,
-          currency: 'KRW',
-          payment_cycle: 'monthly',
-          payment_day: 20,
-          payment_method: 'Credit Card',
-          start_date: '2024-02-20',
-          auto_renewal: true,
-          alarm_days: [15, 18],
-          tier: 'Premium',
-          benefits: 'Ad-free music, offline downloads',
-          tags: ['music', 'audio'],
-          memo: '음악 스트리밍 서비스'
-        },
-        {
-          user_id: user.id,
-          service_name: 'Adobe Creative Cloud',
-          service_url: 'https://adobe.com',
-          service_image_url: 'https://logo.clearbit.com/adobe.com',
-          category: 'Software',
-          status: 'active',
-          amount: 29.99,
-          currency: 'USD',
-          payment_cycle: 'monthly',
-          payment_day: 5,
-          payment_method: 'Credit Card',
-          start_date: '2024-01-05',
-          auto_renewal: true,
-          alarm_days: [1, 3],
-          tier: 'Creative Cloud',
-          benefits: 'Photoshop, Illustrator, Premiere Pro',
-          tags: ['design', 'creative'],
-          memo: '디자인 작업용 소프트웨어'
-        },
-        {
-          user_id: user.id,
-          service_name: 'GitHub Pro',
-          service_url: 'https://github.com',
-          service_image_url: 'https://logo.clearbit.com/github.com',
-          category: 'Software',
-          status: 'active',
-          amount: 4,
-          currency: 'USD',
-          payment_cycle: 'monthly',
-          payment_day: 10,
-          payment_method: 'Credit Card',
-          start_date: '2024-03-10',
-          auto_renewal: true,
-          alarm_days: [5, 8],
-          tier: 'Pro',
-          benefits: 'Private repositories, advanced features',
-          tags: ['development', 'coding'],
-          memo: '코드 저장소 및 협업 도구'
-        }
-      ];
-
-      // Insert sample subscriptions
-      for (const subscription of sampleSubscriptions) {
-        const { error } = await supabase
-          .from('subscriptions')
-          .insert(subscription);
-
-        if (error) {
-          console.error(`Error inserting ${subscription.service_name}:`, error);
-        }
-      }
-
-      // Set exchange rate
-      await supabase
-        .from('exchange_rates')
-        .upsert({
-          user_id: user.id,
-          usd_krw: 1350
-        });
-
-      // Refresh data
-      await fetchDashboardData();
-      alert('Sample data added successfully!');
-    } catch (error) {
-      console.error('Error adding sample data:', error);
-      alert('Failed to add sample data');
-    }
-  };
-  */
 
   const formatCurrency = (amount: number, currency: 'KRW' | 'USD' = 'KRW') => {
     if (currency === 'USD') {
@@ -380,9 +257,7 @@ const Dashboard: React.FC = () => {
                           alt={subscription.service_name}
                           className="w-10 h-10 rounded-lg object-cover"
                           onError={(e) => {
-                            const target = e.currentTarget as HTMLImageElement;
-                            target.style.display = 'none';
-                            const nextSibling = target.nextElementSibling as HTMLElement;
+
                             if (nextSibling) {
                               nextSibling.style.display = 'flex';
                             }
