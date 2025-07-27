@@ -1,4 +1,4 @@
-import { Subscription } from '../types/database.types';
+import type { Subscription } from '../types/database.types';
 
 export interface CalendarEvent {
   id: string;
@@ -93,8 +93,8 @@ function calculatePaymentDates(
   monthEnd: Date
 ): Date[] {
   const dates: Date[] = [];
-  const startDate = new Date(subscription.start_date);
-  const billingDay = subscription.billing_day;
+  const startDate = new Date(subscription.next_payment_date);
+  const billingDay = new Date(subscription.next_payment_date).getDate();
   const cycle = subscription.payment_cycle;
 
   // 시작일이 이번 달보다 이전인 경우
@@ -169,7 +169,6 @@ export function generateCalendarGrid(
   events: CalendarEvent[]
 ): CalendarGrid {
   const firstDay = new Date(year, month - 1, 1);
-  const lastDay = new Date(year, month, 0);
   const startDate = new Date(firstDay);
   startDate.setDate(startDate.getDate() - firstDay.getDay());
 

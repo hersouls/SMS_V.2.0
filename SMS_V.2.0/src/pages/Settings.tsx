@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeftIcon, UserIcon, BellIcon, CurrencyDollarIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { ExchangeRateDisplay } from '../components/features/ExchangeRateDisplay';
 import { ExchangeRateModal } from '../components/features/ExchangeRateModal';
 import { useAuth } from '../contexts/AuthContext';
-import { useExchangeRate } from '../hooks/useExchangeRate';
+
 
 export default function Settings() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { rate, getFormattedLastUpdated } = useExchangeRate();
+
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);

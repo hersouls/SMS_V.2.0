@@ -16,8 +16,6 @@ export const ExchangeRateModal: React.FC<ExchangeRateModalProps> = ({
 }) => {
   const {
     rate,
-    isLoading,
-    error,
     updateExchangeRate,
     updateWithLatestRate,
     getFormattedLastUpdated
