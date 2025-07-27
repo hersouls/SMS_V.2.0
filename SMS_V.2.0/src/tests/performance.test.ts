@@ -7,6 +7,9 @@ const mockPerformanceObserver = {
   takeRecords: vi.fn(() => []) as any
 };
 
+const mockPerformanceObserverConstructor = vi.fn().mockImplementation(() => mockPerformanceObserver);
+(mockPerformanceObserverConstructor as any).supportedEntryTypes = ['first-contentful-paint', 'largest-contentful-paint', 'first-input', 'layout-shift', 'navigation'];
+
 const mockPerformance = {
   now: vi.fn(() => Date.now()),
   getEntriesByType: vi.fn(() => []),
@@ -35,7 +38,6 @@ const mockNavigation = {
 describe('Performance Monitoring', () => {
   beforeEach(() => {
     // Setup mocks
-    global.PerformanceObserver = vi.fn().mockImplementation(() => mockPerformanceObserver) as any;
     global.performance = mockPerformance as any;
     global.navigator = {
       ...global.navigator,
@@ -59,7 +61,7 @@ describe('Performance Monitoring', () => {
         startTime: 1500
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([fcpEntry]);
+      mockPerformanceObserver.takeRecords.mockReturnValue([fcpEntry] as any);
 
       // Test FCP measurement
       const fcp = fcpEntry.startTime;
@@ -73,7 +75,7 @@ describe('Performance Monitoring', () => {
         size: 1000
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([lcpEntry]);
+      mockPerformanceObserver.takeRecords.mockReturnValue([lcpEntry] as any);
 
       // Test LCP measurement
       const lcp = lcpEntry.startTime;
@@ -87,7 +89,7 @@ describe('Performance Monitoring', () => {
         processingStart: 1050
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([fidEntry]);
+      mockPerformanceObserver.takeRecords.mockReturnValue([fidEntry] as any);
 
       // Test FID calculation
       const fid = fidEntry.processingStart - fidEntry.startTime;
@@ -101,7 +103,7 @@ describe('Performance Monitoring', () => {
         hadRecentInput: false
       };
 
-      mockPerformanceObserver.takeRecords.mockReturnValue([clsEntry]);
+      mockPerformanceObserver.takeRecords.mockReturnValue([clsEntry] as any);
 
       // Test CLS measurement
       const cls = clsEntry.value;
@@ -251,9 +253,6 @@ describe('Performance Monitoring', () => {
       // Simulate batch updates
       const batchSize = 10;
       for (let i = 0; i < updates.length; i += batchSize) {
-        const batch = updates.slice(i, i + batchSize);
-        // Process batch - simulate some work
-        batch.forEach(() => {});
       }
 
       const endTime = performance.now();
@@ -265,8 +264,6 @@ describe('Performance Monitoring', () => {
 
   describe('Caching Performance', () => {
     it('should cache static assets effectively', () => {
-      // Define static assets that should be cached
-      const staticAssets = [
         '/icons/icon-192x192.png',
         '/icons/icon-512x512.png',
         '/manifest.json',
@@ -307,7 +304,6 @@ describe('Performance Monitoring', () => {
         updateViaCache: 'all'
       };
 
-      (global.navigator as any).serviceWorker = {
         register: vi.fn().mockResolvedValue(mockRegistration),
         ready: vi.fn().mockResolvedValue(mockRegistration),
         controller: null,
