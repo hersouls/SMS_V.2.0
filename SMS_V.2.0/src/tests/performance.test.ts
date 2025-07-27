@@ -4,7 +4,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 const mockPerformanceObserver = {
   observe: vi.fn(),
   disconnect: vi.fn(),
-  takeRecords: vi.fn(() => [])
+  takeRecords: vi.fn(() => []) as any
 };
 
 const mockPerformanceObserverConstructor = vi.fn().mockImplementation(() => mockPerformanceObserver);
@@ -38,7 +38,6 @@ const mockNavigation = {
 describe('Performance Monitoring', () => {
   beforeEach(() => {
     // Setup mocks
-    global.PerformanceObserver = mockPerformanceObserverConstructor as any;
     global.performance = mockPerformance as any;
     global.navigator = {
       ...global.navigator,
@@ -254,7 +253,6 @@ describe('Performance Monitoring', () => {
       // Simulate batch updates
       const batchSize = 10;
       for (let i = 0; i < updates.length; i += batchSize) {
-        // Process batch
       }
 
       const endTime = performance.now();
@@ -266,12 +264,14 @@ describe('Performance Monitoring', () => {
 
   describe('Caching Performance', () => {
     it('should cache static assets effectively', () => {
-      [
         '/icons/icon-192x192.png',
         '/icons/icon-512x512.png',
         '/manifest.json',
         '/offline.html'
       ];
+
+      // Verify static assets are defined
+      expect(staticAssets).toHaveLength(4);
 
       // Mock cache API
       const mockCache = {
@@ -304,7 +304,6 @@ describe('Performance Monitoring', () => {
         updateViaCache: 'all'
       };
 
-      (navigator as any).serviceWorker = {
         register: vi.fn().mockResolvedValue(mockRegistration),
         ready: vi.fn().mockResolvedValue(mockRegistration),
         controller: null,
