@@ -1357,27 +1357,3 @@ import {
   Plus, 
   Menu 
 } from 'lucide-react';
-
-// Heroicons (Tailwind UI 기본)
-import { 
-  HomeIcon, 
-  UserIcon, 
-  BellIcon, 
-  CogIcon, 
-  PlusIcon,
-  Bars3Icon 
-} from '@heroicons/react/24/outline';
-```
-
-### Tailwind UI 리소스
-
-- **Application UI**: 대시보드, 테이블, 폼, 모달 등
-- **Marketing**: 히어로, 피처, 프라이싱, CTA 등
-- **E-commerce**: 제품 목록, 장바구니, 체크아웃 등
-- **Page Examples**: 완전한 페이지 템플릿
-
----
-
-*이 문서는 Moonwave 서비스의 표준 디자인 가이드입니다. Tailwind UI 유료 구독을 활용하여 프리미엄 품질의 UI를 구현합니다.*
-
-*최종 업데이트: 2025년 1월*
