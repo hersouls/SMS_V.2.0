@@ -1,7 +1,7 @@
 import React from 'react';
 import { CurrencyDollarIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
-import { useExchangeRateContext } from '../../contexts/ExchangeRateContext';
+import { useExchangeRateContext } from '../../hooks/useExchangeRateContext';
 
 interface ExchangeRateDisplayProps {
   onEditClick?: () => void;
