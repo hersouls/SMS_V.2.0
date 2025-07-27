@@ -400,60 +400,342 @@ Include RLS policies for user data isolation"
 
 ---
 
-## Phase 3: 고급 기능 (2주)
+## Phase 3: 고급 기능 개발 (2주)
 
-### 3.1 결제 캘린더
+### 3.1 결제 캘린더 (Payment Calendar)
+
+#### 👤 문유가 할 일
+- [ ] 캘린더 뷰 스타일 확정 (월간/주간/일간)
+- [ ] 결제일 표시 아이콘 디자인 결정
+- [ ] 캘린더 네비게이션 방식 결정
 
 #### 🤖 Cursor에서 실행할 작업
 
 **Cursor 프롬프트 28**:
 ```
-"Create src/pages/Calendar.tsx:
-- Monthly calendar view
-- Payment dates marked with service icons
-- Hover to show payment details
-- Navigation between months
-- Today and upcoming payments highlight"
+"Create src/pages/Calendar.tsx based on 화면정의서 IDCAL-001:
+- Monthly calendar view with Tailwind UI premium components
+- Payment dates marked with service icons (Netflix, Spotify, etc.)
+- Hover to show payment details (service name, amount, currency)
+- Navigation between months with arrow buttons
+- Today and upcoming payments highlight with different colors
+- Right sidebar showing today's payments and weekly summary
+- Container queries for responsive design
+- Pretendard font and Korean text optimization
+- Glass morphism design elements from Footer 디자인가이드"
 ```
 
 **Cursor 프롬프트 29**:
 ```
 "Create src/utils/calendar.ts:
-- Get payment dates for a month
-- Calculate next payment dates
-- Group subscriptions by date"
+- Get payment dates for a month with subscription data
+- Calculate next payment dates based on billing cycle
+- Group subscriptions by date for calendar display
+- Handle different currencies (KRW/USD) with exchange rates
+- Generate calendar grid with proper date calculations
+- TypeScript interfaces for calendar events and payment data"
 ```
-
-### 3.2 환율 관리
-
-#### 🤖 Cursor에서 실행할 작업
 
 **Cursor 프롬프트 30**:
 ```
-"Create src/components/features/ExchangeRateModal.tsx:
-- Modal to edit exchange rate
-- Current rate display
-- Input validation
-- Save to Supabase
-- Real-time update across app"
+"Create src/components/features/calendar/CalendarGrid.tsx:
+- Monthly grid layout with Tailwind UI table patterns
+- Service icons for each payment date
+- Hover effects showing payment details
+- Today and upcoming payment highlighting
+- Responsive design with container queries
+- Accessibility features (ARIA labels, keyboard navigation)"
 ```
 
-### 3.3 설정 페이지
+### 3.2 환율 관리 (Exchange Rate Management)
 
 #### 👤 문유가 할 일
-- [ ] 알림 카테고리 확정
-- [ ] 계정 삭제 정책 결정
+- [ ] 환율 업데이트 주기 결정 (수동/자동)
+- [ ] 실시간 환율 API 서비스 선택
+- [ ] 환율 변경 알림 설정 여부
 
 #### 🤖 Cursor에서 실행할 작업
 
 **Cursor 프롬프트 31**:
 ```
-"Create src/pages/Settings.tsx:
-- Profile section (email, join date)
-- Exchange rate settings
-- Notification preferences
-- Logout button
-- Account deletion option"
+"Create src/components/features/ExchangeRateModal.tsx based on 화면정의서:
+- Modal with Tailwind UI premium modal pattern
+- Current rate display with real-time API integration
+- Input validation for exchange rate (positive numbers only)
+- Save to Supabase with user-specific rates
+- Real-time update across app using context
+- Glass morphism design from 디자인가이드
+- Pretendard font and Korean text optimization
+- Error handling and loading states"
+```
+
+**Cursor 프롬프트 32**:
+```
+"Create src/hooks/useExchangeRate.ts:
+- Fetch and manage exchange rates from Supabase
+- Real-time subscription for rate changes
+- Default rate fallback (1,300 KRW)
+- Currency conversion utilities
+- Error handling and retry logic
+- TypeScript interfaces for exchange rate data"
+```
+
+**Cursor 프롬프트 33**:
+```
+"Create src/components/features/ExchangeRateDisplay.tsx:
+- Clickable exchange rate display on dashboard
+- Shows current rate and last update time
+- Hover effects and click to edit
+- Responsive design with container queries
+- Accessibility features (ARIA labels, keyboard support)
+- Glass morphism styling from 디자인가이드"
+```
+
+### 3.3 설정 페이지 (Settings Page)
+
+#### 👤 문유가 할 일
+- [ ] 알림 카테고리 확정 (결제 예정, 가격 변동, 구독 만료)
+- [ ] 계정 삭제 정책 결정 (데이터 보존 기간)
+- [ ] 프로필 정보 표시 항목 확정
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 34**:
+```
+"Create src/pages/Settings.tsx based on 화면정의서 IDSET-001:
+- Profile section with email and join date display
+- Exchange rate settings with modal integration
+- Notification preferences with toggle switches
+- Logout button with confirmation
+- Account deletion option with warning modal
+- Tailwind UI premium components (forms, toggles, buttons)
+- Glass morphism design elements
+- Pretendard font and Korean text optimization
+- Container queries for responsive layout"
+```
+
+**Cursor 프롬프트 35**:
+```
+"Create src/components/features/settings/NotificationSettings.tsx:
+- Toggle switches for different notification types
+- Real-time save to Supabase
+- Visual feedback for changes
+- Accessibility features (ARIA labels, keyboard navigation)
+- Tailwind UI toggle component patterns
+- Korean text optimization with Pretendard font"
+```
+
+**Cursor 프롬프트 36**:
+```
+"Create src/components/features/settings/AccountDeletionModal.tsx:
+- Warning modal for account deletion
+- Confirmation steps and data explanation
+- Integration with Supabase auth deletion
+- Tailwind UI modal patterns with Headless UI
+- Glass morphism styling
+- Accessibility features and keyboard navigation"
+```
+
+### 3.4 고급 알림 시스템 (Advanced Notification System)
+
+#### 👤 문유가 할 일
+- [ ] 알림 채널 확정 (브라우저, 이메일, 푸시)
+- [ ] 알림 템플릿 디자인 확정
+- [ ] 알림 우선순위 설정 규칙
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 37**:
+```
+"Create src/components/features/notifications/NotificationCenter.tsx:
+- Notification dropdown with Tailwind UI menu patterns
+- Real-time notifications from Supabase
+- Mark as read functionality
+- Notification categories (payment, price change, expiry)
+- Glass morphism design from 디자인가이드
+- Container queries for responsive layout
+- Accessibility features (ARIA live regions)"
+```
+
+**Cursor 프롬프트 38**:
+```
+"Create src/hooks/useNotifications.ts:
+- Fetch notifications from Supabase
+- Real-time subscription for new notifications
+- Mark as read functionality
+- Notification filtering and sorting
+- TypeScript interfaces for notification data
+- Error handling and loading states"
+```
+
+### 3.5 데이터 분석 및 리포트 (Analytics & Reports)
+
+#### 👤 문유가 할 일
+- [ ] 리포트 종류 확정 (월간, 연간, 카테고리별)
+- [ ] 차트 라이브러리 선택 (Chart.js, Recharts)
+- [ ] 데이터 내보내기 형식 결정 (CSV, PDF)
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 39**:
+```
+"Create src/pages/Analytics.tsx:
+- Monthly spending trends with charts
+- Category breakdown visualization
+- Year-over-year comparison
+- Export functionality (CSV download)
+- Tailwind UI premium chart components
+- Glass morphism design elements
+- Responsive design with container queries
+- Pretendard font and Korean text optimization"
+```
+
+**Cursor 프롬프트 40**:
+```
+"Create src/components/features/analytics/SpendingChart.tsx:
+- Line chart for spending trends
+- Bar chart for category breakdown
+- Interactive tooltips and legends
+- Responsive chart sizing
+- Dark/light theme support
+- Accessibility features (ARIA labels, keyboard navigation)
+- Korean text optimization"
+```
+
+### 3.6 고급 검색 및 필터링 (Advanced Search & Filtering)
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 41**:
+```
+"Create src/components/features/search/AdvancedSearch.tsx:
+- Real-time search with debouncing
+- Filter by category, status, price range
+- Sort by name, price, next payment date
+- Search history and suggestions
+- Tailwind UI search patterns
+- Glass morphism design elements
+- Container queries for responsive layout
+- Accessibility features (ARIA labels, keyboard navigation)"
+```
+
+**Cursor 프롬프트 42**:
+```
+"Create src/hooks/useAdvancedSearch.ts:
+- Search logic with multiple criteria
+- Filter and sort functionality
+- Search history management
+- Debounced search input
+- TypeScript interfaces for search parameters
+- Performance optimization with memoization"
+```
+
+### 3.7 배치 작업 (Bulk Operations)
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 43**:
+```
+"Create src/components/features/bulk/BulkActions.tsx:
+- Checkbox selection for multiple subscriptions
+- Bulk pause, resume, delete operations
+- Confirmation modals for destructive actions
+- Progress indicators for batch operations
+- Tailwind UI table patterns with selection
+- Glass morphism design elements
+- Accessibility features (ARIA labels, keyboard navigation)"
+```
+
+**Cursor 프롬프트 44**:
+```
+"Create src/hooks/useBulkOperations.ts:
+- Selection state management
+- Bulk operation execution
+- Progress tracking and error handling
+- Optimistic updates for better UX
+- TypeScript interfaces for bulk operations
+- Integration with Supabase transactions"
+```
+
+### 3.8 데이터 백업 및 동기화 (Backup & Sync)
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 45**:
+```
+"Create src/components/features/backup/DataBackup.tsx:
+- Export all subscription data to JSON/CSV
+- Import data from external sources
+- Data validation and error handling
+- Progress indicators for large operations
+- Tailwind UI file upload patterns
+- Glass morphism design elements
+- Accessibility features and keyboard navigation"
+```
+
+**Cursor 프롬프트 46**:
+```
+"Create src/utils/backup.ts:
+- Data export functionality (JSON, CSV formats)
+- Data import with validation
+- Conflict resolution for duplicate data
+- Progress tracking for large datasets
+- Error handling and recovery
+- TypeScript interfaces for backup data"
+```
+
+### 3.9 성능 최적화 (Performance Optimization)
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 47**:
+```
+"Optimize existing components for performance:
+- Implement React.memo for expensive components
+- Add virtualization for large lists
+- Optimize images with lazy loading
+- Implement code splitting for routes
+- Add service worker for offline functionality
+- Performance monitoring and analytics"
+```
+
+**Cursor 프롬프트 48**:
+```
+"Create src/components/features/performance/VirtualizedList.tsx:
+- Virtual scrolling for large subscription lists
+- Dynamic height calculation
+- Smooth scrolling and performance optimization
+- Accessibility features for screen readers
+- Container queries for responsive behavior
+- Glass morphism design elements"
+```
+
+### 3.10 접근성 강화 (Accessibility Enhancement)
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 49**:
+```
+"Enhance accessibility across all components:
+- Add comprehensive ARIA labels
+- Implement keyboard navigation
+- Add focus management for modals
+- Improve color contrast ratios
+- Add screen reader announcements
+- Test with accessibility tools
+- Follow WCAG 2.1 AA guidelines"
+```
+
+**Cursor 프롬프트 50**:
+```
+"Create src/components/features/accessibility/AccessibilityProvider.tsx:
+- Skip to main content link
+- Focus trap for modals
+- Live region announcements
+- High contrast mode support
+- Reduced motion preferences
+- Keyboard shortcut management
+- Integration with existing components"
 ```
 
 ---
@@ -470,56 +752,127 @@ Include RLS policies for user data isolation"
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 32**:
+**Cursor 프롬프트 51**:
 ```
 "Create .github/workflows/deploy.yml:
 - Trigger on push to main
 - Node.js 20 setup
 - Build with secrets
 - Deploy to GitHub Pages
-- Include CNAME file creation"
+- Include CNAME file creation
+- Environment-specific builds"
 ```
 
 ### 4.2 성능 최적화
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 33**:
+**Cursor 프롬프트 52**:
 ```
-"Update vite.config.ts:
+"Update vite.config.ts with advanced optimization:
 - Manual chunks for vendor splitting
-- Build optimization
+- Build optimization with compression
 - Source maps for development only
-- Base URL for GitHub Pages"
+- Base URL for GitHub Pages
+- Image optimization plugins
+- Bundle analysis tools"
 ```
 
-### 4.3 PWA 설정 (선택)
+**Cursor 프롬프트 53**:
+```
+"Implement advanced performance optimizations:
+- React.lazy for route-based code splitting
+- Image lazy loading with Intersection Observer
+- Service worker for caching strategies
+- Memory leak prevention in components
+- Bundle size monitoring
+- Core Web Vitals optimization"
+```
+
+### 4.3 PWA 설정 (Progressive Web App)
 
 #### 👤 문유가 할 일
-- [ ] App 아이콘 준비 (512x512, 192x192)
+- [ ] App 아이콘 준비 (512x512, 192x192, 144x144)
 - [ ] App 이름 및 설명 결정
+- [ ] 색상 테마 결정 (다크/라이트)
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 34**:
+**Cursor 프롬프트 54**:
 ```
-"Add PWA support:
-- Install vite-plugin-pwa
-- Create manifest.json
-- Service worker registration
-- Offline functionality"
+"Add comprehensive PWA support:
+- Install and configure vite-plugin-pwa
+- Create manifest.json with Moonwave branding
+- Service worker registration with caching strategies
+- Offline functionality with fallback pages
+- Install prompt and app-like experience
+- Background sync for data updates
+- Push notifications setup"
 ```
 
-### 4.4 최종 테스트 및 배포
+**Cursor 프롬프트 55**:
+```
+"Create src/service-worker.ts:
+- Cache strategies for static assets
+- Dynamic caching for API responses
+- Background sync for offline actions
+- Push notification handling
+- Update notifications for new versions
+- Fallback pages for offline access"
+```
+
+### 4.4 디자인 시스템 통합 및 최적화
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 56**:
+```
+"Integrate all design guidelines from 문서들:
+- Apply Footer 디자인가이드 to all footer components
+- Implement 디자인가이드 v2.1 across all components
+- Apply 로그인 회원가입 디자인 가이드 to auth pages
+- Follow 화면정의서 specifications for all screens
+- Ensure consistent Pretendard font usage
+- Apply glass morphism effects consistently
+- Implement container queries throughout"
+```
+
+**Cursor 프롬프트 57**:
+```
+"Create comprehensive design system documentation:
+- Component library with all UI components
+- Design tokens and utility classes
+- Accessibility guidelines and examples
+- Responsive design patterns
+- Animation and interaction guidelines
+- Theme customization options"
+```
+
+### 4.5 최종 테스트 및 배포
 
 #### 👤 문유가 브라우저에서 할 일
 - [ ] 로컬 빌드 테스트
-- [ ] 모든 기능 수동 테스트
-- [ ] 반응형 디자인 확인
+- [ ] 모든 기능 수동 테스트 (Phase 1-3)
+- [ ] 반응형 디자인 확인 (모바일, 태블릿, 데스크톱)
+- [ ] 접근성 테스트 (키보드 네비게이션, 스크린 리더)
+- [ ] 성능 테스트 (Lighthouse, Core Web Vitals)
 - [ ] GitHub Actions 실행 확인
 - [ ] 배포된 사이트 접속 테스트
+- [ ] PWA 설치 및 오프라인 테스트
 
 #### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 58**:
+```
+"Create comprehensive test suite:
+- Unit tests for all utility functions
+- Component tests with React Testing Library
+- Integration tests for user workflows
+- E2E tests with Playwright
+- Performance tests with Lighthouse CI
+- Accessibility tests with axe-core
+- Visual regression tests"
+```
 
 **터미널에서 실행**:
 ```bash
@@ -527,10 +880,45 @@ Include RLS policies for user data isolation"
 npm run build
 npm run preview
 
+# 테스트 실행
+npm run test
+npm run test:e2e
+
+# 성능 분석
+npm run lighthouse
+
 # 최종 커밋 및 푸시
 git add .
-git commit -m "feat: complete v2.0 development"
+git commit -m "feat: complete v2.0 development with advanced features"
 git push origin main
+```
+
+### 4.6 문서화 및 가이드 작성
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 59**:
+```
+"Create comprehensive project documentation:
+- README.md with setup and usage instructions
+- API documentation for all endpoints
+- Component documentation with Storybook
+- Deployment guide with troubleshooting
+- Contributing guidelines
+- Changelog and version history
+- Performance benchmarks and metrics"
+```
+
+**Cursor 프롬프트 60**:
+```
+"Create user and developer guides:
+- User manual with screenshots
+- Developer setup guide
+- Design system documentation
+- Accessibility guidelines
+- Performance optimization tips
+- Troubleshooting guide
+- FAQ and common issues"
 ```
 
 ---
@@ -583,4 +971,39 @@ git push origin main
 
 ---
 
-*이 체크리스트는 Cursor AI의 강력한 코드 생성 능력을 최대한 활용하면서, 문유가 전략적 결정에 집중할 수 있도록 설계되었습니다.*
+## 📋 Phase 3 고급 기능 개발 요약
+
+### 🎨 디자인 가이드 통합 완료
+- **Footer 디자인가이드**: Music Player, Floating Actions, Main Footer 컴포넌트 적용
+- **디자인가이드 v2.1**: Tailwind UI 프리미엄 컴포넌트, Pretendard 폰트, Container Queries
+- **로그인 회원가입 디자인 가이드**: Glass morphism, 그라디언트 배경, 접근성 강화
+- **화면정의서**: 모든 화면의 상세 UI/UX 스펙 준수
+
+### 🚀 고급 기능 확장
+- **결제 캘린더**: 월간 뷰, 서비스 아이콘, 호버 상세정보
+- **환율 관리**: 실시간 API, 모달 편집, 컨텍스트 업데이트
+- **설정 페이지**: 프로필, 알림, 계정 관리 통합
+- **알림 시스템**: 실시간, 카테고리별, 읽음 처리
+- **데이터 분석**: 차트, 리포트, 내보내기 기능
+- **고급 검색**: 실시간, 필터링, 정렬, 히스토리
+- **배치 작업**: 다중 선택, 일괄 처리, 진행률 표시
+- **데이터 백업**: JSON/CSV 내보내기, 가져오기, 검증
+- **성능 최적화**: 가상화, 코드 분할, 메모이제이션
+- **접근성 강화**: WCAG 2.1 AA 준수, 키보드 네비게이션
+
+### 🔧 기술적 개선사항
+- **Container Queries**: 모든 컴포넌트에 반응형 개선
+- **Glass Morphism**: 일관된 글래스 효과 적용
+- **Pretendard 폰트**: 한글 최적화 완료
+- **Tailwind UI**: 프리미엄 컴포넌트 활용
+- **TypeScript**: 타입 안전성 강화
+- **접근성**: ARIA 레이블, 키보드 지원, 스크린 리더
+
+### 📊 프롬프트 확장
+- **Phase 3**: 23개 프롬프트 (28-50)
+- **Phase 4**: 10개 프롬프트 (51-60)
+- **총 프롬프트**: 60개 (전체 개발 과정)
+
+---
+
+*이 체크리스트는 Cursor AI의 강력한 코드 생성 능력을 최대한 활용하면서, 문유가 전략적 결정에 집중할 수 있도록 설계되었습니다. 모든 디자인 가이드와 화면정의서가 Phase 3 고급 기능 개발에 완전히 통합되었습니다.*
