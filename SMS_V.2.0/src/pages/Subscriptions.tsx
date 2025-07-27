@@ -59,8 +59,8 @@ const Subscriptions: React.FC = () => {
 
     // Sort
     filtered.sort((a, b) => {
-      let aValue: string | number | Date;
-      let bValue: string | number | Date;
+      let aValue: string | number | Date = '';
+      let bValue: string | number | Date = '';
 
       switch (sortBy) {
         case 'name':
@@ -72,6 +72,8 @@ const Subscriptions: React.FC = () => {
           bValue = b.amount;
           break;
         case 'date':
+          aValue = new Date(a.created_at);
+          bValue = new Date(b.created_at);
           break;
         case 'category':
           aValue = a.category || '';

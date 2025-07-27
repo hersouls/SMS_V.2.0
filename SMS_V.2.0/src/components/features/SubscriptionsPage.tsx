@@ -8,7 +8,7 @@ import {
   PlayIcon,
   PauseIcon,
   XMarkIcon,
-  ExternalLinkIcon,
+  ArrowTopRightOnSquareIcon,
   Bars3Icon,
   ArrowLeftIcon
 } from '@heroicons/react/24/outline';
@@ -230,14 +230,14 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ subscription, viewM
           {subscription.icon}
         </div>
         {viewMode === 'list' && (
-          <ExternalLinkIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 ml-1 sm:ml-2" />
+          <ArrowTopRightOnSquareIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 ml-1 sm:ml-2" />
         )}
       </div>
 
       <div className={`${viewMode === 'list' ? 'flex-1' : 'text-center'}`}>
         <div className="flex items-center justify-center space-x-1 mb-1">
           <span className="text-xs sm:text-sm text-gray-500">{subscription.icon}</span>
-          <ExternalLinkIcon className="w-2 h-2 sm:w-3 sm:h-3 text-gray-400" />
+          <ArrowTopRightOnSquareIcon className="w-2 h-2 sm:w-3 sm:h-3 text-gray-400" />
         </div>
         
         <h3 className="font-semibold text-gray-900 mb-1 truncate text-sm sm:text-base">{subscription.name}</h3>
