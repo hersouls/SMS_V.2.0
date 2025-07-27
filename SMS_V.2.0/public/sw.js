@@ -8,8 +8,8 @@ const STATIC_FILES = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  '/icons/icon-192x192.svg',
+  '/icons/icon-512x512.svg',
   '/audio/background-music.mp3'
 ];
 
