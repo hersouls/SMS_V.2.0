@@ -5,12 +5,14 @@ export interface Subscription {
   service_name: string;
   service_url?: string;
   service_image_url?: string;
+  logo_url?: string;
   category?: string;
   status: 'active' | 'paused' | 'canceled';
   amount: number;
   currency: 'KRW' | 'USD';
   payment_cycle: 'monthly' | 'yearly' | 'quarterly' | 'weekly';
   payment_day?: number;
+  next_payment_date?: string;
   payment_method?: string;
   start_date?: string;
   end_date?: string;
@@ -71,8 +73,10 @@ export interface SubscriptionFormData {
   currency: 'KRW' | 'USD';
   payment_cycle: 'monthly' | 'yearly' | 'quarterly' | 'weekly';
   payment_day?: number;
+  next_payment_date?: string;
   service_url?: string;
   service_image_url?: string;
+  logo_url?: string;
   category?: string;
   status?: 'active' | 'paused' | 'canceled';
   payment_method?: string;

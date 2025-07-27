@@ -85,7 +85,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
       newErrors.amount = 'Amount must be greater than 0';
     }
 
-    if (formData.payment_day < 1 || formData.payment_day > 31) {
+    if (formData.payment_day && (formData.payment_day < 1 || formData.payment_day > 31)) {
       newErrors.payment_day = 'Payment day must be between 1 and 31';
     }
 
@@ -93,7 +93,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof SubscriptionFormData, value: string | number) => {
+  const handleInputChange = (field: keyof SubscriptionFormData, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
@@ -261,7 +261,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             type="number"
             min="1"
             max="31"
-            value={formData.payment_day}
+            value={formData.payment_day || ''}
             onChange={(e) => handleInputChange('payment_day', parseInt(e.target.value) || 1)}
             placeholder="15"
             error={errors.payment_day}

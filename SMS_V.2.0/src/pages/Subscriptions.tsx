@@ -68,8 +68,8 @@ const Subscriptions: React.FC = () => {
           bValue = b.amount;
           break;
         case 'date':
-          aValue = new Date(a.next_payment_date);
-          bValue = new Date(b.next_payment_date);
+          aValue = new Date(a.next_payment_date || new Date());
+          bValue = new Date(b.next_payment_date || new Date());
           break;
         case 'category':
           aValue = a.category || '';
