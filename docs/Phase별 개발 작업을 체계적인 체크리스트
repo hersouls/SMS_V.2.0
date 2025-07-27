@@ -17,16 +17,16 @@ Moonwave v2.0 개발 작업을 Cursor AI 중심 워크플로우로 재구성합�
 **⚠️ GitHub Actions workflows must be in root .github folder**
 **⚠️ All development work must happen inside SMS_V.2.0 directory**
 
-## Phase 1: 기반 구축 (1-2주)
+## Phase 1: 기반 구축 (1-2주) ✅ 완료
 
-### 1.1 프로젝트 초기화
+### 1.1 프로젝트 초기화 ✅ 완료
 
 #### 👤 문유가 브라우저에서 할 일
-- [ ] GitHub.com에서 새 Repository 생성
+- [x] GitHub.com에서 새 Repository 생성
   - Repository name: `moonwave-v2`
   - Public repository 선택
   - README, .gitignore, License 추가하지 않음
-- [ ] Repository URL 복사해두기
+- [x] Repository URL 복사해두기
 
 #### 🤖 Cursor에서 실행할 명령어와 작업
 - [x] ```bash
