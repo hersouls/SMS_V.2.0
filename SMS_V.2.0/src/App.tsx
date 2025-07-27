@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Header, Footer, MusicPlayer } from './components/layout';
 import Dashboard from './pages/Dashboard';
 import Subscriptions from './pages/Subscriptions';
+import Calendar from './pages/Calendar';
+import Settings from './pages/Settings';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import { useAuth } from './contexts/AuthContext';
@@ -46,6 +48,14 @@ const App: React.FC = () => {
             <Route 
               path="/subscriptions" 
               element={user ? <Subscriptions /> : <Navigate to="/login" replace />} 
+            />
+            <Route 
+              path="/calendar" 
+              element={user ? <Calendar /> : <Navigate to="/login" replace />} 
+            />
+            <Route 
+              path="/settings" 
+              element={user ? <Settings /> : <Navigate to="/login" replace />} 
             />
             
             {/* Default redirect */}
