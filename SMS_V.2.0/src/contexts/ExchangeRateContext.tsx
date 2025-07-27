@@ -1,31 +1,8 @@
 
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
-
-export interface ExchangeRate {
-  id?: string;
-  user_id: string;
-  usd_krw: number;
-  created_at?: string;
-  updated_at?: string;
-}
-
-interface ExchangeRateContextType {
-  rate: number;
-  lastUpdated: string;
-  isLoading: boolean;
-  error: string | null;
-  updateExchangeRate: (newRate: number) => Promise<boolean>;
-  updateWithLatestRate: () => Promise<boolean>;
-  convertCurrency: (amount: number, fromCurrency: string, toCurrency?: string) => number;
-  getFormattedRate: () => string;
-  getFormattedLastUpdated: () => string;
-  refetch: () => Promise<void>;
-}
-
-const ExchangeRateContext = createContext<ExchangeRateContextType | undefined>(undefined);
-
-const DEFAULT_RATE = 1300;
+import { DEFAULT_RATE } from '../constants/exchangeRate';
+import { ExchangeRateContext, ExchangeRateContextType, ExchangeRate } from './ExchangeRateContextDefinition';
 
 interface ExchangeRateProviderProps {
   children: ReactNode;
@@ -39,7 +16,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   const [error, setError] = useState<string | null>(null);
 
   // 환율 데이터 가져오기
-  const fetchExchangeRate = async () => {
+  const fetchExchangeRate = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -70,10 +47,10 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user, createDefaultRate]);
 
   // 기본 환율 생성
-  const createDefaultRate = async () => {
+  const createDefaultRate = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -94,7 +71,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
       console.error('기본 환율 생성 실패:', err);
       setError('기본 환율을 생성하는데 실패했습니다.');
     }
-  };
+  }, [user]);
 
   // 환율 업데이트
   const updateExchangeRate = async (newRate: number): Promise<boolean> => {
@@ -233,7 +210,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
         subscription.unsubscribe();
       };
     }
-  }, [user]);
+  }, [user, fetchExchangeRate]);
 
   const value: ExchangeRateContextType = {
     rate,
@@ -255,10 +232,3 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   );
 };
 
-export const useExchangeRateContext = (): ExchangeRateContextType => {
-  const context = useContext(ExchangeRateContext);
-  if (context === undefined) {
-    throw new Error('useExchangeRateContext must be used within an ExchangeRateProvider');
-  }
-  return context;
-};
