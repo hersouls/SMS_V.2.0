@@ -264,6 +264,7 @@ describe('Performance Monitoring', () => {
 
   describe('Caching Performance', () => {
     it('should cache static assets effectively', () => {
+      const staticAssets = [
         '/icons/icon-192x192.png',
         '/icons/icon-512x512.png',
         '/manifest.json',
@@ -304,12 +305,13 @@ describe('Performance Monitoring', () => {
         updateViaCache: 'all'
       };
 
+      global.navigator.serviceWorker = {
         register: vi.fn().mockResolvedValue(mockRegistration),
         ready: vi.fn().mockResolvedValue(mockRegistration),
         controller: null,
         addEventListener: vi.fn(),
         removeEventListener: vi.fn()
-      };
+      } as any;
 
       expect(navigator.serviceWorker.register).toBeDefined();
     });

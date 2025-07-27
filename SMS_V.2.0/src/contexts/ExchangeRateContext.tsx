@@ -1,6 +1,8 @@
 
+import React, { createContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../hooks/useAuth';
+import { convertCurrency as convertCurrencyUtil, getFormattedRate as getFormattedRateUtil, getFormattedLastUpdated as getFormattedLastUpdatedUtil } from '../utils/exchangeRateUtils';
 
 export interface ExchangeRate {
   id?: string;
@@ -39,7 +41,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   const [error, setError] = useState<string | null>(null);
 
   // 환율 데이터 가져오기
-  const fetchExchangeRate = async () => {
+  const fetchExchangeRate = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -70,10 +72,10 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user, createDefaultRate]);
 
   // 기본 환율 생성
-  const createDefaultRate = async () => {
+  const createDefaultRate = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -94,7 +96,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
       console.error('기본 환율 생성 실패:', err);
       setError('기본 환율을 생성하는데 실패했습니다.');
     }
-  };
+  }, [user]);
 
   // 환율 업데이트
   const updateExchangeRate = async (newRate: number): Promise<boolean> => {
@@ -164,43 +166,17 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
 
   // 통화 변환 유틸리티
   const convertCurrency = (amount: number, fromCurrency: string, toCurrency: string = 'KRW'): number => {
-    if (fromCurrency === toCurrency) return amount;
-    
-    if (fromCurrency === 'USD' && toCurrency === 'KRW') {
-      return amount * rate;
-    }
-    
-    if (fromCurrency === 'KRW' && toCurrency === 'USD') {
-      return amount / rate;
-    }
-    
-    return amount; // 지원하지 않는 통화 조합
+    return convertCurrencyUtil(amount, fromCurrency, toCurrency, rate);
   };
 
   // 포맷된 환율 문자열
   const getFormattedRate = (): string => {
-    return `1 USD = ${rate.toLocaleString()} KRW`;
+    return getFormattedRateUtil(rate);
   };
 
   // 마지막 업데이트 시간 포맷팅
   const getFormattedLastUpdated = (): string => {
-    if (!lastUpdated) return '업데이트 없음';
-    
-    const date = new Date(lastUpdated);
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return '방금 전';
-    if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}시간 전`;
-    
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    return getFormattedLastUpdatedUtil(lastUpdated);
   };
 
   // 초기 로드 및 실시간 구독
@@ -233,7 +209,7 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
         subscription.unsubscribe();
       };
     }
-  }, [user]);
+  }, [user, fetchExchangeRate]);
 
   const value: ExchangeRateContextType = {
     rate,
@@ -255,10 +231,3 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   );
 };
 
-export const useExchangeRateContext = (): ExchangeRateContextType => {
-  const context = useContext(ExchangeRateContext);
-  if (context === undefined) {
-    throw new Error('useExchangeRateContext must be used within an ExchangeRateProvider');
-  }
-  return context;
-};
