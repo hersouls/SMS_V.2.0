@@ -8,6 +8,8 @@ import SubscriptionForm from '../components/features/subscription/SubscriptionFo
 
 import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
+
+
 const Subscriptions: React.FC = () => {
   const {
     subscriptions,
@@ -109,10 +111,7 @@ const Subscriptions: React.FC = () => {
     return result;
   };
 
-  const handleEdit = (subscription: Subscription) => {
-    setEditingSubscription(subscription);
-    setShowForm(true);
-  };
+
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this subscription?')) {
@@ -314,7 +313,6 @@ const Subscriptions: React.FC = () => {
             <SubscriptionCard
               key={subscription.id}
               subscription={subscription}
-              onEdit={handleEdit}
               onToggleStatus={handleToggleStatus}
               onDelete={handleDelete}
               className={viewMode === 'list' ? 'flex-row' : ''}

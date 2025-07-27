@@ -1,12 +1,12 @@
 import React from 'react';
 import { ExternalLink, Play, Pause, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '../../ui';
 import type { Subscription } from '../../../types/database.types';
 import { cn } from '../../../lib/utils';
 
 interface SubscriptionCardProps {
   subscription: Subscription;
-  onEdit?: (subscription: Subscription) => void;
   onToggleStatus?: (id: string, currentStatus: string) => void;
   onDelete?: (id: string) => void;
   className?: string;
@@ -14,11 +14,11 @@ interface SubscriptionCardProps {
 
 const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   subscription,
-  onEdit,
   onToggleStatus,
   onDelete,
   className
 }) => {
+  const navigate = useNavigate();
   const formatCurrency = (amount: number, currency: 'KRW' | 'USD') => {
     if (currency === 'USD') {
       return new Intl.NumberFormat('en-US', {
@@ -65,9 +65,8 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   };
 
   const handleCardClick = () => {
-    if (onEdit) {
-      onEdit(subscription);
-    }
+    // Navigate to subscription detail page
+    navigate(`/subscriptions/${subscription.id}`);
   };
 
   const handleToggleStatus = (e: React.MouseEvent) => {
