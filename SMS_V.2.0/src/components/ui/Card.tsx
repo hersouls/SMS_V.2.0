@@ -3,6 +3,7 @@ import { cn } from '../../lib/utils';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   glass?: boolean;
+  gradient?: boolean;
   children: React.ReactNode;
 }
 
@@ -19,13 +20,15 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, glass = false, children, ...props }, ref) => {
+  ({ className, glass = false, gradient = false, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
           'rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md',
-          glass && 'backdrop-blur-md bg-white/80 border-white/20 shadow-lg',
+          glass && 'card-glass',
+          gradient && 'card-gradient',
+          !glass && !gradient && 'bg-white',
           className
         )}
         {...props}
@@ -55,7 +58,7 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
     return (
       <h3
         ref={ref}
-        className={cn('text-lg font-semibold leading-none tracking-tight break-keep-ko', className)}
+        className={cn('text-lg font-semibold leading-none tracking-tight break-keep-ko tracking-ko-normal font-pretendard', className)}
         {...props}
       >
         {children}
@@ -69,7 +72,7 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
     return (
       <div
         ref={ref}
-        className={cn('p-6 pt-0', className)}
+        className={cn('p-6 pt-0 font-pretendard tracking-ko-normal break-keep-ko', className)}
         {...props}
       >
         {children}

@@ -104,17 +104,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     if (!audio) return;
 
     const updateProgress = () => {
-      if (audio.duration) {
-        const progressPercent = (audio.currentTime / audio.duration) * 100;
-        setProgress(progressPercent);
-        setCurrentTime(audio.currentTime);
-      }
+      setCurrentTime(audio.currentTime);
+      setProgress((audio.currentTime / audio.duration) * 100);
     };
 
     const handleEnded = () => {
       if (repeatMode === 'one') {
         audio.currentTime = 0;
-        audio.play();
+        audio.play().catch(console.error);
       } else if (repeatMode === 'all') {
         nextTrack();
       } else {
@@ -158,9 +155,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const rect = progressRef.current.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
-    const clickPercent = clickX / width;
+    const clickTime = (clickX / width) * audio.duration;
     
-    audio.currentTime = clickPercent * audio.duration;
+    audio.currentTime = clickTime;
   };
 
   const formatTime = (seconds: number) => {
@@ -181,16 +178,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   return (
     <>
-      {/* Hidden audio element */}
       <audio
         ref={audioRef}
         src={currentTrackData.url}
         preload="metadata"
       />
-
-      {/* Fixed Music Player Footer */}
+      
       <div className={cn(
-        "fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur-md border-t border-gray-200 shadow-lg",
+        "fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-gray-200 shadow-lg",
         className
       )}>
         <div className="container mx-auto px-4 py-3">
@@ -198,15 +193,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             {/* Track Info */}
             <div className="flex items-center space-x-3 min-w-0 flex-1">
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <span className="text-white text-xs font-bold">
+                <span className="text-white text-xs font-bold font-pretendard">
                   {currentTrackData.title.charAt(0)}
                 </span>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-gray-900 truncate break-keep-ko">
+                <p className="text-sm font-medium text-gray-900 truncate break-keep-ko tracking-ko-normal font-pretendard">
                   {currentTrackData.title}
                 </p>
-                <p className="text-xs text-gray-500 truncate break-keep-ko">
+                <p className="text-xs text-gray-500 truncate break-keep-ko tracking-ko-normal font-pretendard">
                   {currentTrackData.artist}
                 </p>
               </div>
@@ -224,7 +219,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 )}
                 aria-label="셔플"
               >
-                <Shuffle className="w-4 h-4" />
+                <Shuffle className="w-5 h-5" />
               </button>
 
               <button
@@ -232,7 +227,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                 aria-label="이전 곡"
               >
-                <SkipBack className="w-4 h-4" />
+                <SkipBack className="w-5 h-5" />
               </button>
 
               <button
@@ -252,7 +247,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                 aria-label="다음 곡"
               >
-                <SkipForward className="w-4 h-4" />
+                <SkipForward className="w-5 h-5" />
               </button>
 
               <button
@@ -266,7 +261,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 aria-label="반복 모드"
               >
                 <Repeat className={cn(
-                  "w-4 h-4",
+                  "w-5 h-5",
                   repeatMode === 'one' && "text-orange-600"
                 )} />
               </button>
@@ -284,7 +279,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-gray-500 mt-1 font-pretendard tracking-ko-normal">
                 <span>{formatTime(currentTime)}</span>
                 <span>{formatTime(currentTrackData.duration)}</span>
               </div>
@@ -298,9 +293,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 aria-label={isMuted ? "음소거 해제" : "음소거"}
               >
                 {isMuted ? (
-                  <VolumeX className="w-4 h-4" />
+                  <VolumeX className="w-5 h-5" />
                 ) : (
-                  <Volume2 className="w-4 h-4" />
+                  <Volume2 className="w-5 h-5" />
                 )}
               </button>
 
@@ -320,7 +315,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                 aria-label="플레이리스트"
               >
-                <List className="w-4 h-4" />
+                <List className="w-5 h-5" />
               </button>
 
               <button
@@ -329,9 +324,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 aria-label={isExpanded ? "축소" : "확장"}
               >
                 {isExpanded ? (
-                  <Minimize2 className="w-4 h-4" />
+                  <Minimize2 className="w-5 h-5" />
                 ) : (
-                  <Maximize2 className="w-4 h-4" />
+                  <Maximize2 className="w-5 h-5" />
                 )}
               </button>
             </div>
@@ -343,7 +338,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Playlist */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-2 break-keep-ko">
+                  <h4 className="text-sm font-medium text-gray-900 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
                     플레이리스트
                   </h4>
                   <div className="space-y-1 max-h-32 overflow-y-auto">
@@ -359,18 +354,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                         )}
                       >
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-medium">
+                          <span className="text-xs font-medium font-pretendard tracking-ko-normal">
                             {index + 1}
                           </span>
                           <div className="min-w-0 flex-1">
-                            <p className="text-sm truncate break-keep-ko">
+                            <p className="text-sm truncate break-keep-ko tracking-ko-normal font-pretendard">
                               {track.title}
                             </p>
-                            <p className="text-xs text-gray-500 truncate break-keep-ko">
+                            <p className="text-xs text-gray-500 truncate break-keep-ko tracking-ko-normal font-pretendard">
                               {track.artist}
                             </p>
                           </div>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-gray-400 font-pretendard tracking-ko-normal">
                             {formatTime(track.duration)}
                           </span>
                         </div>
@@ -381,12 +376,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
                 {/* Audio Controls */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-2 break-keep-ko">
+                  <h4 className="text-sm font-medium text-gray-900 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
                     오디오 설정
                   </h4>
                   <div className="space-y-3">
                     <div>
-                      <label className="text-xs text-gray-600 block mb-1 break-keep-ko">
+                      <label className="text-xs text-gray-600 block mb-1 break-keep-ko tracking-ko-normal font-pretendard">
                         볼륨
                       </label>
                       <input
@@ -403,7 +398,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       <button
                         onClick={() => setIsShuffled(!isShuffled)}
                         className={cn(
-                          "text-xs px-3 py-1 rounded-full transition-colors",
+                          "text-xs px-3 py-1 rounded-full transition-colors font-pretendard tracking-ko-normal",
                           isShuffled
                             ? "bg-blue-100 text-blue-700"
                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -414,7 +409,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       <button
                         onClick={toggleRepeatMode}
                         className={cn(
-                          "text-xs px-3 py-1 rounded-full transition-colors",
+                          "text-xs px-3 py-1 rounded-full transition-colors font-pretendard tracking-ko-normal",
                           repeatMode !== 'none'
                             ? "bg-blue-100 text-blue-700"
                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"

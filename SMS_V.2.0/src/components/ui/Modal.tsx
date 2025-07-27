@@ -41,13 +41,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, classNa
       
       {/* Modal */}
       <div className={cn(
-        'relative w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl',
+        'relative w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl card-glass',
         className
       )}>
         {/* Header */}
         {title && (
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 break-keep-ko">
+            <h2 className="text-lg font-semibold text-gray-900 break-keep-ko tracking-ko-normal font-pretendard">
               {title}
             </h2>
             <button
@@ -60,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, classNa
         )}
         
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 font-pretendard tracking-ko-normal break-keep-ko">
           {children}
         </div>
       </div>

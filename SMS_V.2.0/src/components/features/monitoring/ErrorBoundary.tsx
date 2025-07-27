@@ -98,23 +98,19 @@ export class ErrorBoundary extends Component<Props, State> {
 
   private sendToErrorService = async (errorData: ErrorData) => {
     try {
-      // Replace with your error tracking service (Sentry, LogRocket, etc.)
-      if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
-        (window as GtagWindow).gtag!('event', 'exception', {
+      // Send to your error tracking service (e.g., Sentry, LogRocket, etc.)
+      console.error('Error tracked:', errorData);
+      
+      // Example: Send to Google Analytics
+      const gtag = (window as GtagWindow).gtag;
+      if (gtag) {
+        gtag('event', 'exception', {
           description: errorData.message,
-          fatal: true,
-          custom_parameters: errorData
+          fatal: true
         });
       }
-
-      // You can also send to your own API endpoint
-      // await fetch('/api/errors', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(errorData)
-      // });
-    } catch (reportingError) {
-      console.error('Failed to report error:', reportingError);
+    } catch (err) {
+      console.error('Failed to send error to tracking service:', err);
     }
   };
 
@@ -138,24 +134,24 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+          <div className="max-w-md w-full card-glass rounded-2xl shadow-xl p-8 text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
             
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4 font-pretendard tracking-ko-normal">
               문제가 발생했습니다
             </h1>
             
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 font-pretendard tracking-ko-normal break-keep-ko">
               예상치 못한 오류가 발생했습니다. 다시 시도하거나 페이지를 새로고침해주세요.
             </p>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mb-6 text-left">
-                <summary className="cursor-pointer text-sm font-medium text-gray-700 mb-2">
+                <summary className="cursor-pointer text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
                   개발자 정보 (클릭하여 확장)
                 </summary>
                 <div className="bg-gray-50 rounded-lg p-4 text-xs font-mono text-gray-600 overflow-auto max-h-40">
@@ -181,20 +177,20 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex gap-3">
               <button
                 onClick={this.handleRetry}
-                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors font-pretendard tracking-ko-normal"
               >
                 다시 시도
               </button>
               
               <button
                 onClick={this.handleReload}
-                className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors"
+                className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors font-pretendard tracking-ko-normal"
               >
                 새로고침
               </button>
             </div>
 
-            <div className="mt-6 text-sm text-gray-500">
+            <div className="mt-6 text-sm text-gray-500 font-pretendard tracking-ko-normal">
               <p>문제가 지속되면 관리자에게 문의해주세요.</p>
               <p className="mt-1">
                 오류 ID: {this.state.error?.message?.substring(0, 8) || 'unknown'}
@@ -227,16 +223,20 @@ export const useErrorTracking = () => {
   };
 
   const trackEvent = (eventName: string, properties?: Record<string, unknown>) => {
-    // Send to analytics service
-    if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
-      (window as GtagWindow).gtag!('event', eventName, properties);
+    try {
+      const gtag = (window as GtagWindow).gtag;
+      if (gtag) {
+        gtag('event', eventName, properties);
+      }
+    } catch (err) {
+      console.error('Failed to track event:', err);
     }
   };
 
   return { trackError, trackEvent };
 };
 
-// Helper functions
+// Utility functions
 const getUserId = (): string | null => {
   try {
     const user = localStorage.getItem('moonwave_user');
@@ -257,14 +257,18 @@ const getSessionId = (): string => {
 
 const sendToErrorService = async (errorData: ErrorData) => {
   try {
-    if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
-      (window as GtagWindow).gtag!('event', 'exception', {
+    // Send to your error tracking service (e.g., Sentry, LogRocket, etc.)
+    console.error('Error tracked:', errorData);
+    
+    // Example: Send to Google Analytics
+    const gtag = (window as GtagWindow).gtag;
+    if (gtag) {
+      gtag('event', 'exception', {
         description: errorData.message,
-        fatal: false,
-        custom_parameters: errorData
+        fatal: true
       });
     }
-  } catch (reportingError) {
-    console.error('Failed to report error:', reportingError);
+  } catch (err) {
+    console.error('Failed to send error to tracking service:', err);
   }
 };
