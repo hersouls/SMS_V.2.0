@@ -55,7 +55,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       id: 1,
       title: "Glow Not Noise",
       artist: "Moonwave",
-      url: "/Glow Not Noise.mp3",
+      url: "/audio/glow-not-noise.mp3",
       duration: 225
     },
     {
