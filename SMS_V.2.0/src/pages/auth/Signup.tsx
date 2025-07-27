@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, XCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, XCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { cn } from '../../lib/utils';
 import AuthLayout from '../../components/layout/AuthLayout';
