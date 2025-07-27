@@ -85,7 +85,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
       newErrors.amount = 'Amount must be greater than 0';
     }
 
-    if (formData.payment_day < 1 || formData.payment_day > 31) {
+    if (formData.payment_day && (formData.payment_day < 1 || formData.payment_day > 31)) {
       newErrors.payment_day = 'Payment day must be between 1 and 31';
     }
 
@@ -163,7 +163,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
 
       const result = await onSubmit({
         ...formData,
-        logo_url: logoUrl
+        logo_url: logoUrl || undefined
       });
 
       if (result.success) {
@@ -300,7 +300,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             </label>
             <select
               value={formData.auto_renewal ? 'true' : 'false'}
-              onChange={(e) => handleInputChange('auto_renewal', e.target.value === 'true')}
+              onChange={(e) => handleInputChange('auto_renewal', e.target.value)}
               className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="true">Yes</option>

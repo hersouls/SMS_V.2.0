@@ -5,6 +5,7 @@ export interface Subscription {
   service_name: string;
   service_url?: string;
   service_image_url?: string;
+  logo_url?: string;
   category?: string;
   status: 'active' | 'paused' | 'canceled';
   amount: number;
@@ -14,6 +15,7 @@ export interface Subscription {
   payment_method?: string;
   start_date?: string;
   end_date?: string;
+  next_payment_date?: string;
   auto_renewal?: boolean;
   alarm_days?: number[];
   tier?: string;
@@ -61,10 +63,12 @@ export interface SubscriptionFormData {
   payment_day?: number;
   service_url?: string;
   service_image_url?: string;
+  logo_url?: string;
   category?: string;
   status?: 'active' | 'paused' | 'canceled';
   payment_method?: string;
   start_date?: string;
+  next_payment_date?: string;
   auto_renewal?: boolean;
   memo?: string;
 }

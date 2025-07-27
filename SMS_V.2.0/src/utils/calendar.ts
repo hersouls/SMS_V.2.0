@@ -135,8 +135,8 @@ function calculatePaymentDates(
   monthEnd: Date
 ): Date[] {
   const dates: Date[] = [];
-  const startDate = new Date(subscription.next_payment_date);
-  const billingDay = new Date(subscription.next_payment_date).getDate();
+  const startDate = new Date(subscription.next_payment_date || '');
+  const billingDay = new Date(subscription.next_payment_date || '').getDate();
   const cycle = subscription.payment_cycle;
 
   // 시작일이 이번 달보다 이전인 경우

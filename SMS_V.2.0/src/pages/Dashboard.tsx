@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
   const [activeSubscriptions, setActiveSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
-  const [isAddingSampleData, setIsAddingSampleData] = useState(false);
+
 
   const fetchDashboardData = useCallback(async () => {
     try {
@@ -109,8 +109,9 @@ const Dashboard: React.FC = () => {
     });
   };
 
+  // Sample data function (commented out for now)
+  /*
   const addSampleData = async () => {
-    setIsAddingSampleData(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -226,10 +227,9 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Error adding sample data:', error);
       alert('Failed to add sample data');
-    } finally {
-      setIsAddingSampleData(false);
     }
   };
+  */
 
   const formatCurrency = (amount: number, currency: 'KRW' | 'USD' = 'KRW') => {
     if (currency === 'USD') {
@@ -380,8 +380,12 @@ const Dashboard: React.FC = () => {
                           alt={subscription.service_name}
                           className="w-10 h-10 rounded-lg object-cover"
                           onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling!.style.display = 'flex';
+                            const target = e.currentTarget as HTMLImageElement;
+                            target.style.display = 'none';
+                            const nextSibling = target.nextElementSibling as HTMLElement;
+                            if (nextSibling) {
+                              nextSibling.style.display = 'flex';
+                            }
                           }}
                         />
                       ) : null}
