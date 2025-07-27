@@ -1,13 +1,126 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon-192x192.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Moonwave - 구독 서비스 관리 앱</title>
+    <meta name="title" content="Moonwave - 구독 서비스 관리 앱">
+    <meta name="description" content="Netflix, Spotify, YouTube 등 모든 구독 서비스를 체계적으로 관리하고 결제일을 한눈에 확인하세요. 월 구독료 분석과 알림 기능으로 스마트한 구독 관리가 가능합니다.">
+    <meta name="keywords" content="구독 관리, 구독 서비스, Netflix, Spotify, YouTube, 결제 관리, 구독료 분석, 구독 알림">
+    <meta name="author" content="Moonwave Team">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://moonwave.app/">
+    <meta property="og:title" content="Moonwave - 구독 서비스 관리 앱">
+    <meta property="og:description" content="Netflix, Spotify, YouTube 등 모든 구독 서비스를 체계적으로 관리하고 결제일을 한눈에 확인하세요.">
+    <meta property="og:image" content="/icons/icon-512x512.svg">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:site_name" content="Moonwave">
+    <meta property="og:locale" content="ko_KR">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://moonwave.app/">
+    <meta property="twitter:title" content="Moonwave - 구독 서비스 관리 앱">
+    <meta property="twitter:description" content="Netflix, Spotify, YouTube 등 모든 구독 서비스를 체계적으로 관리하고 결제일을 한눈에 확인하세요.">
+    <meta property="twitter:image" content="/icons/icon-512x512.svg">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Moonwave">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.svg">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Moonwave",
+      "description": "구독 서비스를 체계적으로 관리하는 웹 애플리케이션",
+      "url": "https://moonwave.app",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Moonwave Team"
+      },
+      "screenshot": "/icons/icon-512x512.svg",
+      "softwareVersion": "2.0.0"
+    }
+    </script>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- Performance Optimization -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <!-- Critical CSS -->
+    <style>
+      /* Critical CSS for initial render */
+      body {
+        margin: 0;
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #f0f4ff 0%, #f8faff 100%);
+        min-height: 100vh;
+      }
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f0f4ff 0%, #f8faff 100%);
+        z-index: 9999;
+      }
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid #e5e7eb;
+        border-top: 3px solid #6366f1;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Loading screen for better perceived performance -->
+      <div class="loading-screen">
+        <div class="spinner"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply font-pretendard antialiased;
+    @apply font-sans antialiased;
   }
 
   /* 한글 텍스트 최적화 */
@@ -141,15 +141,15 @@
 
   /* 한글 텍스트 유틸리티 */
   .text-korean {
-    @apply font-pretendard antialiased tracking-korean-normal break-keep-ko;
+    @apply font-sans antialiased tracking-korean-normal break-keep-ko;
   }
 
   .text-korean-sm {
-    @apply font-pretendard antialiased tracking-korean-normal break-keep-ko text-sm;
+    @apply font-sans antialiased tracking-korean-normal break-keep-ko text-sm;
   }
 
   .text-korean-lg {
-    @apply font-pretendard antialiased tracking-korean-normal break-keep-ko text-lg;
+    @apply font-sans antialiased tracking-korean-normal break-keep-ko text-lg;
   }
 }
 
