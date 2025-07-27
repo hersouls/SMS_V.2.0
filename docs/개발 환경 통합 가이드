@@ -13,6 +13,15 @@ Moonwave 개발 환경 통합 가이드를 정적 서비스(GitHub Pages)와 동
 
 ---
 
+## ⚠️ CRITICAL WARNINGS - READ FIRST
+
+**⚠️ IMPORTANT: Always cd SMS_V.2.0 before running any commands**
+**⚠️ DO NOT create src folder manually - Vite already created it**
+**⚠️ GitHub Actions workflows must be in root .github folder**
+**⚠️ All development work must happen inside SMS_V.2.0 directory**
+
+---
+
 ## ✅ 개발 환경 개요 (정적 서비스)
 
 | 항목 | 사용 기술 |
@@ -35,8 +44,11 @@ Moonwave 개발 환경 통합 가이드를 정적 서비스(GitHub Pages)와 동
 git clone https://github.com/yourusername/moonwave-static.git
 cd moonwave-static
 
-# 의존성 설치
-npm install
+# ⚠️ IMPORTANT: Navigate to project directory
+cd SMS_V.2.0
+
+# 의존성 설치 (--legacy-peer-deps for Vite 7 compatibility)
+npm install --legacy-peer-deps
 
 # 환경 변수 설정
 cp .env.example .env.local
@@ -48,13 +60,16 @@ npm run dev
 
 ### 2단계: Supabase 연동
 ```env
-# .env.local
+# SMS_V.2.0/.env.local
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your_anon_key
 ```
 
 ### 3단계: GitHub 푸시 & 자동 배포
 ```bash
+# ⚠️ IMPORTANT: Make sure you're in SMS_V.2.0 directory
+cd SMS_V.2.0
+
 # 변경사항 커밋
 git add .
 git commit -m "feat: 새로운 기능 추가"
@@ -70,15 +85,15 @@ git push origin main
 ### 환경별 설정 파일
 ```bash
 # 개발 환경
-.env.local                # localhost 개발용 (git 제외)
+SMS_V.2.0/.env.local                # localhost 개발용 (git 제외)
 
 # 프로덕션 환경  
-.env.production          # GitHub Secrets에서 자동 주입
+SMS_V.2.0/.env.production          # GitHub Secrets에서 자동 주입
 ```
 
 ### Supabase 프로젝트 설정
 ```typescript
-// src/lib/supabase.ts
+// SMS_V.2.0/src/lib/supabase.ts
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
@@ -92,299 +107,298 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 ## ⚙ GitHub Actions 자동 배포
 
 ```yaml
-# .github/workflows/deploy.yml
+# .github/workflows/deploy.yml (Repository ROOT)
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build
-        run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
-          
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: SMS_V.2.0/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: SMS_V.2.0
+      run: npm ci --legacy-peer-deps
+    
+    - name: Build
+      working-directory: SMS_V.2.0
+      run: npm run build
+      env:
+        VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+        VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./SMS_V.2.0/dist
 ```
 
 ---
 
-## 🛠 프로젝트 구조
+## 📁 프로젝트 구조
 
 ```
-moonwave-static/
+Repository Root/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # GitHub Actions 배포 설정
-├── public/
-│   └── CNAME                   # 커스텀 도메인 설정
-├── src/
-│   ├── components/
-│   │   ├── ui/                 # 재사용 가능한 UI 컴포넌트
-│   │   ├── layout/             # 레이아웃 컴포넌트
-│   │   └── features/           # 기능별 컴포넌트
-│   ├── contexts/
-│   │   └── SupabaseContext.tsx # Supabase 컨텍스트
-│   ├── hooks/
-│   │   └── useSupabase.ts      # Supabase 훅
-│   ├── lib/
-│   │   ├── supabase.ts         # Supabase 클라이언트
-│   │   └── utils.ts            # 유틸리티 함수
-│   ├── pages/
-│   │   ├── Home.tsx            # 홈 페이지
-│   │   ├── Dashboard.tsx       # 대시보드
-│   │   └── Auth.tsx            # 인증 페이지
-│   ├── styles/
-│   │   └── globals.css         # Tailwind CSS
-│   ├── App.tsx
-│   └── main.tsx
-├── .env.example                # 환경 변수 템플릿
-├── .gitignore
-├── index.html
-├── package.json
-├── tailwind.config.js
-├── tsconfig.json
-└── vite.config.ts
+│       ├── deploy.yml          # GitHub Actions (ROOT)
+│       └── ci.yml
+├── docs/                       # Documentation
+├── SMS_V.2.0/                  # Main project directory
+│   ├── src/                    # Source code (Vite created)
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── lib/
+│   │   └── ...
+│   ├── public/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   └── .env.local
+└── README.md
 ```
 
 ---
 
-## 🔧 Vite 설정
+## 🔧 개발 환경 설정
+
+### 1. Cursor IDE 설정
+
+```json
+// .vscode/settings.json (in SMS_V.2.0/)
+{
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  }
+}
+```
+
+### 2. TypeScript 설정
+
+```json
+// SMS_V.2.0/tsconfig.app.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+### 3. Vite 설정
 
 ```typescript
-// vite.config.ts
+// SMS_V.2.0/vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/moonwave-static/', // GitHub Pages base path
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+      '@': path.resolve(__dirname, './src')
+    }
   },
-  base: process.env.NODE_ENV === 'production' 
-    ? '/moonwave-static/' // GitHub Pages 서브디렉토리
-    : '/',
   build: {
     outDir: 'dist',
-    sourcemap: true,
-  },
+    sourcemap: true
+  }
 })
-```
-
----
-
-## 🎯 개발 시작하기
-
-### 1. 프로젝트 초기화
-```bash
-# 새 프로젝트 생성
-npm create vite@latest moonwave-static -- --template react-ts
-
-# Tailwind CSS 설치
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-
-# Supabase 클라이언트 설치
-npm install @supabase/supabase-js
-
-# 추가 의존성
-npm install @tailwindcss/container-queries clsx tailwind-merge
-npm install @radix-ui/react-icons lucide-react
-```
-
-### 2. Tailwind 설정
-```javascript
-// tailwind.config.js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      fontFamily: {
-        pretendard: ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-      },
-    },
-  },
-  plugins: [
-    require('@tailwindcss/container-queries'),
-  ],
-}
-```
-
-### 3. 환경 변수 설정
-```bash
-# .env.example
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-```
-
-### 4. GitHub Repository 설정
-```bash
-# GitHub에서 새 repository 생성 후
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/yourusername/moonwave-static.git
-git push -u origin main
-```
-
-### 5. GitHub Pages 활성화
-1. Repository Settings → Pages
-2. Source: GitHub Actions 선택
-3. Custom domain: xxx.moonwave.kr 입력
-
----
-
-## 📱 로컬 개발 가이드
-
-### 개발 서버 실행
-```bash
-# 개발 모드
-npm run dev
-
-# 빌드 테스트
-npm run build
-npm run preview
-```
-
-### Mock 데이터 사용 (개발 초기)
-```typescript
-// src/hooks/useSubscriptions.ts
-const useSubscriptions = () => {
-  const [subscriptions, setSubscriptions] = useState([])
-  const [loading, setLoading] = useState(true)
-  
-  useEffect(() => {
-    // 개발 초기: Mock 데이터 사용
-    if (import.meta.env.DEV && !import.meta.env.VITE_SUPABASE_URL) {
-      setSubscriptions(mockSubscriptions)
-      setLoading(false)
-      return
-    }
-    
-    // 프로덕션: Supabase 실제 데이터
-    fetchSubscriptionsFromSupabase()
-  }, [])
-}
 ```
 
 ---
 
 ## 🚀 배포 프로세스
 
-### 1. GitHub Secrets 설정
-Repository Settings → Secrets and variables → Actions에서 추가:
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-
-### 2. 자동 배포 확인
+### 1. 로컬 빌드 테스트
 ```bash
-# main 브랜치 푸시 시 자동 배포
-git push origin main
+# ⚠️ IMPORTANT: Make sure you're in SMS_V.2.0 directory
+cd SMS_V.2.0
 
-# Actions 탭에서 배포 상태 확인
-# https://github.com/yourusername/moonwave-static/actions
+# 빌드 테스트
+npm run build
+
+# 빌드 결과 확인
+ls dist/
 ```
 
-### 3. 커스텀 도메인 설정
+### 2. GitHub Secrets 설정
+GitHub Repository → Settings → Secrets and variables → Actions:
+
+| Secret Name | Value |
+|-------------|-------|
+| `VITE_SUPABASE_URL` | `https://your-project.supabase.co` |
+| `VITE_SUPABASE_ANON_KEY` | `your_anon_key` |
+
+### 3. 자동 배포 확인
+- GitHub Actions 탭에서 워크플로우 실행 상태 확인
+- 배포 완료 후 `https://username.github.io/moonwave-static/` 접속
+
+---
+
+## 🔧 Common Mistakes and Solutions
+
+### ❌ Common Mistakes
+
+1. **Running commands in wrong directory**
+   - ❌ Wrong: `npm install` from repository root
+   - ✅ Correct: `cd SMS_V.2.0 && npm install --legacy-peer-deps`
+
+2. **GitHub Actions in wrong location**
+   - ❌ Wrong: `.github/workflows/` inside SMS_V.2.0
+   - ✅ Correct: `.github/workflows/` in repository root
+
+3. **Creating duplicate src folders**
+   - ❌ Wrong: Creating another src folder
+   - ✅ Correct: Use existing SMS_V.2.0/src created by Vite
+
+4. **npm dependency conflicts**
+   - ❌ Wrong: `npm install` without --legacy-peer-deps
+   - ✅ Correct: `npm install --legacy-peer-deps`
+
+5. **Incorrect import paths**
+   - ❌ Wrong: `import Button from '../components/Button'`
+   - ✅ Correct: `import Button from '@/components/ui/Button'`
+
+### ✅ Solutions
+
+1. **Directory Verification**
+   ```bash
+   # Always verify your location
+   pwd  # Should show: /workspace/SMS_V.2.0
+   ls   # Should show: src/, package.json, vite.config.ts
+   ```
+
+2. **Path Alias Usage**
+   ```typescript
+   // ✅ Correct imports
+   import { Button } from '@/components/ui/Button'
+   import { supabase } from '@/lib/supabase'
+   import { useAuth } from '@/contexts/AuthContext'
+   ```
+
+3. **Environment Variables**
+   ```bash
+   # SMS_V.2.0/.env.local
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_anon_key
+   ```
+
+4. **Build Commands**
+   ```bash
+   # Development
+   cd SMS_V.2.0
+   npm run dev
+
+   # Build
+   cd SMS_V.2.0
+   npm run build
+
+   # Deploy
+   git add .
+   git commit -m "feat: new feature"
+   git push origin main
+   ```
+
+---
+
+## 📋 Troubleshooting
+
+### npm install errors
 ```bash
-# public/CNAME 파일 생성
-echo "xxx.moonwave.kr" > public/CNAME
+# Clear cache and reinstall
+cd SMS_V.2.0
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
+```
+
+### Build errors
+```bash
+# Check TypeScript errors
+cd SMS_V.2.0
+npx tsc --noEmit
+
+# Check Vite build
+npm run build
+```
+
+### GitHub Actions failures
+1. Check workflow file location (must be in root .github/workflows/)
+2. Verify working-directory: SMS_V.2.0
+3. Check GitHub Secrets are set correctly
+4. Verify cache-dependency-path: SMS_V.2.0/package-lock.json
+
+### Development server issues
+```bash
+# Clear Vite cache
+cd SMS_V.2.0
+rm -rf node_modules/.vite
+npm run dev
 ```
 
 ---
 
-## 🔍 개발 vs 프로덕션 차이
+## 🎯 Best Practices
 
-| 항목 | 개발 환경 | 프로덕션 환경 |
-|------|----------|-------------|
-| URL | http://localhost:5173 | https://xxx.moonwave.kr |
-| 환경 변수 | .env.local | GitHub Secrets |
-| 데이터 | Mock 허용 | Supabase 필수 |
-| 빌드 | Vite HMR | 정적 파일 |
-| 에러 처리 | 상세 로그 | 사용자 친화적 메시지 |
+1. **Always start with directory check**
+   ```bash
+   pwd  # Verify you're in SMS_V.2.0
+   ```
 
----
+2. **Use path aliases consistently**
+   ```typescript
+   // ✅ Good
+   import { Button } from '@/components/ui/Button'
+   
+   // ❌ Avoid
+   import { Button } from '../../../components/ui/Button'
+   ```
 
-## 📋 체크리스트
+3. **Test builds locally before pushing**
+   ```bash
+   cd SMS_V.2.0
+   npm run build
+   ```
 
-### 개발 환경 설정
-- [ ] Node.js 20+ 설치
-- [ ] Cursor IDE 설치
-- [ ] Git 설정 완료
-- [ ] npm 의존성 설치
+4. **Use --legacy-peer-deps for all npm commands**
+   ```bash
+   npm install --legacy-peer-deps
+   npm ci --legacy-peer-deps
+   ```
 
-### Supabase 설정
-- [ ] Supabase 프로젝트 생성
-- [ ] 환경 변수 설정
-- [ ] RLS 정책 구성
-- [ ] 초기 데이터 삽입
-
-### GitHub 설정
-- [ ] Repository 생성
-- [ ] GitHub Secrets 설정
-- [ ] GitHub Pages 활성화
-- [ ] 커스텀 도메인 연결
-
-### 배포 확인
-- [ ] GitHub Actions 실행 성공
-- [ ] 사이트 접속 확인
-- [ ] Supabase 연동 확인
-- [ ] 성능 테스트 완료
+5. **Keep GitHub Actions in repository root**
+   - Workflows: `.github/workflows/`
+   - Project: `SMS_V.2.0/`
 
 ---
 
-*이 가이드는 정적 서비스(GitHub Pages) 버전입니다. 동적 서비스(Vercel + Next.js) 버전은 별도 문서를 참조하세요.*
+## 📚 Additional Resources
+
+- [Vite Documentation](https://vitejs.dev/)
+- [Supabase Documentation](https://supabase.com/docs)
+- [GitHub Pages Documentation](https://pages.github.com/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
