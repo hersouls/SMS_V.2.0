@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CurrencyDollarIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
 import { useExchangeRateContext } from '../../hooks/useExchangeRateContext';
+import Typography from '../ui/Typography';
 
 interface ExchangeRateExampleProps {
   className?: string;
@@ -40,18 +41,18 @@ export const ExchangeRateExample: React.FC<ExchangeRateExampleProps> = ({ classN
             <CurrencyDollarIcon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-900 font-pretendard">
+            <Typography.H3 className="text-gray-900">
               실시간 환율 변환기
-            </h3>
-            <p className="text-sm text-gray-500 font-pretendard">
+            </Typography.H3>
+            <Typography.Caption className="text-gray-500">
               현재 환율: {getFormattedRate()}
-            </p>
+            </Typography.Caption>
           </div>
         </div>
 
         {error ? (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <p className="text-red-600 font-pretendard">{error}</p>
+            <Typography.Body className="text-red-600">{error}</Typography.Body>
           </div>
         ) : (
           <>
@@ -59,33 +60,35 @@ export const ExchangeRateExample: React.FC<ExchangeRateExampleProps> = ({ classN
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-700 font-pretendard">
+                  <Typography.Caption className="text-gray-700">
                     현재 환율
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 font-pretendard">
+                  </Typography.Caption>
+                  <Typography.H2 className="text-gray-900">
                     {isLoading ? (
                       <div className="w-8 h-8 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
                     ) : (
                       `${rate.toLocaleString()} KRW`
                     )}
-                  </p>
+                  </Typography.H2>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500 font-pretendard">
-                    마지막 업데이트
-                  </p>
-                  <p className="text-sm font-medium text-gray-700 font-pretendard">
-                    {getFormattedLastUpdated()}
-                  </p>
-                </div>
+                                  <div className="text-right">
+                    <Typography.Caption className="text-gray-500">
+                      마지막 업데이트
+                    </Typography.Caption>
+                    <Typography.Caption className="text-gray-700">
+                      {getFormattedLastUpdated()}
+                    </Typography.Caption>
+                  </div>
               </div>
             </div>
 
             {/* 통화 변환 입력 */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 font-pretendard mb-2">
-                  USD (달러)
+                <label className="block mb-2">
+                  <Typography.Caption className="text-gray-700">
+                    USD (달러)
+                  </Typography.Caption>
                 </label>
                 <div className="relative">
                   <input
@@ -111,8 +114,10 @@ export const ExchangeRateExample: React.FC<ExchangeRateExampleProps> = ({ classN
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 font-pretendard mb-2">
-                  KRW (원화)
+                <label className="block mb-2">
+                  <Typography.Caption className="text-gray-700">
+                    KRW (원화)
+                  </Typography.Caption>
                 </label>
                 <div className="relative">
                   <input
@@ -135,16 +140,16 @@ export const ExchangeRateExample: React.FC<ExchangeRateExampleProps> = ({ classN
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div className="bg-blue-50 rounded-lg p-3">
-                  <p className="text-sm text-blue-600 font-pretendard">USD</p>
-                  <p className="text-lg font-bold text-blue-900 font-pretendard">
+                  <Typography.Caption className="text-blue-600">USD</Typography.Caption>
+                  <Typography.H3 className="text-blue-900">
                     ${usdAmount.toFixed(2)}
-                  </p>
+                  </Typography.H3>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-3">
-                  <p className="text-sm text-purple-600 font-pretendard">KRW</p>
-                  <p className="text-lg font-bold text-purple-900 font-pretendard">
+                  <Typography.Caption className="text-purple-600">KRW</Typography.Caption>
+                  <Typography.H3 className="text-purple-900">
                     {krwAmount.toLocaleString()}원
-                  </p>
+                  </Typography.H3>
                 </div>
               </div>
             </div>
