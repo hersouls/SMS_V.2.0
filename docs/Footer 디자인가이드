@@ -1,0 +1,524 @@
+## 요약
+
+Moonwave Footer 디자인가이드 1.0은 프로젝트의 하단 영역 컴포넌트들(Footer, Music Player, Floating Actions)의 표준 디자인 시스템을 정의합니다. Pretendard 폰트와 Container Queries를 활용한 반응형 설계, Utility-First CSS 접근법으로 일관된 사용자 경험을 제공합니다.
+
+## 분석
+
+Footer 시스템은 3개의 주요 컴포넌트로 구성됩니다:
+- **MainFooter**: 정적 정보 영역 (소셜 링크, 저작권)
+- **MusicPlayerFooter**: 고정형 음악 재생 컨트롤러
+- **FloatingActionButtons**: 우하단 플로팅 액션 버튼
+
+각 컴포넌트는 Moonwave 디자인 토큰을 활용하여 일관된 시각적 언어를 유지하며, 접근성과 반응형 디자인을 최우선으로 고려합니다.
+
+## 실행
+
+# Moonwave Footer Design Guide v1.0
+
+> 하단 영역 컴포넌트의 표준 디자인 시스템 및 구현 가이드
+
+## 목차
+
+1. [개요](#1-개요)
+2. [디자인 원칙](#2-디자인-원칙)
+3. [컴포넌트 아키텍처](#3-컴포넌트-아키텍처)
+4. [Main Footer](#4-main-footer)
+5. [Music Player Footer](#5-music-player-footer)
+6. [Floating Action Buttons](#6-floating-action-buttons)
+7. [레이아웃 통합](#7-레이아웃-통합)
+8. [접근성 가이드](#8-접근성-가이드)
+9. [구현 체크리스트](#9-구현-체크리스트)
+
+---
+
+## 1. 개요
+
+### 1.1 목적
+Footer 시스템은 Moonwave 애플리케이션의 하단 영역을 구성하는 핵심 컴포넌트들을 정의합니다. 정보 제공, 미디어 컨트롤, 빠른 액션 접근을 위한 통합된 디자인 시스템을 제공합니다.
+
+### 1.2 구성 요소
+- **Main Footer**: 회사 정보 및 소셜 링크
+- **Music Player Footer**: 백그라운드 음악 재생 컨트롤
+- **Floating Action Buttons**: 주요 액션 빠른 접근
+
+### 1.3 기술 스택
+- React + TypeScript
+- Tailwind CSS + Container Queries
+- Pretendard Variable Font
+- Radix/Lucide Icons
+- Headless UI (Transitions)
+
+---
+
+## 2. 디자인 원칙
+
+### 2.1 핵심 원칙
+
+#### Utility-First CSS
+```tsx
+// 표준 Footer 유틸리티 조합
+const FOOTER_PATTERNS = {
+  container: "@container bg-white border-t border-gray-200",
+  glass: "bg-white/20 backdrop-blur-md border border-white/30",
+  gradient: "bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900",
+}
+```
+
+#### 디자인 토큰 활용
+```typescript
+const DESIGN_TOKENS = {
+  // 버튼 패턴
+  BUTTON_BASE: "font-pretendard antialiased tracking-korean-normal font-semibold px-4 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
+  
+  // 카드 패턴
+  CARD_BASE: "font-pretendard antialiased bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-200",
+  
+  // 한글 텍스트
+  KOREAN_TEXT_BASE: "font-pretendard antialiased tracking-korean-normal break-keep-ko",
+  
+  // 컨테이너 반응형
+  CONTAINER_RESPONSIVE: "@container @lg:flex-row @lg:gap-6 @lg:items-center flex flex-col gap-4",
+  
+  // 그라디언트
+  GRADIENT_PRIMARY: "bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900",
+  GRADIENT_ACCENT: "bg-gradient-to-br from-purple-500 to-blue-500"
+}
+```
+
+### 2.2 레이어 구조
+
+```css
+/* Z-index 계층 구조 */
+.main-footer { z-index: 10; }
+.music-player-footer { z-index: 30; }
+.floating-actions { z-index: 40; }
+.global-notifications { z-index: 50; }
+```
+
+---
+
+## 3. 컴포넌트 아키텍처
+
+### 3.1 컴포넌트 계층 구조
+
+```
+Footer System
+├── MainFooter (정적)
+│   ├── Social Links
+│   └── Copyright Info
+├── MusicPlayerFooter (고정)
+│   ├── Player Controls
+│   ├── Progress Bar
+│   └── Volume Control
+└── FloatingActionButtons (고정)
+    ├── Add Subscription
+    └── Debug Tools (dev only)
+```
+
+### 3.2 상태 관리
+
+```typescript
+// Music Player 상태 관리
+const useMusicPlayer = (isLoggedIn: boolean, autoPlay: boolean = true) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(0);
+  const [volume, setVolume] = useState(0.7);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [repeatMode, setRepeatMode] = useState<'none' | 'one' | 'all'>('all');
+  
+  // ... 플레이어 로직
+}
+```
+
+---
+
+## 4. Main Footer
+
+### 4.1 구조 및 레이아웃
+
+```tsx
+const MainFooter = () => {
+  return (
+    <footer className="@container bg-white border-t border-gray-200">
+      <div className={cn(
+        "mx-auto max-w-7xl px-6 py-8",
+        DESIGN_TOKENS.CONTAINER_RESPONSIVE,
+        "@lg:justify-between"
+      )}>
+        {/* 소셜 링크 */}
+        <div className="@container flex justify-center @lg:justify-end @lg:order-2 space-x-6">
+          {/* 소셜 아이콘들 */}
+        </div>
+        
+        {/* 저작권 정보 */}
+        <div className="@container @lg:order-1 @lg:mt-0 mt-8">
+          <p className={cn(
+            DESIGN_TOKENS.KOREAN_TEXT_BASE,
+            "text-center @lg:text-left text-sm leading-5 text-gray-500"
+          )}>
+            &copy; 2025 Moonwave Company, Inc. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+```
+
+### 4.2 소셜 링크 구현
+
+```tsx
+const socialLinks = [
+  { name: 'Facebook', icon: FacebookIcon, href: '#' },
+  { name: 'Instagram', icon: InstagramIcon, href: '#' },
+  { name: 'Twitter', icon: TwitterIcon, href: '#' },
+  { name: 'GitHub', icon: GitHubIcon, href: '#' },
+];
+
+// 접근성을 고려한 소셜 링크
+<a 
+  href={item.href} 
+  className={cn(
+    "text-gray-400 hover:text-gray-500 transition-colors duration-200",
+    "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg p-1"
+  )}
+  aria-label={`${item.name} 팔로우하기`}
+>
+  <span className="sr-only">{item.name}</span>
+  <item.icon className="h-6 w-6" aria-hidden="true" />
+</a>
+```
+
+### 4.3 반응형 디자인
+
+| 브레이크포인트 | 레이아웃 |
+|---------------|---------|
+| Mobile | 중앙 정렬, 세로 배치 |
+| @lg | 좌우 정렬, 가로 배치 |
+| @xl | 최대 너비 제한 |
+
+---
+
+## 5. Music Player Footer
+
+### 5.1 플레이어 구조
+
+```tsx
+const MusicPlayerFooter = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  return (
+    <div className={cn(
+      "@container fixed bottom-0 left-0 right-0 z-30",
+      DESIGN_TOKENS.GRADIENT_PRIMARY,
+      "backdrop-blur-md shadow-2xl border-t border-white/10"
+    )}>
+      {/* 확장된 플레이어 UI */}
+      {isExpanded && <ExpandedPlayer />}
+      
+      {/* 메인 플레이어 컨트롤 */}
+      <MainPlayerControls />
+      
+      {/* 프로그레스 바 */}
+      <ProgressBar />
+    </div>
+  );
+};
+```
+
+### 5.2 플레이리스트 관리
+
+```typescript
+const PLAYLIST = [
+  {
+    id: 1,
+    title: 'Glow Not Noise',
+    artist: 'Moonwave',
+    file: '/Glow Not Noise.mp3',
+    duration: '3:45'
+  },
+  // ... 추가 트랙들
+];
+
+// 셔플 및 반복 모드
+type RepeatMode = 'none' | 'one' | 'all';
+```
+
+### 5.3 플레이어 컨트롤
+
+#### 기본 컨트롤
+```tsx
+// 재생/일시정지 버튼
+<button
+  onClick={handlePlayPause}
+  className={cn(
+    DESIGN_TOKENS.BUTTON_BASE,
+    "w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full",
+    "focus:ring-white/50"
+  )}
+  aria-label={isPlaying ? "일시정지" : "재생"}
+>
+  {isPlaying ? <Pause /> : <Play />}
+</button>
+```
+
+#### 확장 컨트롤
+- 셔플 모드
+- 반복 재생 (없음/한곡/전체)
+- 볼륨 조절
+- 시크바
+
+### 5.4 자동 재생 로직
+
+```typescript
+useEffect(() => {
+  if (isLoggedIn && autoPlay && audioRef.current) {
+    const playMusic = async () => {
+      try {
+        setIsLoading(true);
+        audioRef.current!.volume = volume;
+        await audioRef.current!.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.log('자동 재생 실패 (브라우저 정책):', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    const timer = setTimeout(playMusic, 1000);
+    return () => clearTimeout(timer);
+  }
+}, [isLoggedIn, autoPlay, volume]);
+```
+
+---
+
+## 6. Floating Action Buttons
+
+### 6.1 버튼 구성
+
+```tsx
+const FloatingActionButtons = ({ 
+  onAddClick, 
+  onEmergencyClick,
+  onDebugClick 
+}) => {
+  return (
+    <div className="@container fixed bottom-32 right-4 flex flex-col gap-3 z-40">
+      {/* 개발 환경 전용 버튼들 */}
+      {process.env.NODE_ENV === 'development' && (
+        <>
+          <DebugButton onClick={onDebugClick} />
+          <EmergencyButton onClick={onEmergencyClick} />
+        </>
+      )}
+      
+      {/* 메인 액션 버튼 */}
+      <AddButton onClick={onAddClick} />
+    </div>
+  );
+};
+```
+
+### 6.2 버튼 스타일링
+
+```tsx
+// 메인 액션 버튼
+<Button
+  onClick={onAddClick}
+  variant="gradient"
+  size="icon"
+  className={cn(
+    DESIGN_TOKENS.BUTTON_BASE,
+    "w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110",
+    DESIGN_TOKENS.GRADIENT_ACCENT,
+    "text-white focus:ring-purple-400"
+  )}
+  aria-label="새 구독 추가"
+>
+  <Plus className="w-6 h-6" />
+</Button>
+```
+
+### 6.3 위치 및 간격
+
+- **위치**: 우하단 고정 (`bottom-32 right-4`)
+- **간격**: 버튼 간 12px (`gap-3`)
+- **크기**: 48x48px (`w-12 h-12`)
+- **호버 효과**: 10% 확대 (`hover:scale-110`)
+
+---
+
+## 7. 레이아웃 통합
+
+### 7.1 전체 레이아웃 구조
+
+```tsx
+const AppLayout = ({ children }) => {
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* 메인 콘텐츠 */}
+      <main className="flex-1">{children}</main>
+      
+      {/* Footer 시스템 */}
+      <MainFooter />
+      
+      {/* 고정 요소들 */}
+      <MusicPlayerFooter isLoggedIn={isLoggedIn} />
+      <FloatingActionButtons {...actionHandlers} />
+    </div>
+  );
+};
+```
+
+### 7.2 여백 관리
+
+```css
+/* Music Player가 있을 때 하단 여백 */
+.with-music-player {
+  padding-bottom: 120px; /* 플레이어 높이 + 여백 */
+}
+
+/* Floating Actions 영역 확보 */
+.content-wrapper {
+  margin-bottom: 200px; /* 플로팅 버튼 영역 */
+}
+```
+
+### 7.3 반응형 고려사항
+
+| 화면 크기 | Main Footer | Music Player | Floating Actions |
+|----------|-------------|--------------|------------------|
+| Mobile | 세로 정렬 | 축소형 | 우하단 고정 |
+| Tablet | 가로 정렬 | 기본형 | 우하단 고정 |
+| Desktop | 가로 정렬 | 확장 가능 | 우하단 고정 |
+
+---
+
+## 8. 접근성 가이드
+
+### 8.1 키보드 내비게이션
+
+```tsx
+// 포커스 가능한 요소
+<button
+  tabIndex={0}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleAction();
+    }
+  }}
+  className="focus:ring-2 focus:ring-offset-2"
+>
+```
+
+### 8.2 ARIA 레이블
+
+```tsx
+// 아이콘 버튼
+<button aria-label="재생">
+  <Play className="w-5 h-5" />
+</button>
+
+// 슬라이더
+<input
+  type="range"
+  aria-label="볼륨 조절"
+  aria-valuemin="0"
+  aria-valuemax="100"
+  aria-valuenow={volume * 100}
+/>
+```
+
+### 8.3 스크린 리더 지원
+
+```tsx
+// 숨겨진 텍스트
+<span className="sr-only">현재 재생 중: {currentSong.title}</span>
+
+// 라이브 영역
+<div aria-live="polite" aria-atomic="true">
+  {isPlaying ? '재생 중' : '일시정지'}
+</div>
+```
+
+---
+
+## 9. 구현 체크리스트
+
+### 9.1 Main Footer
+- [ ] 소셜 링크 구현
+- [ ] 저작권 정보 표시
+- [ ] Container Queries 반응형
+- [ ] 접근성 레이블 추가
+
+### 9.2 Music Player Footer
+- [ ] 자동 재생 로직
+- [ ] 플레이리스트 관리
+- [ ] 셔플/반복 모드
+- [ ] 볼륨 컨트롤
+- [ ] 확장/축소 UI
+- [ ] 프로그레스 바
+- [ ] 키보드 단축키
+
+### 9.3 Floating Action Buttons
+- [ ] 메인 액션 버튼
+- [ ] 개발 환경 조건부 버튼
+- [ ] 호버 애니메이션
+- [ ] 포커스 스타일
+- [ ] 모바일 터치 영역
+
+### 9.4 통합 및 테스트
+- [ ] 레이아웃 통합
+- [ ] Z-index 계층 확인
+- [ ] 반응형 테스트
+- [ ] 접근성 검증
+- [ ] 성능 최적화
+
+---
+
+## 부록: 빠른 참조
+
+### Footer 클래스 조합
+
+```css
+/* Main Footer */
+.moonwave-footer {
+  @apply @container bg-white border-t border-gray-200;
+}
+
+/* Music Player */
+.moonwave-music-player {
+  @apply @container fixed bottom-0 left-0 right-0 z-30
+         bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900
+         backdrop-blur-md shadow-2xl border-t border-white/10;
+}
+
+/* Floating Button */
+.moonwave-fab {
+  @apply w-12 h-12 rounded-full shadow-lg hover:shadow-xl 
+         transition-all duration-300 hover:scale-110
+         focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+```
+
+### 아이콘 사용 가이드
+
+```tsx
+// Music Player Icons
+import { 
+  Play, Pause, SkipBack, SkipForward,
+  Volume2, VolumeX, Shuffle, Repeat,
+  ChevronUp, ChevronDown 
+} from 'lucide-react';
+
+// Action Icons
+import { Plus, Home, Bell } from 'lucide-react';
+```
+
+---
+
+*이 문서는 Moonwave Footer 시스템의 표준 디자인 가이드입니다. Moonwave Design System v2.1과 완전히 호환됩니다.*
+
+*최종 업데이트: 2025년 1월*
