@@ -1,8 +1,3 @@
-import React, { Component, ReactNode } from 'react';
-
-interface ErrorInfo {
-  componentStack: string;
-}
 
 interface Props {
   children: ReactNode;
@@ -224,7 +219,6 @@ export const useErrorTracking = () => {
     sendToErrorService(errorData);
   };
 
-  const trackEvent = (eventName: string, properties?: Record<string, unknown>) => {
     // Send to analytics service
     if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
       (window as GtagWindow).gtag!('event', eventName, properties);

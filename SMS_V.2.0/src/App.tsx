@@ -1,7 +1,5 @@
 import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
-import { useAuth } from './hooks/useAuth'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import MusicPlayer from './components/layout/MusicPlayer'
@@ -128,8 +126,10 @@ function App() {
     <ErrorBoundary>
       <Router>
         <AuthProvider>
-          <PerformanceMonitor enableReporting={process.env.NODE_ENV === 'production'} />
-          <AppRoutes />
+          <ExchangeRateProvider>
+            <PerformanceMonitor enableReporting={process.env.NODE_ENV === 'production'} />
+            <AppRoutes />
+          </ExchangeRateProvider>
         </AuthProvider>
       </Router>
     </ErrorBoundary>
