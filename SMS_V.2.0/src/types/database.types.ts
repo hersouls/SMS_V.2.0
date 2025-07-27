@@ -1,5 +1,5 @@
 // Database types for Supabase
-export interface Subscription {
+export interface DatabaseSubscription {
   id: string;
   user_id: string;
   service_name: string;
@@ -25,6 +25,8 @@ export interface Subscription {
   created_at: string;
   updated_at: string;
 }
+
+
 
 export interface ExchangeRate {
   id: string;
@@ -85,6 +87,8 @@ export interface SubscriptionFormData {
   memo?: string;
 }
 
+
+
 // Dashboard stats types
 export interface DashboardStats {
   totalSubscriptions: number;
@@ -94,3 +98,8 @@ export interface DashboardStats {
   totalCostKRW: number;
   totalCostUSD: number;
 }
+
+
+
+// Legacy type alias for backward compatibility - using DatabaseSubscription as the primary type
+export type Subscription = DatabaseSubscription;

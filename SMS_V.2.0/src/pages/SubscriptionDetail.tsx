@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useSubscriptions } from '../hooks/useSubscriptions';
-import type { Subscription } from '../types/database.types';
+
 import DeleteConfirmationModal from '../components/features/subscription/DeleteConfirmationModal';
 
 const SubscriptionDetail: React.FC = () => {

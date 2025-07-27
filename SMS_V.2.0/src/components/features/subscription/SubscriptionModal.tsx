@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, X as XIcon } from 'lucide-react';
+import { X } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import type { Subscription, SubscriptionFormData } from '../../../types/database.types';
 
@@ -19,74 +19,55 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   title = '구독 추가'
 }) => {
   const [formData, setFormData] = useState<SubscriptionFormData>({
-    name: '',
-    url: '',
-    price: 0,
+    service_name: '',
+    service_url: '',
+    amount: 0,
     currency: 'KRW',
-    billingCycle: 'monthly',
-    billingDay: 1,
-    startDate: new Date().toISOString().split('T')[0],
-    autoRenew: true,
+    payment_cycle: 'monthly',
+    payment_day: 1,
+    start_date: new Date().toISOString().split('T')[0],
+    auto_renewal: true,
     status: 'active',
-    categories: [],
-    notifications: {
-      sevenDaysBefore: false,
-      threeDaysBefore: true,
-      onBillingDay: true
-    },
-    notes: '',
-    imageUrl: '',
-    paymentMethod: '',
-    tier: ''
+    memo: '',
+    service_image_url: '',
+    payment_method: '',
+    category: ''
   });
 
-  const [newCategory, setNewCategory] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (subscription) {
       setFormData({
-        name: subscription.name,
-        url: subscription.url || '',
-        price: subscription.price,
+        service_name: subscription.service_name,
+        service_url: subscription.service_url || '',
+        amount: subscription.amount,
         currency: subscription.currency,
-        billingCycle: subscription.billingCycle,
-        billingDay: subscription.billingDay,
-        startDate: subscription.startDate,
-        autoRenew: subscription.autoRenew,
+        payment_cycle: subscription.payment_cycle,
+        payment_day: subscription.payment_day,
+        start_date: subscription.start_date,
+        auto_renewal: subscription.auto_renewal,
         status: subscription.status,
-        categories: subscription.categories || [],
-        notifications: subscription.notifications || {
-          sevenDaysBefore: false,
-          threeDaysBefore: true,
-          onBillingDay: true
-        },
-        notes: subscription.notes || '',
-        imageUrl: subscription.imageUrl || '',
-        paymentMethod: subscription.paymentMethod || '',
-        tier: subscription.tier || ''
+        memo: subscription.memo || '',
+        service_image_url: subscription.service_image_url || '',
+        payment_method: subscription.payment_method || '',
+        category: subscription.category || ''
       });
     } else {
       setFormData({
-        name: '',
-        url: '',
-        price: 0,
+        service_name: '',
+        service_url: '',
+        amount: 0,
         currency: 'KRW',
-        billingCycle: 'monthly',
-        billingDay: 1,
-        startDate: new Date().toISOString().split('T')[0],
-        autoRenew: true,
+        payment_cycle: 'monthly',
+        payment_day: 1,
+        start_date: new Date().toISOString().split('T')[0],
+        auto_renewal: true,
         status: 'active',
-        categories: [],
-        notifications: {
-          sevenDaysBefore: false,
-          threeDaysBefore: true,
-          onBillingDay: true
-        },
-        notes: '',
-        imageUrl: '',
-        paymentMethod: '',
-        tier: ''
+        memo: '',
+        service_image_url: '',
+        payment_method: '',
+        category: ''
       });
     }
     setErrors({});
@@ -95,16 +76,16 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = '서비스명을 입력해주세요';
+    if (!formData.service_name.trim()) {
+      newErrors.service_name = '서비스명을 입력해주세요';
     }
 
-    if (formData.price <= 0) {
-      newErrors.price = '가격을 입력해주세요';
+    if (formData.amount <= 0) {
+      newErrors.amount = '금액을 입력해주세요';
     }
 
-    if (formData.billingDay < 1 || formData.billingDay > 31) {
-      newErrors.billingDay = '1-31 사이의 숫자를 입력해주세요';
+    if (formData.payment_day && (formData.payment_day < 1 || formData.payment_day > 31)) {
+      newErrors.payment_day = '결제일은 1-31 사이의 숫자여야 합니다';
     }
 
     setErrors(newErrors);
@@ -126,463 +107,227 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
     }
   };
 
-  const addCategory = () => {
-    if (newCategory.trim() && !formData.categories.includes(newCategory.trim())) {
-      handleInputChange('categories', [...formData.categories, newCategory.trim()]);
-      setNewCategory('');
-    }
-  };
-
-  const removeCategory = (category: string) => {
-    handleInputChange('categories', formData.categories.filter(c => c !== category));
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addCategory();
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        {/* Backdrop */}
-        <div 
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-          onClick={onClose}
-        />
-        
-        {/* Modal */}
-        <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-          {/* Header */}
-          <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold leading-6 text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
-                {title}
-              </h3>
-              <button
-                onClick={onClose}
-                className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b">
+          <h2 className="text-xl font-semibold font-pretendard tracking-ko-normal">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Service Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              서비스명 *
+            </label>
+            <input
+              type="text"
+              value={formData.service_name}
+              onChange={(e) => handleInputChange('service_name', e.target.value)}
+              className={cn(
+                "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal",
+                errors.service_name ? "border-red-500" : "border-gray-300"
+              )}
+              placeholder="서비스명을 입력하세요"
+            />
+            {errors.service_name && (
+              <p className="text-red-500 text-sm mt-1 font-pretendard tracking-ko-normal">
+                {errors.service_name}
+              </p>
+            )}
+          </div>
+
+          {/* Amount and Currency */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+                금액 *
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.amount}
+                onChange={(e) => handleInputChange('amount', parseFloat(e.target.value) || 0)}
+                className={cn(
+                  "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal",
+                  errors.amount ? "border-red-500" : "border-gray-300"
+                )}
+                placeholder="0"
+              />
+              {errors.amount && (
+                <p className="text-red-500 text-sm mt-1 font-pretendard tracking-ko-normal">
+                  {errors.amount}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+                통화
+              </label>
+              <select
+                value={formData.currency}
+                onChange={(e) => handleInputChange('currency', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
               >
-                <span className="sr-only">닫기</span>
-                <X className="h-6 w-6" aria-hidden="true" />
-              </button>
+                <option value="KRW">KRW</option>
+                <option value="USD">USD</option>
+              </select>
             </div>
           </div>
-          
-          {/* Content */}
-          <form onSubmit={handleSubmit} className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-            <div className="space-y-6">
-              {/* Service Image */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-2">
-                  서비스 이미지
-                </label>
-                <div className="flex items-center space-x-4">
-                  {formData.imageUrl && (
-                    <img
-                      src={formData.imageUrl}
-                      alt="Service"
-                      className="w-16 h-16 rounded-lg object-cover border border-gray-200"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <input
-                      type="url"
-                      placeholder="이미지 URL을 입력하세요"
-                      value={formData.imageUrl}
-                      onChange={(e) => handleInputChange('imageUrl', e.target.value)}
-                      className={cn(
-                        "w-full px-3 py-2 border rounded-md",
-                        "font-pretendard tracking-ko-normal",
-                        "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                        "border-gray-300"
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {/* Basic Information */}
-              <div className="space-y-4">
-                <h4 className="text-md font-semibold text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
-                  기본 정보
-                </h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                    서비스명 *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className={cn(
-                      "w-full px-3 py-2 border rounded-md",
-                      "font-pretendard tracking-ko-normal",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                      errors.name ? "border-red-300" : "border-gray-300"
-                    )}
-                    placeholder="서비스명을 입력하세요"
-                  />
-                  {errors.name && (
-                    <p className="text-sm text-red-600 mt-1">{errors.name}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                    서비스 URL
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.url}
-                    onChange={(e) => handleInputChange('url', e.target.value)}
-                    className={cn(
-                      "w-full px-3 py-2 border rounded-md",
-                      "font-pretendard tracking-ko-normal",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                      "border-gray-300"
-                    )}
-                    placeholder="https://example.com"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                      카테고리
-                    </label>
-                    <div className="flex space-x-2">
-                      <input
-                        type="text"
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        className={cn(
-                          "flex-1 px-3 py-2 border rounded-md",
-                          "font-pretendard tracking-ko-normal",
-                          "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                          "border-gray-300"
-                        )}
-                        placeholder="카테고리 추가"
-                      />
-                      <button
-                        type="button"
-                        onClick={addCategory}
-                        className={cn(
-                          "font-pretendard font-semibold rounded-lg px-3 py-2",
-                          "transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
-                          "tracking-ko-normal break-keep-ko antialiased",
-                          "bg-blue-500 hover:bg-blue-600 text-white focus:ring-blue-500"
-                        )}
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
-                    {formData.categories.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {formData.categories.map((category, index) => (
-                          <span
-                            key={index}
-                            className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-0.5 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
-                          >
-                            {category}
-                            <button
-                              type="button"
-                              onClick={() => removeCategory(category)}
-                              className="ml-1 text-blue-400 hover:text-blue-600"
-                            >
-                              <XIcon className="w-3 h-3" />
-                            </button>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Payment Information */}
-              <div className="space-y-4">
-                <h4 className="text-md font-semibold text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
-                  결제 정보
-                </h4>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                      금액 *
-                    </label>
-                    <div className="flex">
-                      <input
-                        type="number"
-                        value={formData.price}
-                        onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
-                        className={cn(
-                          "flex-1 px-3 py-2 border rounded-l-md",
-                          "font-pretendard tracking-ko-normal",
-                          "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                          errors.price ? "border-red-300" : "border-gray-300"
-                        )}
-                        placeholder="0"
-                        min="0"
-                        step="0.01"
-                      />
-                      <select
-                        value={formData.currency}
-                        onChange={(e) => handleInputChange('currency', e.target.value)}
-                        className={cn(
-                          "px-3 py-2 border border-l-0 rounded-r-md",
-                          "font-pretendard tracking-ko-normal",
-                          "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                          "border-gray-300 bg-gray-50"
-                        )}
-                      >
-                        <option value="KRW">KRW</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                      </select>
-                    </div>
-                    {errors.price && (
-                      <p className="text-sm text-red-600 mt-1">{errors.price}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                      결제주기 *
-                    </label>
-                    <div className="space-y-2">
-                      {['monthly', 'yearly', 'one-time'].map((cycle) => (
-                        <label key={cycle} className="flex items-center">
-                          <input
-                            type="radio"
-                            name="billingCycle"
-                            value={cycle}
-                            checked={formData.billingCycle === cycle}
-                            onChange={(e) => handleInputChange('billingCycle', e.target.value)}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                          />
-                          <span className="ml-2 text-sm text-gray-700 font-pretendard tracking-ko-normal break-keep-ko">
-                            {cycle === 'monthly' ? '월간' : cycle === 'yearly' ? '연간' : '일회성'}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                      결제일 *
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.billingDay}
-                      onChange={(e) => handleInputChange('billingDay', parseInt(e.target.value) || 1)}
-                      className={cn(
-                        "w-full px-3 py-2 border rounded-md",
-                        "font-pretendard tracking-ko-normal",
-                        "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                        errors.billingDay ? "border-red-300" : "border-gray-300"
-                      )}
-                      placeholder="1-31"
-                      min="1"
-                      max="31"
-                    />
-                    {errors.billingDay && (
-                      <p className="text-sm text-red-600 mt-1">{errors.billingDay}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                    결제수단
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.paymentMethod}
-                    onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
-                    className={cn(
-                      "w-full px-3 py-2 border rounded-md",
-                      "font-pretendard tracking-ko-normal",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                      "border-gray-300"
-                    )}
-                    placeholder="신용카드, 계좌이체 등"
-                  />
-                </div>
-              </div>
-
-              {/* Subscription Information */}
-              <div className="space-y-4">
-                <h4 className="text-md font-semibold text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
-                  구독 정보
-                </h4>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                      시작일 *
-                    </label>
-                    <input
-                      type="date"
-                      value={formData.startDate}
-                      onChange={(e) => handleInputChange('startDate', e.target.value)}
-                      className={cn(
-                        "w-full px-3 py-2 border rounded-md",
-                        "font-pretendard tracking-ko-normal",
-                        "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                        "border-gray-300"
-                      )}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                      상태
-                    </label>
-                    <select
-                      value={formData.status}
-                      onChange={(e) => handleInputChange('status', e.target.value)}
-                      className={cn(
-                        "w-full px-3 py-2 border rounded-md",
-                        "font-pretendard tracking-ko-normal",
-                        "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                        "border-gray-300"
-                      )}
-                    >
-                      <option value="active">활성</option>
-                      <option value="paused">일시정지</option>
-                      <option value="cancelled">해지</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="autoRenew"
-                    checked={formData.autoRenew}
-                    onChange={(e) => handleInputChange('autoRenew', e.target.checked)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="autoRenew" className="ml-2 text-sm text-gray-700 font-pretendard tracking-ko-normal break-keep-ko">
-                    자동갱신
-                  </label>
-                </div>
-              </div>
-
-              {/* Notification Settings */}
-              <div className="space-y-4">
-                <h4 className="text-md font-semibold text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
-                  알림 설정
-                </h4>
-                
-                <div className="space-y-3">
-                  {[
-                    { key: 'sevenDaysBefore', label: '결제 7일 전' },
-                    { key: 'threeDaysBefore', label: '결제 3일 전' },
-                    { key: 'onBillingDay', label: '결제 당일' }
-                  ].map(({ key, label }) => (
-                    <div key={key} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={key}
-                        checked={formData.notifications[key as keyof typeof formData.notifications]}
-                        onChange={(e) => handleInputChange('notifications', {
-                          ...formData.notifications,
-                          [key]: e.target.checked
-                        })}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <label htmlFor={key} className="ml-2 text-sm text-gray-700 font-pretendard tracking-ko-normal break-keep-ko">
-                        {label}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Additional Information */}
-              <div className="space-y-4">
-                <h4 className="text-md font-semibold text-gray-900 font-pretendard tracking-ko-tight break-keep-ko">
-                  추가 정보
-                </h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                    티어/등급
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.tier}
-                    onChange={(e) => handleInputChange('tier', e.target.value)}
-                    className={cn(
-                      "w-full px-3 py-2 border rounded-md",
-                      "font-pretendard tracking-ko-normal",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                      "border-gray-300"
-                    )}
-                    placeholder="Basic, Pro, Premium 등"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 font-pretendard tracking-ko-normal break-keep-ko mb-1">
-                    메모
-                  </label>
-                  <textarea
-                    value={formData.notes}
-                    onChange={(e) => handleInputChange('notes', e.target.value)}
-                    rows={3}
-                    className={cn(
-                      "w-full px-3 py-2 border rounded-md",
-                      "font-pretendard tracking-ko-normal",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                      "border-gray-300"
-                    )}
-                    placeholder="이 구독에 대한 메모를 입력하세요..."
-                  />
-                </div>
-              </div>
-            </div>
-          </form>
-          
-          {/* Actions */}
-          <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className={cn(
-                "font-pretendard font-semibold rounded-lg px-4 py-2",
-                "transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
-                "tracking-ko-normal break-keep-ko antialiased",
-                "bg-blue-500 hover:bg-blue-600 text-white focus:ring-blue-500",
-                "inline-flex w-full justify-center sm:ml-3 sm:w-auto"
-              )}
+          {/* Payment Cycle */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              결제 주기
+            </label>
+            <select
+              value={formData.payment_cycle}
+              onChange={(e) => handleInputChange('payment_cycle', e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
             >
-              {subscription ? '업데이트' : '추가'}
-            </button>
+              <option value="monthly">월간</option>
+              <option value="yearly">연간</option>
+              <option value="quarterly">분기</option>
+              <option value="weekly">주간</option>
+            </select>
+          </div>
+
+          {/* Payment Day */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              결제일
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="31"
+              value={formData.payment_day || ''}
+              onChange={(e) => handleInputChange('payment_day', parseInt(e.target.value) || 1)}
+              className={cn(
+                "w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal",
+                errors.payment_day ? "border-red-500" : "border-gray-300"
+              )}
+              placeholder="1-31"
+            />
+            {errors.payment_day && (
+              <p className="text-red-500 text-sm mt-1 font-pretendard tracking-ko-normal">
+                {errors.payment_day}
+              </p>
+            )}
+          </div>
+
+          {/* Service URL */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              서비스 URL
+            </label>
+            <input
+              type="url"
+              value={formData.service_url}
+              onChange={(e) => handleInputChange('service_url', e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+              placeholder="https://example.com"
+            />
+          </div>
+
+          {/* Start Date */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              시작일
+            </label>
+            <input
+              type="date"
+              value={formData.start_date}
+              onChange={(e) => handleInputChange('start_date', e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+            />
+          </div>
+
+          {/* Payment Method */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              결제 방법
+            </label>
+            <input
+              type="text"
+              value={formData.payment_method}
+              onChange={(e) => handleInputChange('payment_method', e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+              placeholder="신용카드, 계좌이체 등"
+            />
+          </div>
+
+          {/* Auto Renewal */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              자동 갱신
+            </label>
+            <select
+              value={formData.auto_renewal ? 'true' : 'false'}
+              onChange={(e) => handleInputChange('auto_renewal', e.target.value === 'true')}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+            >
+              <option value="true">ON</option>
+              <option value="false">OFF</option>
+            </select>
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              카테고리
+            </label>
+            <input
+              type="text"
+              value={formData.category}
+              onChange={(e) => handleInputChange('category', e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+              placeholder="엔터테인먼트, 생산성 등"
+            />
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 font-pretendard tracking-ko-normal">
+              메모
+            </label>
+            <textarea
+              value={formData.memo}
+              onChange={(e) => handleInputChange('memo', e.target.value)}
+              rows={3}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
+              placeholder="추가 정보를 입력하세요"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-end space-x-3 pt-6">
             <button
               type="button"
               onClick={onClose}
-              className={cn(
-                "font-pretendard font-semibold rounded-lg px-4 py-2",
-                "transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
-                "tracking-ko-normal break-keep-ko antialiased",
-                "bg-white hover:bg-gray-50 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-gray-500",
-                "mt-3 inline-flex w-full justify-center sm:mt-0 sm:w-auto"
-              )}
+              className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-pretendard tracking-ko-normal"
             >
               취소
             </button>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-pretendard tracking-ko-normal"
+            >
+              {subscription ? '수정' : '추가'}
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

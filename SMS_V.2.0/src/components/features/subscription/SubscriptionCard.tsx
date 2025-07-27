@@ -100,10 +100,10 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
               className="relative w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
               onClick={handleServiceClick}
             >
-              {subscription.imageUrl ? (
+              {subscription.service_image_url ? (
                 <img 
-                  src={subscription.imageUrl} 
-                  alt={subscription.name}
+                  src={subscription.service_image_url} 
+                  alt={subscription.service_name}
                   className="w-full h-full object-cover rounded-lg"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';

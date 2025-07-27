@@ -7,11 +7,9 @@ import SubscriptionCard from '../components/features/subscription/SubscriptionCa
 import SubscriptionForm from '../components/features/subscription/SubscriptionForm';
 import type { Subscription, SubscriptionFormData } from '../types/database.types';
 
-interface SubscriptionsProps {
-  onEditSubscription?: (subscription: import('../types/database.types').Subscription) => void;
-}
 
-const Subscriptions: React.FC<SubscriptionsProps> = ({ onEditSubscription }) => {
+
+const Subscriptions: React.FC = () => {
   const {
     subscriptions,
     loading,
@@ -112,14 +110,7 @@ const Subscriptions: React.FC<SubscriptionsProps> = ({ onEditSubscription }) => 
     return result;
   };
 
-  const handleEdit = (subscription: Subscription) => {
-    if (onEditSubscription) {
-      onEditSubscription(subscription);
-    } else {
-      setEditingSubscription(subscription);
-      setShowForm(true);
-    }
-  };
+
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this subscription?')) {

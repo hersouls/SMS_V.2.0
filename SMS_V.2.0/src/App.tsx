@@ -11,7 +11,7 @@ import { AuthProvider } from './contexts/AuthContext.tsx'
 import { useAuth } from './hooks/useAuth'
 import { ExchangeRateProvider } from './contexts/ExchangeRateContext'
 import SubscriptionModal from './components/features/subscription/SubscriptionModal'
-import type { Subscription, SubscriptionFormData } from './types/subscription'
+
 
 // Lazy load pages for code splitting
 const Login = lazy(() => import('./pages/auth/Login'))
@@ -54,17 +54,14 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 
 function AppRoutes() {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  const [editingSubscription, setEditingSubscription] = useState<import('./types/database.types').Subscription | null>(null);
+  const [editingSubscription, setEditingSubscription] = useState<import('./types/database.types').Subscription | undefined>(undefined);
 
   const handleAddSubscription = () => {
-    setEditingSubscription(null);
+    setEditingSubscription(undefined);
     setShowSubscriptionModal(true);
   };
 
-  const handleEditSubscription = (subscription: import('./types/database.types').Subscription) => {
-    setEditingSubscription(subscription);
-    setShowSubscriptionModal(true);
-  };
+
 
   const handleSubscriptionSubmit = (data: import('./types/database.types').SubscriptionFormData) => {
     // TODO: 구독 추가/편집 로직 구현
@@ -124,7 +121,7 @@ function AppRoutes() {
               <Header />
               <main className="flex-1 pt-16 pb-32">
                 <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
-                  <Subscriptions onEditSubscription={handleEditSubscription} />
+                  <Subscriptions />
                 </div>
               </main>
               <Footer />
