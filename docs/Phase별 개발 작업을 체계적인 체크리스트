@@ -740,27 +740,32 @@ Include RLS policies for user data isolation"
 
 ---
 
-## Phase 4: 배포 및 최적화 (1주)
+## Phase 4: 배포 및 최적화 (1주) 🚀
 
 ### 4.1 GitHub Actions 설정
 
 #### 👤 문유가 브라우저에서 할 일
-- [ ] GitHub Repository → Settings → Secrets
-- [ ] Add secret: `VITE_SUPABASE_URL`
-- [ ] Add secret: `VITE_SUPABASE_ANON_KEY`
+- [ ] GitHub Repository → Settings → Secrets and variables → Actions
+- [ ] Add repository secret: `VITE_SUPABASE_URL`
+- [ ] Add repository secret: `VITE_SUPABASE_ANON_KEY`
 - [ ] Settings → Pages → Source: GitHub Actions
+- [ ] Settings → Pages → Custom domain (선택사항)
 
 #### 🤖 Cursor에서 실행할 작업
 
 **Cursor 프롬프트 51**:
 ```
 "Create .github/workflows/deploy.yml:
-- Trigger on push to main
-- Node.js 20 setup
-- Build with secrets
+- Trigger on push to main branch
+- Node.js 20 setup with caching
+- Install dependencies with npm ci
+- Build with environment secrets
 - Deploy to GitHub Pages
-- Include CNAME file creation
-- Environment-specific builds"
+- Include CNAME file creation for custom domain
+- Environment-specific builds (dev/prod)
+- Build optimization with compression
+- Cache node_modules and build artifacts
+- Add deployment status checks"
 ```
 
 ### 4.2 성능 최적화
@@ -770,12 +775,16 @@ Include RLS policies for user data isolation"
 **Cursor 프롬프트 52**:
 ```
 "Update vite.config.ts with advanced optimization:
-- Manual chunks for vendor splitting
-- Build optimization with compression
+- Manual chunks for vendor splitting (react, supabase, ui libraries)
+- Build optimization with compression (gzip, brotli)
 - Source maps for development only
-- Base URL for GitHub Pages
-- Image optimization plugins
-- Bundle analysis tools"
+- Base URL for GitHub Pages deployment
+- Image optimization plugins (vite-plugin-imagemin)
+- Bundle analysis tools (rollup-plugin-visualizer)
+- Environment-specific configurations
+- PWA plugin integration
+- Service worker generation
+- Manifest file generation"
 ```
 
 **Cursor 프롬프트 53**:
@@ -783,18 +792,23 @@ Include RLS policies for user data isolation"
 "Implement advanced performance optimizations:
 - React.lazy for route-based code splitting
 - Image lazy loading with Intersection Observer
-- Service worker for caching strategies
-- Memory leak prevention in components
-- Bundle size monitoring
-- Core Web Vitals optimization"
+- Service worker for caching strategies (Cache First, Network First)
+- Memory leak prevention in components (cleanup effects)
+- Bundle size monitoring and optimization
+- Core Web Vitals optimization (LCP, FID, CLS)
+- Virtual scrolling for large lists
+- Debounced search and filtering
+- Optimistic updates for better UX
+- Preload critical resources"
 ```
 
 ### 4.3 PWA 설정 (Progressive Web App)
 
 #### 👤 문유가 할 일
-- [ ] App 아이콘 준비 (512x512, 192x192, 144x144)
-- [ ] App 이름 및 설명 결정
-- [ ] 색상 테마 결정 (다크/라이트)
+- [ ] App 아이콘 준비 (512x512, 192x192, 144x144, favicon.ico)
+- [ ] App 이름: "Moonwave - 구독 관리"
+- [ ] App 설명: "구독 서비스를 체계적으로 관리하세요"
+- [ ] 색상 테마: 다크/라이트 모드 지원
 
 #### 🤖 Cursor에서 실행할 작업
 
@@ -807,18 +821,25 @@ Include RLS policies for user data isolation"
 - Offline functionality with fallback pages
 - Install prompt and app-like experience
 - Background sync for data updates
-- Push notifications setup"
+- Push notifications setup
+- App icons in multiple sizes
+- Theme colors and display modes
+- Splash screen configuration"
 ```
 
 **Cursor 프롬프트 55**:
 ```
 "Create src/service-worker.ts:
-- Cache strategies for static assets
-- Dynamic caching for API responses
+- Cache strategies for static assets (Cache First)
+- Dynamic caching for API responses (Network First)
 - Background sync for offline actions
 - Push notification handling
 - Update notifications for new versions
-- Fallback pages for offline access"
+- Fallback pages for offline access
+- Cache cleanup and version management
+- Performance monitoring and analytics
+- Error handling and recovery
+- Service worker lifecycle management"
 ```
 
 ### 4.4 디자인 시스템 통합 및 최적화
@@ -834,7 +855,10 @@ Include RLS policies for user data isolation"
 - Follow 화면정의서 specifications for all screens
 - Ensure consistent Pretendard font usage
 - Apply glass morphism effects consistently
-- Implement container queries throughout"
+- Implement container queries throughout
+- Add dark/light theme support
+- Optimize for Core Web Vitals
+- Ensure accessibility compliance"
 ```
 
 **Cursor 프롬프트 57**:
@@ -845,13 +869,17 @@ Include RLS policies for user data isolation"
 - Accessibility guidelines and examples
 - Responsive design patterns
 - Animation and interaction guidelines
-- Theme customization options"
+- Theme customization options
+- Performance best practices
+- Browser compatibility matrix
+- Mobile-first design principles
+- Internationalization support"
 ```
 
 ### 4.5 최종 테스트 및 배포
 
 #### 👤 문유가 브라우저에서 할 일
-- [ ] 로컬 빌드 테스트
+- [ ] 로컬 빌드 테스트 (`npm run build && npm run preview`)
 - [ ] 모든 기능 수동 테스트 (Phase 1-3)
 - [ ] 반응형 디자인 확인 (모바일, 태블릿, 데스크톱)
 - [ ] 접근성 테스트 (키보드 네비게이션, 스크린 리더)
@@ -859,19 +887,23 @@ Include RLS policies for user data isolation"
 - [ ] GitHub Actions 실행 확인
 - [ ] 배포된 사이트 접속 테스트
 - [ ] PWA 설치 및 오프라인 테스트
+- [ ] 크로스 브라우저 테스트 (Chrome, Firefox, Safari, Edge)
 
 #### 🤖 Cursor에서 실행할 작업
 
 **Cursor 프롬프트 58**:
 ```
 "Create comprehensive test suite:
-- Unit tests for all utility functions
+- Unit tests for all utility functions (Vitest)
 - Component tests with React Testing Library
 - Integration tests for user workflows
 - E2E tests with Playwright
 - Performance tests with Lighthouse CI
 - Accessibility tests with axe-core
-- Visual regression tests"
+- Visual regression tests
+- API integration tests
+- Error boundary tests
+- Service worker tests"
 ```
 
 **터미널에서 실행**:
@@ -889,7 +921,7 @@ npm run lighthouse
 
 # 최종 커밋 및 푸시
 git add .
-git commit -m "feat: complete v2.0 development with advanced features"
+git commit -m "feat: complete v2.0 development with advanced features and deployment"
 git push origin main
 ```
 
@@ -906,7 +938,10 @@ git push origin main
 - Deployment guide with troubleshooting
 - Contributing guidelines
 - Changelog and version history
-- Performance benchmarks and metrics"
+- Performance benchmarks and metrics
+- Security best practices
+- Monitoring and analytics setup
+- Backup and recovery procedures"
 ```
 
 **Cursor 프롬프트 60**:
@@ -918,8 +953,137 @@ git push origin main
 - Accessibility guidelines
 - Performance optimization tips
 - Troubleshooting guide
-- FAQ and common issues"
+- FAQ and common issues
+- Video tutorials and demos
+- Best practices documentation
+- Migration guide from v1.0"
 ```
+
+### 4.7 모니터링 및 분석 설정
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 61**:
+```
+"Implement comprehensive monitoring:
+- Error tracking with Sentry integration
+- Performance monitoring with Web Vitals
+- User analytics with privacy-first approach
+- Real User Monitoring (RUM)
+- Custom event tracking
+- A/B testing framework
+- Feature flag system
+- Health check endpoints
+- Logging and debugging tools
+- Alert system for critical issues"
+```
+
+### 4.8 보안 강화
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 62**:
+```
+"Implement security best practices:
+- Content Security Policy (CSP) headers
+- HTTPS enforcement
+- XSS protection
+- CSRF protection
+- Input validation and sanitization
+- Secure authentication practices
+- Data encryption at rest and in transit
+- Regular security audits
+- Dependency vulnerability scanning
+- Security headers configuration"
+```
+
+### 4.9 SEO 최적화
+
+#### 🤖 Cursor에서 실행할 작업
+
+**Cursor 프롬프트 63**:
+```
+"Implement comprehensive SEO optimization:
+- Meta tags and Open Graph data
+- Structured data (JSON-LD)
+- Sitemap generation
+- Robots.txt configuration
+- Canonical URLs
+- Image optimization with alt tags
+- Semantic HTML structure
+- Page speed optimization
+- Mobile-first indexing
+- Social media optimization"
+```
+
+### 4.10 최종 배포 및 런칭
+
+#### 👤 문유가 브라우저에서 할 일
+- [ ] GitHub Actions 성공 확인
+- [ ] 배포된 사이트 접속 및 기능 테스트
+- [ ] PWA 설치 테스트
+- [ ] 오프라인 기능 테스트
+- [ ] 성능 점수 확인 (Lighthouse)
+- [ ] 접근성 점수 확인
+- [ ] SEO 점수 확인
+- [ ] 소셜 미디어 공유 테스트
+- [ ] 사용자 피드백 수집 준비
+
+#### 🤖 Cursor에서 실행할 작업
+
+**터미널에서 최종 배포**:
+```bash
+# 최종 빌드 및 배포
+npm run build
+npm run test:all
+npm run lighthouse:ci
+
+# 배포 확인
+git status
+git add .
+git commit -m "feat: final deployment preparation for v2.0 launch"
+git push origin main
+
+# 배포 후 확인
+echo "🚀 Moonwave v2.0 배포 완료!"
+echo "📊 성능 모니터링 시작"
+echo "🎯 사용자 피드백 수집 준비"
+```
+
+---
+
+## 🎯 Phase 4 배포 및 최적화 완료 체크리스트
+
+### ✅ 기술적 완료사항
+- [ ] GitHub Actions CI/CD 파이프라인 구축
+- [ ] PWA 설정 및 오프라인 기능
+- [ ] 성능 최적화 (Core Web Vitals)
+- [ ] 보안 강화 및 모니터링
+- [ ] SEO 최적화
+- [ ] 접근성 준수 (WCAG 2.1 AA)
+- [ ] 크로스 브라우저 호환성
+- [ ] 모바일 최적화
+
+### ✅ 사용자 경험 완료사항
+- [ ] 빠른 로딩 속도 (< 3초)
+- [ ] 직관적인 네비게이션
+- [ ] 반응형 디자인
+- [ ] 오프라인 기능
+- [ ] 설치 가능한 앱 경험
+- [ ] 접근성 지원
+- [ ] 다국어 지원 준비
+
+### ✅ 비즈니스 완료사항
+- [ ] 사용자 분석 도구
+- [ ] 성능 모니터링
+- [ ] 오류 추적 시스템
+- [ ] 백업 및 복구 시스템
+- [ ] 확장 가능한 아키텍처
+- [ ] 문서화 완료
+
+---
+
+*Phase 4는 Moonwave v2.0의 최종 배포와 최적화를 담당하며, 사용자에게 최고의 경험을 제공하기 위한 모든 기술적 요소를 포함합니다. 모든 디자인 가이드와 최신 웹 표준을 준수하여 현대적이고 안정적인 애플리케이션을 구축합니다.*
 
 ---
 
