@@ -56,10 +56,10 @@ const Footer: React.FC = () => {
 
           {/* Copyright */}
           <div className="text-center">
-            <p className="text-sm text-gray-500 break-keep-ko">
+            <p className="text-sm text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
               © {currentYear} Moonwave. All rights reserved.
             </p>
-            <p className="text-xs text-gray-400 mt-1 break-keep-ko">
+            <p className="text-xs text-gray-400 mt-1 break-keep-ko tracking-ko-normal font-pretendard">
               Made with ❤️ for subscription management
             </p>
           </div>

@@ -49,7 +49,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
             <div
               key={event.id}
               className={cn(
-                "flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full border",
+                "flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-full border font-pretendard tracking-ko-normal",
                 serviceIcon.color,
                 "hover:scale-105 transition-transform duration-200"
               )}
@@ -63,7 +63,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           );
         })}
         {day.events.length > 3 && (
-          <div className="bg-gray-100 text-gray-600 text-xs px-1.5 py-0.5 rounded-full border border-gray-200">
+          <div className="bg-gray-100 text-gray-600 text-xs px-1.5 py-0.5 rounded-full border border-gray-200 font-pretendard tracking-ko-normal">
             +{day.events.length - 3}
           </div>
         )}
@@ -75,8 +75,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     if (day.events.length === 0) return null;
 
     return (
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 px-4 py-3 bg-white/95 backdrop-blur-md border border-gray-200 text-sm rounded-xl shadow-2xl z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none min-w-[280px]">
-        <div className="font-semibold mb-2 text-gray-900 border-b border-gray-100 pb-2">
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 px-4 py-3 card-glass text-sm rounded-xl shadow-2xl z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none min-w-[280px]">
+        <div className="font-semibold mb-2 text-gray-900 border-b border-gray-100 pb-2 font-pretendard tracking-ko-normal">
           {day.date && formatDate(day.date)}
         </div>
         <div className="space-y-2">
@@ -92,18 +92,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                     {serviceIcon.icon}
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">
+                    <div className="font-medium text-gray-900 font-pretendard tracking-ko-normal">
                       {event.subscriptions[0].service_name}
                     </div>
                     {event.subscriptions.length > 1 && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 font-pretendard tracking-ko-normal">
                         외 {event.subscriptions.length - 1}개 서비스
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-semibold text-gray-900">
+                  <div className="font-semibold text-gray-900 font-pretendard tracking-ko-normal">
                     {formatAmount(event.totalAmount)}
                   </div>
                 </div>
@@ -112,7 +112,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           })}
         </div>
         {day.events.length > 1 && (
-          <div className="border-t border-gray-100 mt-2 pt-2 font-semibold text-gray-900 flex justify-between">
+          <div className="border-t border-gray-100 mt-2 pt-2 font-semibold text-gray-900 flex justify-between font-pretendard tracking-ko-normal">
             <span>총 결제액</span>
             <span>{formatAmount(day.events.reduce((sum, e) => sum + e.totalAmount, 0))}</span>
           </div>
@@ -143,14 +143,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     <div className={cn("@container", className)}>
       {/* 캘린더 헤더 */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold font-pretendard text-gray-900 tracking-ko-tight">
+        <h2 className="text-2xl font-bold font-pretendard text-gray-900 tracking-ko-normal">
           {formatMonthName(calendar.year, calendar.month)}
         </h2>
         
         <div className="flex items-center gap-2">
           <button
             onClick={handlePreviousMonth}
-            className="p-2 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-md"
+            className="p-2 rounded-lg card-glass border border-gray-200 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-md"
             aria-label="이전 달"
           >
             <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
@@ -158,14 +158,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
           
           <button
             onClick={handleToday}
-            className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-md"
+            className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-md font-pretendard tracking-ko-normal"
           >
             오늘
           </button>
           
           <button
             onClick={handleNextMonth}
-            className="p-2 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-md"
+            className="p-2 rounded-lg card-glass border border-gray-200 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-md"
             aria-label="다음 달"
           >
             <ChevronRightIcon className="w-5 h-5 text-gray-600" />
@@ -174,14 +174,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
       </div>
 
       {/* 캘린더 그리드 */}
-      <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-white/30 shadow-xl overflow-hidden">
+      <div className="card-glass rounded-2xl shadow-xl overflow-hidden">
         {/* 요일 헤더 */}
         <div className="grid grid-cols-7 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
           {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
             <div
               key={day}
               className={cn(
-                "px-3 py-4 text-center text-sm font-semibold text-gray-900 font-pretendard",
+                "px-3 py-4 text-center text-sm font-semibold text-gray-900 font-pretendard tracking-ko-normal",
                 index === 0 && "text-red-600",
                 index === 6 && "text-blue-600"
               )}
@@ -226,7 +226,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                   <>
                     <div
                       className={cn(
-                        "text-sm font-semibold mb-2",
+                        "text-sm font-semibold mb-2 font-pretendard tracking-ko-normal",
                         day.isToday && "text-blue-700 font-bold",
                         !day.isCurrentMonth && "text-gray-400",
                         day.isWeekend && "text-gray-600"

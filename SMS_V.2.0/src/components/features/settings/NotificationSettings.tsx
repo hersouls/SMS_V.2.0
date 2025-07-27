@@ -145,9 +145,9 @@ const NotificationSettings: React.FC = () => {
           {saveStatus === 'saving' && (
             <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent" />
           )}
-          {saveStatus === 'saved' && <CheckCircle className="h-4 w-4" />}
-          {saveStatus === 'error' && <AlertCircle className="h-4 w-4" />}
-          <span className="text-sm font-medium break-keep-ko">
+          {saveStatus === 'saved' && <CheckCircle className="h-5 w-5" />}
+          {saveStatus === 'error' && <AlertCircle className="h-5 w-5" />}
+          <span className="text-sm font-medium break-keep-ko tracking-ko-normal font-pretendard">
             {saveStatus === 'saving' && '저장 중...'}
             {saveStatus === 'saved' && '설정이 저장되었습니다'}
             {saveStatus === 'error' && '저장 중 오류가 발생했습니다'}
@@ -160,7 +160,7 @@ const NotificationSettings: React.FC = () => {
         {notificationTypes.map(({ key, label, description, icon: Icon }) => (
           <div
             key={key}
-            className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-between p-4 card-gradient rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
           >
             <div className="flex items-start gap-3 flex-1">
               <div className="flex-shrink-0 mt-1">
@@ -169,11 +169,11 @@ const NotificationSettings: React.FC = () => {
               <div className="flex-1 min-w-0">
                 <label
                   htmlFor={`toggle-${key}`}
-                  className="text-sm font-medium text-gray-900 cursor-pointer break-keep-ko"
+                  className="text-sm font-medium text-gray-900 cursor-pointer break-keep-ko tracking-ko-normal font-pretendard"
                 >
                   {label}
                 </label>
-                <p className="text-sm text-gray-600 break-keep-ko">
+                <p className="text-sm text-gray-600 break-keep-ko tracking-ko-normal font-pretendard">
                   {description}
                 </p>
               </div>
@@ -209,7 +209,7 @@ const NotificationSettings: React.FC = () => {
       </div>
 
       {/* Additional Info */}
-      <div className="text-xs text-gray-500 break-keep-ko">
+      <div className="text-xs text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
         <p>
           알림 설정은 실시간으로 저장되며, 언제든지 변경할 수 있습니다.
         </p>

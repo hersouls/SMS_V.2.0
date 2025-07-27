@@ -14,7 +14,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 }) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
-    md: 'h-6 w-6',
+    md: 'h-5 w-5',
     lg: 'h-12 w-12',
     xl: 'h-16 w-16'
   }
@@ -36,7 +36,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       />
       {text && (
         <p className={cn(
-          'mt-2 text-gray-600 break-keep-ko font-medium',
+          'mt-2 text-gray-600 break-keep-ko tracking-ko-normal font-pretendard font-medium',
           textSizes[size]
         )}>
           {text}

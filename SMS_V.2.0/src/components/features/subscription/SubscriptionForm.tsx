@@ -101,44 +101,29 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
   };
 
   const handleImageUpload = async (file: File): Promise<string> => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error('User not authenticated');
-
     const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `subscription-logos/${fileName}`;
 
-    const { error } = await supabase.storage
-      .from('service-logos')
-      .upload(fileName, file);
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, file);
 
-    if (error) throw error;
+    if (uploadError) {
+      throw uploadError;
+    }
 
-    const { data: { publicUrl } } = supabase.storage
-      .from('service-logos')
-      .getPublicUrl(fileName);
+    const { data } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
 
-    return publicUrl;
+    return data.publicUrl;
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        setErrors(prev => ({ ...prev, logo: 'Please select an image file' }));
-        return;
-      }
-
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrors(prev => ({ ...prev, logo: 'File size must be less than 5MB' }));
-        return;
-      }
-
       setImageFile(file);
-      setErrors(prev => ({ ...prev, logo: '' }));
-
-      // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
@@ -150,30 +135,34 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      return;
+    }
 
     setLoading(true);
-    try {
-      let logoUrl = formData.logo_url;
+    setErrors({});
 
-      // Upload image if new file selected
+    try {
+      let logoUrl = formData.service_image_url;
+      
       if (imageFile) {
         logoUrl = await handleImageUpload(imageFile);
       }
 
       const result = await onSubmit({
         ...formData,
-        logo_url: logoUrl
+        service_image_url: logoUrl
       });
 
       if (result.success) {
-        onClose();
         resetForm();
+        onClose();
       } else {
-        setErrors(prev => ({ ...prev, general: result.error || 'Failed to save subscription' }));
+        setErrors({ general: result.error || 'Failed to save subscription' });
       }
     } catch (error) {
-      setErrors(prev => ({ ...prev, general: error instanceof Error ? error.message : 'An error occurred' }));
+      console.error('Error saving subscription:', error);
+      setErrors({ general: 'An unexpected error occurred' });
     } finally {
       setLoading(false);
     }
@@ -185,15 +174,20 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
       amount: 0,
       currency: 'KRW',
       payment_cycle: 'monthly',
-      next_payment_date: new Date().toISOString().split('T')[0],
+      payment_day: 1,
       service_url: '',
-      logo_url: '',
+      service_image_url: '',
       category: '',
-      status: 'active'
+      status: 'active',
+      payment_method: '',
+      start_date: new Date().toISOString().split('T')[0],
+      auto_renewal: true,
+      memo: ''
     });
     setErrors({});
     setImageFile(null);
     setImagePreview('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   return (
@@ -221,13 +215,13 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             required
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
               Currency
             </label>
             <select
               value={formData.currency}
               onChange={(e) => handleInputChange('currency', e.target.value)}
-              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
             >
               {currencies.map(currency => (
                 <option key={currency.value} value={currency.value}>
@@ -241,13 +235,13 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
         {/* Payment Cycle and Payment Day */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
               Payment Cycle
             </label>
             <select
               value={formData.payment_cycle}
               onChange={(e) => handleInputChange('payment_cycle', e.target.value)}
-              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
             >
               {paymentCycles.map(cycle => (
                 <option key={cycle.value} value={cycle.value}>
@@ -295,13 +289,13 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             placeholder="Credit Card, PayPal, etc."
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
               Auto Renewal
             </label>
             <select
               value={formData.auto_renewal ? 'true' : 'false'}
               onChange={(e) => handleInputChange('auto_renewal', e.target.value === 'true')}
-              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
             >
               <option value="true">Yes</option>
               <option value="false">No</option>
@@ -311,27 +305,27 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
 
         {/* Memo */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+          <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
             Memo (Optional)
           </label>
           <textarea
             value={formData.memo}
             onChange={(e) => handleInputChange('memo', e.target.value)}
             placeholder="Add any notes about this subscription..."
-            className="w-full h-20 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full h-20 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none font-pretendard tracking-ko-normal"
           />
         </div>
 
         {/* Category and Status */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
               Category
             </label>
             <select
               value={formData.category}
               onChange={(e) => handleInputChange('category', e.target.value)}
-              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
             >
               <option value="">Select category</option>
               {categories.map(category => (
@@ -342,13 +336,13 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+            <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
               Status
             </label>
             <select
               value={formData.status}
               onChange={(e) => handleInputChange('status', e.target.value)}
-              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-10 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-pretendard tracking-ko-normal"
             >
               {statuses.map(status => (
                 <option key={status.value} value={status.value}>
@@ -361,7 +355,7 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
 
         {/* Logo Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko">
+          <label className="block text-sm font-medium text-gray-700 mb-2 break-keep-ko tracking-ko-normal font-pretendard">
             Service Logo (Optional)
           </label>
           <div className="flex items-center gap-4">
@@ -381,16 +375,16 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
                   }}
                   className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             )}
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-pretendard tracking-ko-normal"
             >
-              <Upload className="w-4 h-4" />
+              <Upload className="w-5 h-5" />
               <span className="text-sm break-keep-ko">Upload Image</span>
             </button>
             <input
@@ -402,13 +396,13 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({
             />
           </div>
           {errors.logo && (
-            <p className="mt-1 text-sm text-red-600 break-keep-ko">{errors.logo}</p>
+            <p className="mt-1 text-sm text-red-600 break-keep-ko tracking-ko-normal font-pretendard">{errors.logo}</p>
           )}
         </div>
 
         {/* General Error */}
         {errors.general && (
-          <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg break-keep-ko">
+          <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg break-keep-ko tracking-ko-normal font-pretendard">
             {errors.general}
           </div>
         )}
