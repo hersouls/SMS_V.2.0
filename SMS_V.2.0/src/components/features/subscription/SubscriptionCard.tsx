@@ -124,7 +124,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
                 />
               ) : null}
               <div className={`w-full h-full flex items-center justify-center ${subscription.service_image_url ? 'hidden' : ''}`}>
-                <span className="text-white font-bold text-lg font-pretendard">
+                <span className="text-white font-bold text-base @sm:text-lg @lg:text-xl font-pretendard">
                   {subscription.service_name.charAt(0).toUpperCase()}
                 </span>
               </div>
@@ -135,14 +135,14 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
 
             {/* Service Details */}
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 truncate break-keep-ko tracking-ko-normal font-pretendard">
+              <h3 className="font-semibold text-gray-900 truncate break-keep-ko tracking-ko-normal font-pretendard text-sm @sm:text-base @lg:text-lg">
                 {subscription.service_name}
               </h3>
-              <p className="text-sm text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
+              <p className="text-xs @sm:text-sm text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
                 {subscription.payment_cycle} • {formatCurrency(subscription.amount, subscription.currency)}
               </p>
               {subscription.category && (
-                <span className="inline-block mt-1 px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full break-keep-ko tracking-ko-normal font-pretendard">
+                <span className="inline-block mt-1 px-2 py-1 text-xs @sm:text-sm bg-gray-100 text-gray-600 rounded-full break-keep-ko tracking-ko-normal font-pretendard">
                   {subscription.category}
                 </span>
               )}
@@ -150,10 +150,10 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
           </div>
 
           {/* Status and Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 @sm:gap-3">
             {/* Status Badge */}
             <div className={cn(
-              'flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border font-pretendard tracking-ko-normal',
+              'flex items-center gap-1 px-2 py-1 @sm:px-3 @sm:py-1.5 rounded-full text-xs @sm:text-sm font-medium border font-pretendard tracking-ko-normal',
               getStatusColor(subscription.status)
             )}>
               {getStatusIcon(subscription.status)}
@@ -163,39 +163,39 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-1 @sm:gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 onClick={handleEdit}
-                className="p-1 rounded hover:bg-blue-100 transition-colors"
+                className="p-1 @sm:p-1.5 rounded hover:bg-blue-100 transition-colors"
                 title="Edit"
               >
-                <Edit className="w-5 h-5 text-blue-600" />
+                <Edit className="w-4 h-4 @sm:w-5 @sm:h-5 text-blue-600" />
               </button>
               <button
                 onClick={handleToggleStatus}
-                className="p-1 rounded hover:bg-gray-100 transition-colors"
+                className="p-1 @sm:p-1.5 rounded hover:bg-gray-100 transition-colors"
                 title={subscription.status === 'active' ? 'Pause' : 'Activate'}
               >
                 {subscription.status === 'active' ? (
-                  <Pause className="w-5 h-5 text-gray-600" />
+                  <Pause className="w-4 h-4 @sm:w-5 @sm:h-5 text-gray-600" />
                 ) : (
-                  <Play className="w-5 h-5 text-gray-600" />
+                  <Play className="w-4 h-4 @sm:w-5 @sm:h-5 text-gray-600" />
                 )}
               </button>
               <button
                 onClick={handleDelete}
-                className="p-1 rounded hover:bg-red-100 transition-colors"
+                className="p-1 @sm:p-1.5 rounded hover:bg-red-100 transition-colors"
                 title="Delete"
               >
-                <X className="w-5 h-5 text-red-600" />
+                <X className="w-4 h-4 @sm:w-5 @sm:h-5 text-red-600" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Additional Info */}
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <div className="flex items-center justify-between text-sm">
+        <div className="mt-4 @sm:mt-6 pt-4 @sm:pt-6 border-t border-gray-100">
+          <div className="flex items-center justify-between text-xs @sm:text-sm">
             <span className="text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
               Payment day:
             </span>
@@ -203,16 +203,16 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
               {subscription.payment_day ? `Day ${subscription.payment_day}` : 'Not set'}
             </span>
           </div>
-          <div className="flex items-center justify-between text-sm mt-1">
+          <div className="flex items-center justify-between text-xs @sm:text-sm mt-1">
             <span className="text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
               Monthly cost:
             </span>
-            <span className="font-semibold text-lg text-gray-900 font-pretendard tracking-ko-normal">
+            <span className="font-semibold text-base @sm:text-lg @lg:text-xl text-gray-900 font-pretendard tracking-ko-normal">
               {formatCurrency(subscription.amount, subscription.currency)}
             </span>
           </div>
           {subscription.memo && (
-            <div className="mt-2 text-xs text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
+            <div className="mt-2 text-xs @sm:text-sm text-gray-500 break-keep-ko tracking-ko-normal font-pretendard">
               {subscription.memo}
             </div>
           )}

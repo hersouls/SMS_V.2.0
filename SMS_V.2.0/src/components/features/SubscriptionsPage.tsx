@@ -87,27 +87,27 @@ const SubscriptionsPage: React.FC = () => {
         <div className="space-y-6">
         {/* Title Section */}
         <div className="text-center space-y-2 md:hidden">
-          <h1 className="text-3xl font-bold text-gray-900">Subscriptions</h1>
-          <p className="text-gray-600">Manage your subscription services</p>
+          <h1 className="text-2xl @sm:text-3xl @lg:text-4xl font-bold text-gray-900">Subscriptions</h1>
+          <p className="text-sm @sm:text-base text-gray-600">Manage your subscription services</p>
         </div>
 
         {/* Add Subscription Button */}
         <div className="flex justify-center">
-          <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 sm:px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-            <PlusIcon className="w-5 h-5" />
-            <span className="text-sm sm:text-base">Add Subscription</span>
+          <button className="flex items-center space-x-2 bg-blue-600 text-white px-3 @sm:px-4 @lg:px-6 py-2 @sm:py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+            <PlusIcon className="w-4 h-4 @sm:w-5 @sm:h-5" />
+            <span className="text-xs @sm:text-sm @lg:text-base">Add Subscription</span>
           </button>
         </div>
 
         {/* Search Bar */}
         <div className="relative">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 @sm:w-5 @sm:h-5 text-gray-400" />
           <input
             type="text"
             placeholder="Search subscriptions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+            className="w-full pl-10 pr-4 py-2 @sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm @sm:text-base"
           />
         </div>
 
@@ -117,57 +117,57 @@ const SubscriptionsPage: React.FC = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 @sm:px-4 py-2 @sm:py-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm @sm:text-base"
             >
               {categories.map((category) => (
                 <option key={category} value={category}>{category}</option>
               ))}
             </select>
-            <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 @sm:w-5 @sm:h-5 text-gray-400 pointer-events-none" />
           </div>
 
           <div className="relative">
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 @sm:px-4 py-2 @sm:py-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm @sm:text-base"
             >
               {statuses.map((status) => (
                 <option key={status} value={status}>{status}</option>
               ))}
             </select>
-            <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 @sm:w-5 @sm:h-5 text-gray-400 pointer-events-none" />
           </div>
 
           <div className="relative">
             <select
               value={selectedSort}
               onChange={(e) => setSelectedSort(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 @sm:px-4 py-2 @sm:py-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm @sm:text-base"
             >
               {sortOptions.map((option) => (
                 <option key={option} value={option}>{option}</option>
               ))}
             </select>
-            <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 @sm:w-5 @sm:h-5 text-gray-400 pointer-events-none" />
           </div>
         </GridLayout>
 
         {/* Subscription Count and View Toggle */}
         <div className="flex items-center justify-between">
-          <span className="text-gray-700 font-medium text-sm sm:text-base">{subscriptions.length} subscriptions</span>
-          <div className="flex items-center space-x-1 sm:space-x-2 bg-gray-100 rounded-lg p-1">
+          <span className="text-gray-700 font-medium text-xs @sm:text-sm @lg:text-base">{subscriptions.length} subscriptions</span>
+          <div className="flex items-center space-x-1 @sm:space-x-2 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 sm:p-2 rounded transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`p-1 @sm:p-1.5 @lg:p-2 rounded transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
-              <Squares2X2Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Squares2X2Icon className="w-3 h-3 @sm:w-4 @sm:h-4 @lg:w-5 @lg:h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 sm:p-2 rounded transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`p-1 @sm:p-1.5 @lg:p-2 rounded transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
             >
-              <ListBulletIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ListBulletIcon className="w-3 h-3 @sm:w-4 @sm:h-4 @lg:w-5 @lg:h-5" />
             </button>
           </div>
         </div>

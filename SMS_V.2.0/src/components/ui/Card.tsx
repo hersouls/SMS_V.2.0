@@ -42,7 +42,7 @@ const Card: React.FC<CardProps> = ({ children, className, hover = true, onClick 
 
 const CardHeader: React.FC<CardHeaderProps> = ({ children, className }) => {
   return (
-    <div className={cn('p-6 pb-0', className)}>
+    <div className={cn('p-4 @sm:p-6 @lg:p-8 pb-0', className)}>
       {children}
     </div>
   );
@@ -51,7 +51,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({ children, className }) => {
 const CardTitle: React.FC<CardTitleProps> = ({ children, className }) => {
   return (
     <h3 className={cn(
-      'text-lg font-semibold font-sans tracking-ko-normal break-keep-ko',
+      'text-base @sm:text-lg @lg:text-xl font-semibold font-sans tracking-ko-normal break-keep-ko',
       'text-gray-900',
       className
     )}>
@@ -62,7 +62,7 @@ const CardTitle: React.FC<CardTitleProps> = ({ children, className }) => {
 
 const CardContent: React.FC<CardContentProps> = ({ children, className }) => {
   return (
-    <div className={cn('p-6 pt-4', className)}>
+    <div className={cn('p-4 @sm:p-6 @lg:p-8 pt-4', className)}>
       {children}
     </div>
   );
