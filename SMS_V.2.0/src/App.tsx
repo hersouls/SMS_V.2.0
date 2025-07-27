@@ -61,43 +61,7 @@ function AppRoutes() {
     setShowSubscriptionModal(true);
   };
 
-  const handleEditSubscription = (subscription: import('./types/database.types').Subscription) => {
-    setEditingSubscription(subscription);
-    setShowSubscriptionModal(true);
-  };
 
-  const handleDeleteSubscription = async (subscriptionId: string) => {
-    if (confirm('정말 이 구독을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
-      try {
-        const { success, error } = await deleteSubscription(subscriptionId);
-        if (success) {
-          console.log('구독이 성공적으로 삭제되었습니다.');
-        } else {
-          console.error('구독 삭제 실패:', error);
-          alert('구독 삭제에 실패했습니다.');
-        }
-      } catch (error) {
-        console.error('구독 삭제 중 오류 발생:', error);
-        alert('구독 삭제 중 오류가 발생했습니다.');
-      }
-    }
-  };
-
-  const handleToggleSubscriptionStatus = async (subscriptionId: string, currentStatus: string) => {
-    try {
-      const { success, error } = await toggleSubscriptionStatus(subscriptionId, currentStatus);
-      if (success) {
-        const newStatus = currentStatus === 'active' ? '일시정지' : '활성화';
-        console.log(`구독이 ${newStatus}되었습니다.`);
-      } else {
-        console.error('구독 상태 변경 실패:', error);
-        alert('구독 상태 변경에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('구독 상태 변경 중 오류 발생:', error);
-      alert('구독 상태 변경 중 오류가 발생했습니다.');
-    }
-  };
 
 
 
