@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, TrendingUp, CreditCard, Users, DollarSign } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
 import { supabase } from '../lib/supabase';
-import { Subscription, ExchangeRate, DashboardStats } from '../types/database.types';
+import type { Subscription, DashboardStats } from '../types/database.types';
 
 const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats>({

@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { Plus, Search, Grid3X3, List, Filter, SortAsc } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
+import { Plus, Search, Grid3X3, List } from 'lucide-react';
+import { Card, CardContent } from '../components/ui';
 import { Button } from '../components/ui';
 import { useSubscriptions } from '../hooks/useSubscriptions';
 import SubscriptionCard from '../components/features/subscription/SubscriptionCard';
 import SubscriptionForm from '../components/features/subscription/SubscriptionForm';
-import { Subscription } from '../types/database.types';
+import type { Subscription } from '../types/database.types';
 
 const Subscriptions: React.FC = () => {
   const {
@@ -129,18 +129,7 @@ const Subscriptions: React.FC = () => {
     setSelectedStatus('');
   };
 
-  const formatCurrency = (amount: number, currency: 'KRW' | 'USD') => {
-    if (currency === 'USD') {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      }).format(amount);
-    }
-    return new Intl.NumberFormat('ko-KR', {
-      style: 'currency',
-      currency: 'KRW'
-    }).format(amount);
-  };
+
 
   if (loading) {
     return (

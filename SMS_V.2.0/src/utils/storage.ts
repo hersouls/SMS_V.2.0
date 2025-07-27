@@ -68,10 +68,10 @@ export const uploadImage = async (file: File, folder: string = 'service-logos'):
     // Generate unique filename
     const fileExt = file.name.split('.').pop();
     const fileName = `${user.id}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = `${folder}/${fileName}`;
+
 
     // Upload file
-    const { data, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from(folder)
       .upload(fileName, file, {
         cacheControl: '3600',

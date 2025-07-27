@@ -101,31 +101,31 @@ src/
 "Create src/lib/utils.ts with cn function using clsx and tailwind-merge for className combination"
 ```
 
-### 1.4 Supabase 설정
+### 1.4 Supabase 설정 ✅ 완료
 
 #### 👤 문유가 브라우저에서 할 일
 
 1. **Supabase 프로젝트 생성**
-   - [ ] [app.supabase.com](https://app.supabase.com) 접속
-   - [ ] "New Project" 클릭
-   - [ ] Organization 선택 또는 생성
-   - [ ] Project 정보 입력:
+   - [x] [app.supabase.com](https://app.supabase.com) 접속
+   - [x] "New Project" 클릭
+   - [x] Organization 선택 또는 생성
+   - [x] Project 정보 입력:
      - Name: `moonwave-v2`
      - Database Password: 생성 후 안전한 곳에 저장
      - Region: `Northeast Asia (Seoul)`
-   - [ ] "Create Project" 클릭
+   - [x] "Create Project" 클릭
 
 2. **API 키 복사**
-   - [ ] Settings → API 이동
-   - [ ] Project URL 복사
-   - [ ] anon public key 복사
+   - [x] Settings → API 이동
+   - [x] Project URL 복사
+   - [x] anon public key 복사
 
 3. **Authentication 설정**
-   - [ ] Authentication → Providers → Email 활성화
-   - [ ] Authentication → Providers → Google 설정
-     - [ ] Google Cloud Console에서 OAuth 2.0 Client ID 생성
-     - [ ] Authorized redirect URIs 추가
-     - [ ] Client ID와 Secret 입력
+   - [x] Authentication → Providers → Email 활성화
+   - [x] Authentication → Providers → Google 설정
+     - [x] Google Cloud Console에서 OAuth 2.0 Client ID 생성
+     - [x] Authorized redirect URIs 추가
+     - [x] Client ID와 Secret 입력
 
 #### 🤖 Cursor에서 실행할 작업
 
@@ -142,11 +142,11 @@ and add .env.local to .gitignore"
 "Create src/lib/supabase.ts with typed Supabase client initialization using environment variables"
 ```
 
-### 1.5 데이터베이스 테이블 생성
+### 1.5 데이터베이스 테이블 생성 ✅ 완료
 
 #### 👤 문유가 Supabase SQL Editor에서 할 일
-- [ ] SQL Editor 열기
-- [ ] 아래 SQL 복사하여 실행
+- [x] SQL Editor 열기
+- [x] 아래 SQL 복사하여 실행
 
 #### 🤖 Cursor에서 SQL 생성
 
@@ -159,7 +159,7 @@ and add .env.local to .gitignore"
 Include RLS policies for user data isolation"
 ```
 
-✅ SQL 스키마가 `database_schema.sql` 파일로 생성됨. 문유가 Supabase SQL Editor에 붙여넣고 실행 필요
+✅ SQL 스키마가 `database_schema.sql` 파일로 생성됨. 문유가 Supabase SQL Editor에 붙여넣고 실행 완료
 
 ### 1.6 타입 정의
 
@@ -229,11 +229,11 @@ Include RLS policies for user data isolation"
 - Session persistence"
 ```
 
-### 1.9 레이아웃 컴포넌트
+### 1.9 레이아웃 컴포넌트 ✅ 완료
 
 #### 👤 문유가 할 일
-- [ ] 헤더 디자인 확인 (Wave 효과 포함 여부)
-- [ ] 푸터에 들어갈 소셜 링크 결정
+- [x] 헤더 디자인 확인 (Wave 효과 포함 여부)
+- [x] 푸터에 들어갈 소셜 링크 결정
 
 #### 🤖 Cursor에서 실행할 작업
 
@@ -279,17 +279,17 @@ Include RLS policies for user data isolation"
 
 ---
 
-## Phase 2: 핵심 기능 구현 (2-3주)
+## Phase 2: 핵심 기능 구현 (2-3주) ✅ 완료
 
-### 2.1 홈/대시보드 페이지
+### 2.1 홈/대시보드 페이지 ✅ 완료
 
 #### 👤 문유가 할 일
-- [ ] 대시보드에 표시할 통계 항목 확정
-- [ ] 환율 기본값 결정 (예: 1,300원)
+- [x] 대시보드에 표시할 통계 항목 확정
+- [x] 환율 기본값 결정 (예: 1,300원)
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 20**:
+- [x] **Cursor 프롬프트 20**:
 ```
 "Create src/pages/Dashboard.tsx with:
 - Stats cards (total subscriptions, monthly cost, average, active count)
@@ -299,7 +299,7 @@ Include RLS policies for user data isolation"
 - Fetch data from Supabase"
 ```
 
-**Cursor 프롬프트 21**:
+- [x] **Cursor 프롬프트 21**:
 ```
 "Create src/components/features/dashboard/StatsCard.tsx:
 - Icon, title, value, change indicator
@@ -307,15 +307,15 @@ Include RLS policies for user data isolation"
 - Animated number transitions"
 ```
 
-### 2.2 구독 CRUD 기능
+### 2.2 구독 CRUD 기능 ✅ 완료
 
 #### 👤 문유가 할 일
-- [ ] 구독 카테고리 목록 확정
-- [ ] 결제 수단 옵션 확정
+- [x] 구독 카테고리 목록 확정
+- [x] 결제 수단 옵션 확정
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 22**:
+- [x] **Cursor 프롬프트 22**:
 ```
 "Create src/hooks/useSubscriptions.ts:
 - Fetch user subscriptions
@@ -325,7 +325,7 @@ Include RLS policies for user data isolation"
 - Loading states"
 ```
 
-**Cursor 프롬프트 23**:
+- [x] **Cursor 프롬프트 23**:
 ```
 "Create src/components/features/subscription/SubscriptionCard.tsx:
 - Service image/logo display
@@ -335,7 +335,7 @@ Include RLS policies for user data isolation"
 - Click card for details"
 ```
 
-**Cursor 프롬프트 24**:
+- [x] **Cursor 프롬프트 24**:
 ```
 "Create src/components/features/subscription/SubscriptionForm.tsx:
 - Modal form for add/edit
@@ -345,17 +345,17 @@ Include RLS policies for user data isolation"
 - Currency selection (KRW/USD)"
 ```
 
-### 2.3 Supabase Storage 설정
+### 2.3 Supabase Storage 설정 ✅ 완료
 
 #### 👤 문유가 브라우저에서 할 일
-- [ ] Supabase Dashboard → Storage
-- [ ] New bucket 생성: `service-logos`
-- [ ] Public bucket으로 설정
-- [ ] RLS 정책 추가 (authenticated users can upload)
+- [x] Supabase Dashboard → Storage
+- [x] New bucket 생성: `service-logos`
+- [x] Public bucket으로 설정
+- [x] RLS 정책 추가 (authenticated users can upload)
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 25**:
+- [x] **Cursor 프롬프트 25**:
 ```
 "Create src/utils/storage.ts:
 - Upload image to Supabase Storage
@@ -364,11 +364,11 @@ Include RLS policies for user data isolation"
 - Error handling"
 ```
 
-### 2.4 구독 목록 페이지
+### 2.4 구독 목록 페이지 ✅ 완료
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 26**:
+- [x] **Cursor 프롬프트 26**:
 ```
 "Create src/pages/Subscriptions.tsx:
 - Grid/list view toggle
@@ -379,15 +379,15 @@ Include RLS policies for user data isolation"
 - Floating action button for add"
 ```
 
-### 2.5 Music Player Footer
+### 2.5 Music Player Footer ✅ 완료
 
 #### 👤 문유가 할 일
-- [ ] 배경 음악 파일 준비 (MP3)
-- [ ] 음악 파일을 public/audio/ 폴더에 추가
+- [x] 배경 음악 파일 준비 (MP3)
+- [x] 음악 파일을 public/audio/ 폴더에 추가
 
 #### 🤖 Cursor에서 실행할 작업
 
-**Cursor 프롬프트 27**:
+- [x] **Cursor 프롬프트 27**:
 ```
 "Create src/components/layout/MusicPlayer.tsx:
 - Fixed bottom player
