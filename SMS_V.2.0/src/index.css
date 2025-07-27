@@ -98,10 +98,6 @@
   }
 
   @container (min-width: 1280px) {
-    .@xl\:flex-row {
-      flex-direction: row;
-    }
-    
     .@xl\:justify-between {
       justify-content: space-between;
     }
@@ -117,118 +113,82 @@
 }
 
 @layer components {
-  /* Moonwave 디자인 토큰 */
   .btn-primary {
-    background: linear-gradient(to right, #9333ea, #2563eb);
-    color: white;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50;
   }
-  
+
   .btn-primary:hover {
-    background: linear-gradient(to right, #7c3aed, #1d4ed8);
+    @apply transform hover:scale-[1.02];
   }
-  
+
   .btn-primary:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #a855f7, 0 0 0 4px white;
+    @apply ring-2 ring-purple-500/50;
   }
 
   .btn-secondary {
-    background: white;
-    color: #374151;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #d1d5db;
-    transition: all 0.2s;
+    @apply bg-gray-200 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500/20;
   }
-  
+
   .btn-secondary:hover {
-    background: #f9fafb;
+    @apply bg-gray-300;
   }
-  
+
   .btn-secondary:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px white;
+    @apply ring-2 ring-gray-500/20;
   }
 
   .btn-ghost {
-    color: #4b5563;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
+    @apply bg-transparent text-gray-700 font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500/20;
   }
-  
+
   .btn-ghost:hover {
-    color: #111827;
-    background: #f3f4f6;
+    @apply bg-gray-100;
   }
-  
+
   .btn-ghost:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px white;
+    @apply ring-2 ring-gray-500/20;
   }
 
   .card-glass {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    @apply bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20;
   }
 
   .card-gradient {
-    background: linear-gradient(to bottom right, #faf5ff, #eff6ff);
-    border: 1px solid #f3e8ff;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    @apply bg-gradient-to-br from-purple-500 to-blue-500 text-white;
   }
 
-  /* 한글 텍스트 유틸리티 */
+  /* 글래스 버튼 스타일 */
+  .glass-button {
+    @apply p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200 transform active:scale-95;
+  }
+
+  /* 웨이브 효과 */
+  .wave-single {
+    @apply absolute bottom-0 w-full;
+  }
+
   .text-korean {
-    font-family: 'Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.01em;
-    word-break: keep-all;
-    overflow-wrap: break-word;
+    @apply font-pretendard tracking-ko-normal break-keep-ko;
   }
 
   .text-korean-sm {
-    font-family: 'Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.01em;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    font-size: 0.875rem;
+    @apply font-pretendard text-sm tracking-ko-normal break-keep-ko;
   }
 
   .text-korean-lg {
-    font-family: 'Pretendard Variable', 'Pretendard', 'system-ui', 'sans-serif';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.01em;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    font-size: 1.125rem;
+    @apply font-pretendard text-lg tracking-ko-normal break-keep-ko;
   }
-}
 
-@layer utilities {
-  /* 한글 줄바꿈 최적화 */
+  /* 한글 타이포그래피 유틸리티 */
   .break-keep-ko {
     word-break: keep-all;
     overflow-wrap: break-word;
   }
-  
-  /* 한글 자간 최적화 */
+
   .tracking-ko-tight { letter-spacing: -0.02em; }
   .tracking-ko-normal { letter-spacing: -0.01em; }
   .tracking-ko-wide { letter-spacing: 0; }
-  
+
   /* 숫자 최적화 */
   .text-numeric {
     font-variant-numeric: tabular-nums;
@@ -237,7 +197,7 @@
 
   /* 애니메이션 */
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.5s ease-in-out;
   }
 
   .animate-slide-up {
@@ -263,7 +223,7 @@
 
   /* 그림자 */
   .shadow-soft {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
   .shadow-glow {
@@ -271,11 +231,10 @@
   }
 
   .shadow-premium {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* 커스텀 애니메이션 */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -287,12 +246,12 @@
 
 @keyframes slideUp {
   from {
-    transform: translateY(20px);
     opacity: 0;
+    transform: translateY(10px);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -311,16 +270,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #c1c1c1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #a8a8a8;
 }
 
 /* 포커스 스타일 */
@@ -333,13 +292,13 @@
   outline-offset: 2px;
 }
 
-/* 선택 텍스트 스타일 */
+/* 선택 스타일 */
 ::selection {
-  background-color: #3b82f6;
-  color: white;
+  background: rgba(59, 130, 246, 0.2);
+  color: inherit;
 }
 
 ::-moz-selection {
-  background-color: #3b82f6;
-  color: white;
+  background: rgba(59, 130, 246, 0.2);
+  color: inherit;
 }
