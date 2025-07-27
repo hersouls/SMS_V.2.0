@@ -223,6 +223,35 @@
     @apply inline-flex items-center rounded-md px-2 py-1 text-xs 
            font-medium ring-1 ring-inset;
   }
+
+  /* Frame Layout Classes */
+  .frame-container {
+    @apply min-h-screen flex flex-col;
+  }
+
+  .frame-header {
+    @apply flex-shrink-0;
+  }
+
+  .frame-main {
+    @apply flex-1 flex flex-col;
+  }
+
+  .frame-content {
+    @apply flex-1 container mx-auto px-4 @sm:px-6 @lg:px-8 py-4 @sm:py-6 @lg:py-8;
+  }
+
+  .frame-content-inner {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .frame-footer {
+    @apply flex-shrink-0;
+  }
+
+  .frame-floating {
+    @apply fixed bottom-4 right-4 z-40;
+  }
 }
 
 @keyframes fadeIn {

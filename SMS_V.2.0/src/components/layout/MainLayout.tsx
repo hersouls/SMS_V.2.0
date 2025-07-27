@@ -1,0 +1,71 @@
+import React from 'react';
+import Header from './Header';
+import Footer from './Footer';
+import MusicPlayer from './MusicPlayer';
+import FloatingActionButtons from './FloatingActionButtons';
+
+interface MainLayoutProps {
+  children: React.ReactNode;
+  showHeader?: boolean;
+  showFooter?: boolean;
+  showMusicPlayer?: boolean;
+  showFloatingActions?: boolean;
+  onAddClick?: () => void;
+  onEmergencyClick?: () => void;
+  onDebugClick?: () => void;
+}
+
+const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  showHeader = true,
+  showFooter = true,
+  showMusicPlayer = true,
+  showFloatingActions = true,
+  onAddClick,
+  onEmergencyClick,
+  onDebugClick
+}) => {
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Main Layout Frame */}
+      <div className="frame-container">
+        {/* Header Frame */}
+        {showHeader && (
+          <div className="frame-header">
+            <Header />
+          </div>
+        )}
+        
+        {/* Main Content Frame */}
+        <main className="frame-main">
+          {/* Content Container with proper spacing */}
+          <div className="frame-content">
+            {/* Content Frame */}
+            <div className="frame-content-inner">
+              {children}
+            </div>
+          </div>
+        </main>
+        
+        {/* Footer Frame */}
+        {showFooter && (
+          <div className="frame-footer">
+            <Footer />
+          </div>
+        )}
+      </div>
+      
+      {/* Floating Elements Frame */}
+      {showMusicPlayer && <MusicPlayer />}
+      {showFloatingActions && (
+        <FloatingActionButtons 
+          onAddClick={onAddClick}
+          onEmergencyClick={onEmergencyClick}
+          onDebugClick={onDebugClick}
+        />
+      )}
+    </div>
+  );
+};
+
+export default MainLayout;
