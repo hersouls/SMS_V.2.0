@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Play, 
   Pause, 
@@ -123,7 +123,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       audio.removeEventListener('timeupdate', updateProgress);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [repeatMode]);
+  }, [repeatMode, nextTrack]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -135,11 +135,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     );
   };
 
-  const nextTrack = () => {
+  const nextTrack = useCallback(() => {
     setCurrentTrack(prev => 
       prev === playlist.length - 1 ? 0 : prev + 1
     );
-  };
+  }, [playlist.length]);
 
   const toggleMute = () => {
     setIsMuted(!isMuted);

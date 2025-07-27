@@ -1,5 +1,8 @@
-import { Component } from 'react';
-import type { ErrorInfo, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
+
+interface ErrorInfo {
+  componentStack: string;
+}
 
 interface Props {
   children: ReactNode;
@@ -11,6 +14,20 @@ interface State {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
+}
+
+interface ErrorData {
+  message: string;
+  stack?: string;
+  context?: Record<string, unknown>;
+  timestamp: string;
+  url: string;
+  userId: string | null;
+  sessionId: string;
+}
+
+interface GtagWindow extends Window {
+  gtag?: (command: string, eventName: string, parameters?: Record<string, unknown>) => void;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -37,43 +54,29 @@ export class ErrorBoundary extends Component<Props, State> {
       errorInfo
     });
 
-    // Log error to console
-    console.error('Error caught by boundary:', error, errorInfo);
-
-    // Report error to monitoring service
     this.reportError(error, errorInfo);
-
-    // Call custom error handler
-    this.props.onError?.(error, errorInfo);
   }
 
   private reportError = (error: Error, errorInfo: ErrorInfo) => {
-    const errorData = {
+    const errorData: ErrorData = {
       message: error.message,
       stack: error.stack,
-      componentStack: errorInfo.componentStack,
       timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
       url: window.location.href,
       userId: this.getUserId(),
       sessionId: this.getSessionId()
     };
 
-    // Send to error tracking service (replace with your service)
+    // Send to error tracking service
     this.sendToErrorService(errorData);
 
-    // Log to console for development
-    if (process.env.NODE_ENV === 'development') {
-      console.group('Error Details');
-      console.log('Error:', error);
-      console.log('Component Stack:', errorInfo.componentStack);
-      console.log('Error Data:', errorData);
-      console.groupEnd();
+    // Call custom error handler if provided
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
     }
   };
 
   private getUserId = (): string | null => {
-    // Get user ID from auth context or localStorage
     try {
       const user = localStorage.getItem('moonwave_user');
       return user ? JSON.parse(user).id : null;
@@ -83,7 +86,6 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   private getSessionId = (): string => {
-    // Generate or get session ID
     let sessionId = sessionStorage.getItem('moonwave_session_id');
     if (!sessionId) {
       sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -92,11 +94,11 @@ export class ErrorBoundary extends Component<Props, State> {
     return sessionId;
   };
 
-  private sendToErrorService = async (errorData: any) => {
+  private sendToErrorService = async (errorData: ErrorData) => {
     try {
       // Replace with your error tracking service (Sentry, LogRocket, etc.)
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'exception', {
+      if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
+        (window as GtagWindow).gtag!('event', 'exception', {
           description: errorData.message,
           fatal: true,
           custom_parameters: errorData
@@ -207,8 +209,8 @@ export class ErrorBoundary extends Component<Props, State> {
 
 // Hook for error tracking
 export const useErrorTracking = () => {
-  const trackError = (error: Error, context?: Record<string, any>) => {
-    const errorData = {
+  const trackError = (error: Error, context?: Record<string, unknown>) => {
+    const errorData: ErrorData = {
       message: error.message,
       stack: error.stack,
       context,
@@ -222,10 +224,10 @@ export const useErrorTracking = () => {
     sendToErrorService(errorData);
   };
 
-  const trackEvent = (eventName: string, properties?: Record<string, any>) => {
+  const trackEvent = (eventName: string, properties?: Record<string, unknown>) => {
     // Send to analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', eventName, properties);
+    if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
+      (window as GtagWindow).gtag!('event', eventName, properties);
     }
   };
 
@@ -251,10 +253,10 @@ const getSessionId = (): string => {
   return sessionId;
 };
 
-const sendToErrorService = async (errorData: any) => {
+const sendToErrorService = async (errorData: ErrorData) => {
   try {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'exception', {
+    if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
+      (window as GtagWindow).gtag!('event', 'exception', {
         description: errorData.message,
         fatal: false,
         custom_parameters: errorData

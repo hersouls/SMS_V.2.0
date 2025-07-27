@@ -1,4 +1,36 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+
+interface FirstInputEntry extends PerformanceEntry {
+  processingStart: number;
+}
+
+interface LayoutShiftEntry extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+}
+
+interface NavigationEntry extends PerformanceEntry {
+  responseStart: number;
+  requestStart: number;
+  entryType: string;
+}
+
+interface PerformanceMemory {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
+interface NetworkConnection {
+  effectiveType: string;
+  downlink: number;
+  rtt: number;
+  saveData: boolean;
+}
+
+interface GtagWindow extends Window {
+  gtag?: (command: string, eventName: string, parameters?: Record<string, unknown>) => void;
+}
 
 interface PerformanceMetrics {
   fcp: number | null;
@@ -43,7 +75,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
   };
 
   // Measure First Contentful Paint (FCP)
-  const measureFCP = () => {
+  const measureFCP = useCallback(() => {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
@@ -66,10 +98,10 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       
       observer.observe({ entryTypes: ['paint'] });
     }
-  };
+  }, [onMetricsUpdate, enableReporting]);
 
   // Measure Largest Contentful Paint (LCP)
-  const measureLCP = () => {
+  const measureLCP = useCallback(() => {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
@@ -92,14 +124,15 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
     }
-  };
+  }, [onMetricsUpdate, enableReporting]);
 
   // Measure First Input Delay (FID)
-  const measureFID = () => {
+  const measureFID = useCallback(() => {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
+
           const fidScore = calculateScore(fid, { good: 100, needsImprovement: 300 });
           
           metricsRef.current.fid = fid;
@@ -115,19 +148,20 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       
       observer.observe({ entryTypes: ['first-input'] });
     }
-  };
+  }, [onMetricsUpdate, enableReporting]);
 
   // Measure Cumulative Layout Shift (CLS)
-  const measureCLS = () => {
+  const measureCLS = useCallback(() => {
     if ('PerformanceObserver' in window) {
       let clsValue = 0;
       
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
-        entries.forEach((entry: any) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+        entries.forEach((entry) => {
+          const clsEntry = entry as LayoutShiftEntry;
+          if (!clsEntry.hadRecentInput) {
+            clsValue += clsEntry.value;
           }
         });
         
@@ -145,17 +179,18 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       
       observer.observe({ entryTypes: ['layout-shift'] });
     }
-  };
+  }, [onMetricsUpdate, enableReporting]);
 
   // Measure Time to First Byte (TTFB)
-  const measureTTFB = () => {
+  const measureTTFB = useCallback(() => {
     if ('PerformanceObserver' in window) {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         
-        entries.forEach((entry: any) => {
-          if (entry.entryType === 'navigation') {
-            const ttfb = entry.responseStart - entry.requestStart;
+        entries.forEach((entry) => {
+          const navEntry = entry as NavigationEntry;
+          if (navEntry.entryType === 'navigation') {
+            const ttfb = navEntry.responseStart - navEntry.requestStart;
             const ttfbScore = calculateScore(ttfb, { good: 800, needsImprovement: 1800 });
             
             metricsRef.current.ttfb = ttfb;
@@ -172,12 +207,12 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       
       observer.observe({ entryTypes: ['navigation'] });
     }
-  };
+  }, [onMetricsUpdate, enableReporting]);
 
   // Measure memory usage
   const measureMemory = () => {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory: PerformanceMemory }).memory;
       console.log('Memory Usage:', {
         usedJSHeapSize: memory.usedJSHeapSize,
         totalJSHeapSize: memory.totalJSHeapSize,
@@ -189,7 +224,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
   // Measure network information
   const measureNetwork = () => {
     if ('connection' in navigator) {
-      const connection = (navigator as any).connection;
+      const connection = (navigator as Navigator & { connection: NetworkConnection }).connection;
       console.log('Network Info:', {
         effectiveType: connection.effectiveType,
         downlink: connection.downlink,
@@ -200,7 +235,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
   };
 
   // Report performance metrics to analytics
-  const reportMetrics = (metrics: PerformanceMetrics) => {
+  const reportMetrics = useCallback((metrics: PerformanceMetrics) => {
     if (!enableReporting) return;
 
     // Calculate overall performance score
@@ -217,8 +252,8 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       : 0;
 
     // Send to analytics (replace with your analytics service)
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'performance_metrics', {
+    if (typeof window !== 'undefined' && (window as GtagWindow).gtag) {
+      (window as GtagWindow).gtag!('event', 'performance_metrics', {
         event_category: 'Performance',
         event_label: 'Core Web Vitals',
         value: Math.round(overallScore * 100),
@@ -237,7 +272,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       ...metrics,
       overallScore: Math.round(overallScore * 100)
     });
-  };
+  }, [enableReporting]);
 
   useEffect(() => {
     // Start measuring when component mounts
@@ -262,7 +297,7 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       clearTimeout(timer);
       clearInterval(reportTimer);
     };
-  }, []);
+  }, [measureFCP, measureLCP, measureFID, measureCLS, measureTTFB, reportMetrics]);
 
   // Listen for visibility change to measure performance when tab becomes visible
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar, TrendingUp, CreditCard, Users, DollarSign } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui';
 import { ExchangeRateDisplay } from '../components/features/ExchangeRateDisplay';
@@ -22,9 +22,9 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [fetchDashboardData]);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       // Fetch user's subscriptions
       const { data: { user } } = await supabase.auth.getUser();
@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const calculateStats = (subscriptions: Subscription[], rate: number) => {
     const totalSubscriptions = subscriptions.length;
