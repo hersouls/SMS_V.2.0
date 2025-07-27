@@ -109,7 +109,7 @@ export const ExchangeRateDisplay: React.FC<ExchangeRateDisplayProps> = ({
       if (success) {
         setIsEditing(false);
       }
-    } catch (err) {
+    } catch {
       setEditError('환율 업데이트에 실패했습니다.');
     }
   };
