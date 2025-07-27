@@ -1,4 +1,15 @@
 // Performance monitoring and analytics utility
+
+// Type definitions for performance APIs
+interface LayoutShift {
+  value: number;
+  hadRecentInput: boolean;
+}
+
+interface PerformanceEventTiming extends PerformanceEntry {
+  processingStart: number;
+}
+
 export interface PerformanceMetrics {
   fcp: number; // First Contentful Paint
   lcp: number; // Largest Contentful Paint
@@ -57,6 +68,7 @@ class Analytics {
     let clsValue = 0;
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
+
         if (!layoutShiftEntry.hadRecentInput) {
           clsValue += layoutShiftEntry.value;
         }

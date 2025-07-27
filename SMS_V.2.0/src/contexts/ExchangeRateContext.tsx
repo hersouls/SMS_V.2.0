@@ -1,3 +1,4 @@
+
 interface ExchangeRateProviderProps {
   children: ReactNode;
 }
@@ -8,6 +9,30 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
   const [lastUpdated, setLastUpdated] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // 기본 환율 생성
+  const createDefaultRate = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      const { data, error: createError } = await supabase
+        .from('exchange_rates')
+        .insert({
+          user_id: user.id,
+          usd_krw: DEFAULT_RATE
+        })
+        .select()
+        .single();
+
+      if (createError) throw createError;
+
+      setRate(data.usd_krw);
+      setLastUpdated(data.created_at || '');
+    } catch (err) {
+      console.error('기본 환율 생성 실패:', err);
+      setError('기본 환율을 생성하는데 실패했습니다.');
+    }
+  }, [user]);
 
   // 환율 데이터 가져오기
   const fetchExchangeRate = useCallback(async () => {
@@ -42,30 +67,6 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
       setIsLoading(false);
     }
   }, [user, createDefaultRate]);
-
-  // 기본 환율 생성
-  const createDefaultRate = useCallback(async () => {
-    if (!user) return;
-
-    try {
-      const { data, error: createError } = await supabase
-        .from('exchange_rates')
-        .insert({
-          user_id: user.id,
-          usd_krw: DEFAULT_RATE
-        })
-        .select()
-        .single();
-
-      if (createError) throw createError;
-
-      setRate(data.usd_krw);
-      setLastUpdated(data.created_at || '');
-    } catch (err) {
-      console.error('기본 환율 생성 실패:', err);
-      setError('기본 환율을 생성하는데 실패했습니다.');
-    }
-  }, [user]);
 
   // 환율 업데이트
   const updateExchangeRate = async (newRate: number): Promise<boolean> => {
@@ -198,5 +199,14 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
       {children}
     </ExchangeRateContext.Provider>
   );
+};
+
+// Export the hook for use in other components
+export const useExchangeRateContext = () => {
+  const context = React.useContext(ExchangeRateContext);
+  if (context === undefined) {
+    throw new Error('useExchangeRateContext must be used within an ExchangeRateProvider');
+  }
+  return context;
 };
 
