@@ -23,30 +23,50 @@ const Dashboard: React.FC = () => {
 
   const fetchDashboardData = useCallback(async () => {
     try {
-      // Fetch user's subscriptions
+      setLoading(true);
+      
+      // Fetch user's subscriptions (all statuses)
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        console.log('No user found, redirecting to login...');
+        return;
+      }
 
-      const { data: subscriptions } = await supabase
+      console.log('Fetching data for user:', user.email);
+
+      // Fetch all subscriptions for the user
+      const { data: subscriptions, error: subError } = await supabase
         .from('subscriptions')
         .select('*')
-        .eq('user_id', user.id)
-        .eq('status', 'active');
+        .eq('user_id', user.id);
+
+      if (subError) {
+        console.error('Error fetching subscriptions:', subError);
+      } else {
+        console.log('Fetched subscriptions:', subscriptions?.length || 0);
+      }
 
       // Fetch exchange rate
-      const { data: rateData } = await supabase
+      const { data: rateData, error: rateError } = await supabase
         .from('exchange_rates')
         .select('usd_krw')
         .eq('user_id', user.id)
         .single();
 
-      if (rateData) {
-        setExchangeRate(rateData.usd_krw);
+      if (rateError && rateError.code !== 'PGRST116') {
+        console.error('Error fetching exchange rate:', rateError);
       }
 
+      const currentRate = rateData?.usd_krw || 1300;
+      setExchangeRate(currentRate);
+
       if (subscriptions) {
-        setActiveSubscriptions(subscriptions.slice(0, 5));
-        calculateStats(subscriptions, rateData?.usd_krw || 1300);
+        const activeSubs = subscriptions.filter(sub => sub.status === 'active');
+        setActiveSubscriptions(activeSubs.slice(0, 5));
+        calculateStats(subscriptions, currentRate);
+      } else {
+        setActiveSubscriptions([]);
+        calculateStats([], currentRate);
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -330,32 +350,19 @@ const Dashboard: React.FC = () => {
               <div className="text-center py-8">
                 <CreditCard className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-500 break-keep-ko">
-                  No active subscriptions yet.
+                  No active subscriptions found.
                 </p>
                 <p className="text-sm text-gray-400 mt-1 break-keep-ko">
                   Add your first subscription to get started.
                 </p>
-                <div className="mt-4 space-y-2">
+                <div className="mt-4">
                   <Button
-                    onClick={addSampleData}
-                    disabled={isAddingSampleData}
+                    onClick={() => window.location.href = '/subscriptions'}
                     className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
-                    {isAddingSampleData ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Adding Sample Data...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Plus className="w-4 h-4" />
-                        Add Sample Data
-                      </div>
-                    )}
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Subscription
                   </Button>
-                  <p className="text-xs text-gray-400">
-                    This will add Netflix, Spotify, Adobe, and GitHub subscriptions
-                  </p>
                 </div>
               </div>
             ) : (
@@ -364,9 +371,21 @@ const Dashboard: React.FC = () => {
                   <div
                     key={subscription.id}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                    onClick={() => window.location.href = `/subscriptions`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                      {subscription.service_image_url ? (
+                        <img 
+                          src={subscription.service_image_url} 
+                          alt={subscription.service_name}
+                          className="w-10 h-10 rounded-lg object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling!.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div className={`w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center ${subscription.service_image_url ? 'hidden' : ''}`}>
                         <span className="text-white font-bold text-sm">
                           {subscription.service_name.charAt(0).toUpperCase()}
                         </span>
@@ -376,7 +395,7 @@ const Dashboard: React.FC = () => {
                           {subscription.service_name}
                         </h3>
                         <p className="text-sm text-gray-500 break-keep-ko">
-                          {subscription.payment_cycle} • {formatCurrency(subscription.amount, subscription.currency)}
+                          {subscription.payment_cycle} • {subscription.category || 'Uncategorized'}
                         </p>
                       </div>
                     </div>
@@ -385,7 +404,7 @@ const Dashboard: React.FC = () => {
                         {formatCurrency(subscription.amount, subscription.currency)}
                       </p>
                       <p className="text-xs text-gray-500 break-keep-ko">
-                        Next: {new Date(subscription.next_payment_date).toLocaleDateString()}
+                        {subscription.payment_day ? `Day ${subscription.payment_day}` : 'No payment day set'}
                       </p>
                     </div>
                   </div>

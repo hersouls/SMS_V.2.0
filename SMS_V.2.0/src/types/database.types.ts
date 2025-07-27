@@ -3,14 +3,23 @@ export interface Subscription {
   id: string;
   user_id: string;
   service_name: string;
+  service_url?: string;
+  service_image_url?: string;
+  category?: string;
+  status: 'active' | 'paused' | 'canceled';
   amount: number;
   currency: 'KRW' | 'USD';
   payment_cycle: 'monthly' | 'yearly' | 'quarterly' | 'weekly';
-  next_payment_date: string;
-  service_url?: string;
-  logo_url?: string;
-  category?: string;
-  status: 'active' | 'paused' | 'canceled';
+  payment_day?: number;
+  payment_method?: string;
+  start_date?: string;
+  end_date?: string;
+  auto_renewal?: boolean;
+  alarm_days?: number[];
+  tier?: string;
+  benefits?: string;
+  tags?: string[];
+  memo?: string;
   created_at: string;
   updated_at: string;
 }
@@ -49,11 +58,15 @@ export interface SubscriptionFormData {
   amount: number;
   currency: 'KRW' | 'USD';
   payment_cycle: 'monthly' | 'yearly' | 'quarterly' | 'weekly';
-  next_payment_date: string;
+  payment_day?: number;
   service_url?: string;
-  logo_url?: string;
+  service_image_url?: string;
   category?: string;
   status?: 'active' | 'paused' | 'canceled';
+  payment_method?: string;
+  start_date?: string;
+  auto_renewal?: boolean;
+  memo?: string;
 }
 
 // Dashboard stats types

@@ -17,6 +17,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Subscriptions = lazy(() => import('./pages/Subscriptions'))
 const Calendar = lazy(() => import('./pages/Calendar'))
 const Settings = lazy(() => import('./pages/Settings'))
+const DataTest = lazy(() => import('./components/features/DataTest'))
 
 // Loading component for Suspense fallback
 const PageLoader = () => (
@@ -114,6 +115,17 @@ function AppRoutes() {
               <MusicPlayer />
             </div>
           </ProtectedRoute>
+        } />
+        
+        {/* Test route for data verification */}
+        <Route path="/test" element={
+          <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+            <Header />
+            <main className="pt-16 pb-20">
+              <DataTest />
+            </main>
+            <Footer />
+          </div>
         } />
         
         {/* Default redirect */}

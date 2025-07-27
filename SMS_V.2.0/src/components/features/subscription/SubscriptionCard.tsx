@@ -101,17 +101,22 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
               className="relative w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
               onClick={handleServiceClick}
             >
-              {subscription.logo_url ? (
+              {subscription.service_image_url ? (
                 <img 
-                  src={subscription.logo_url} 
+                  src={subscription.service_image_url} 
                   alt={subscription.service_name}
                   className="w-full h-full object-cover rounded-lg"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling!.style.display = 'flex';
+                  }}
                 />
-              ) : (
+              ) : null}
+              <div className={`w-full h-full flex items-center justify-center ${subscription.service_image_url ? 'hidden' : ''}`}>
                 <span className="text-white font-bold text-lg">
                   {subscription.service_name.charAt(0).toUpperCase()}
                 </span>
-              )}
+              </div>
               {subscription.service_url && (
                 <ExternalLink className="absolute -top-1 -right-1 w-4 h-4 text-white bg-blue-600 rounded-full p-0.5" />
               )}
@@ -174,20 +179,25 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         <div className="mt-4 pt-4 border-t border-gray-100">
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-500 break-keep-ko">
-              Next payment:
+              Payment day:
             </span>
             <span className="font-medium text-gray-900">
-              {new Date(subscription.next_payment_date).toLocaleDateString()}
+              {subscription.payment_day ? `Day ${subscription.payment_day}` : 'Not set'}
             </span>
           </div>
           <div className="flex items-center justify-between text-sm mt-1">
             <span className="text-gray-500 break-keep-ko">
-              Total cost:
+              Monthly cost:
             </span>
             <span className="font-semibold text-lg text-gray-900">
               {formatCurrency(subscription.amount, subscription.currency)}
             </span>
           </div>
+          {subscription.memo && (
+            <div className="mt-2 text-xs text-gray-500 break-keep-ko">
+              {subscription.memo}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
