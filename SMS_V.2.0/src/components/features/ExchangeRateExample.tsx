@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CurrencyDollarIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
-import { useExchangeRateContext } from '../../contexts/ExchangeRateContext';
 
 interface ExchangeRateExampleProps {
   className?: string;

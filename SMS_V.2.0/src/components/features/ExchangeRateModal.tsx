@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CurrencyDollarIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { cn } from '../../lib/utils';
-import { useExchangeRateContext } from '../../contexts/ExchangeRateContext';
+import { useExchangeRateContext } from '../../hooks/useExchangeRateContext';
 
 interface ExchangeRateModalProps {
   isOpen: boolean;

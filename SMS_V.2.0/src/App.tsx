@@ -6,7 +6,8 @@ import MusicPlayer from './components/layout/MusicPlayer'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 import { ErrorBoundary } from './components/features/monitoring/ErrorBoundary'
 import { PerformanceMonitor } from './components/features/performance/PerformanceMonitor'
-import { useAuth, AuthProvider } from './contexts/AuthContext'
+import { AuthProvider } from './contexts/AuthContext'
+import { useAuth } from './hooks/useAuth'
 import { ExchangeRateProvider } from './contexts/ExchangeRateContext'
 
 // Lazy load pages for code splitting

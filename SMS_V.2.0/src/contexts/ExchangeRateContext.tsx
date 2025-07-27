@@ -1,12 +1,4 @@
 
-import React, { useState, useCallback, useEffect } from 'react';
-import type { ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from './AuthContext';
-import { DEFAULT_RATE } from '../constants/exchangeRate';
-import { ExchangeRateContext } from './ExchangeRateContextDefinition';
-import type { ExchangeRateContextType, ExchangeRate } from './ExchangeRateContextDefinition';
-
 interface ExchangeRateProviderProps {
   children: ReactNode;
 }
@@ -144,43 +136,17 @@ export const ExchangeRateProvider: React.FC<ExchangeRateProviderProps> = ({ chil
 
   // 통화 변환 유틸리티
   const convertCurrency = (amount: number, fromCurrency: string, toCurrency: string = 'KRW'): number => {
-    if (fromCurrency === toCurrency) return amount;
-    
-    if (fromCurrency === 'USD' && toCurrency === 'KRW') {
-      return amount * rate;
-    }
-    
-    if (fromCurrency === 'KRW' && toCurrency === 'USD') {
-      return amount / rate;
-    }
-    
-    return amount; // 지원하지 않는 통화 조합
+    return convertCurrencyUtil(amount, fromCurrency, toCurrency, rate);
   };
 
   // 포맷된 환율 문자열
   const getFormattedRate = (): string => {
-    return `1 USD = ${rate.toLocaleString()} KRW`;
+    return getFormattedRateUtil(rate);
   };
 
   // 마지막 업데이트 시간 포맷팅
   const getFormattedLastUpdated = (): string => {
-    if (!lastUpdated) return '업데이트 없음';
-    
-    const date = new Date(lastUpdated);
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return '방금 전';
-    if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}시간 전`;
-    
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    return getFormattedLastUpdatedUtil(lastUpdated);
   };
 
   // 초기 로드 및 실시간 구독

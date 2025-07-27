@@ -57,8 +57,7 @@ class Analytics {
   private observeFID() {
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      entries.forEach((entry: PerformanceEntry) => {
-        const firstInputEntry = entry as PerformanceEventTiming;
+
         this.trackPerformance('fid', firstInputEntry.processingStart - entry.startTime);
       });
     });
@@ -69,8 +68,7 @@ class Analytics {
     let clsValue = 0;
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      entries.forEach((entry: PerformanceEntry) => {
-        const layoutShiftEntry = entry as unknown as LayoutShift;
+
         if (!layoutShiftEntry.hadRecentInput) {
           clsValue += layoutShiftEntry.value;
         }
