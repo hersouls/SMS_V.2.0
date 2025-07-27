@@ -24,6 +24,23 @@ export const DESIGN_TOKENS = {
   // 플로팅 액션 버튼
   FAB_BASE: "w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 transform active:scale-95 font-pretendard font-semibold",
   
+  // 레이아웃 관련 토큰
+  LAYOUT_CENTER: "flex items-center justify-center",
+  LAYOUT_CENTER_HORIZONTAL: "flex justify-center",
+  LAYOUT_CENTER_VERTICAL: "flex items-center",
+  LAYOUT_SPACED: "flex items-center justify-between",
+  
+  // 간격 관련 토큰
+  GAP_SM: "gap-2",
+  GAP_MD: "gap-4",
+  GAP_LG: "gap-6",
+  GAP_XL: "gap-8",
+  
+  // 버튼 그룹 토큰
+  BUTTON_GROUP: "flex items-center gap-2 @sm:gap-3 @lg:gap-4",
+  BUTTON_GROUP_VERTICAL: "flex flex-col items-center gap-2 @sm:gap-3 @lg:gap-4",
+  BUTTON_GROUP_CENTERED: "flex items-center justify-center gap-2 @sm:gap-3 @lg:gap-4",
+  
   // 입력 필드
   INPUT_BASE: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-pretendard tracking-ko-normal",
   

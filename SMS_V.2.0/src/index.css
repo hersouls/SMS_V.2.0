@@ -242,7 +242,7 @@
   }
 
   .frame-content-inner {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-7xl mx-auto flex flex-col items-center justify-center min-h-full;
   }
 
   .frame-footer {
@@ -251,6 +251,52 @@
 
   .frame-floating {
     @apply fixed bottom-4 right-4 z-40;
+  }
+
+  /* Layout Utilities */
+  .layout-center {
+    @apply flex items-center justify-center;
+  }
+
+  .layout-center-horizontal {
+    @apply flex justify-center;
+  }
+
+  .layout-center-vertical {
+    @apply flex items-center;
+  }
+
+  .layout-spaced {
+    @apply flex items-center justify-between;
+  }
+
+  .layout-gap-sm {
+    @apply gap-2;
+  }
+
+  .layout-gap-md {
+    @apply gap-4;
+  }
+
+  .layout-gap-lg {
+    @apply gap-6;
+  }
+
+  .layout-gap-xl {
+    @apply gap-8;
+  }
+
+  /* Button Layout Improvements */
+  .button-group {
+    @apply flex items-center gap-2 @sm:gap-3 @lg:gap-4;
+  }
+
+  .button-group-vertical {
+    @apply flex flex-col items-center gap-2 @sm:gap-3 @lg:gap-4;
+  }
+
+  .button-group-centered {
+    @apply flex items-center justify-center gap-2 @sm:gap-3 @lg:gap-4;
   }
 }
 

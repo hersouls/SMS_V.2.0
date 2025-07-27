@@ -38,11 +38,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         
         {/* Main Content Frame */}
         <main className="frame-main">
-          {/* Content Container with proper spacing */}
+          {/* Content Container with proper spacing and centering */}
           <div className="frame-content">
-            {/* Content Frame */}
-            <div className="frame-content-inner">
-              {children}
+            {/* Content Frame with improved centering */}
+            <div className="frame-content-inner flex flex-col items-center justify-center min-h-full">
+              <div className="w-full max-w-4xl mx-auto px-4 @sm:px-6 @lg:px-8">
+                {children}
+              </div>
             </div>
           </div>
         </main>
