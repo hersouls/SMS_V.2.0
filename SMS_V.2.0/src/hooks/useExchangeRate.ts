@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -27,7 +27,7 @@ export const useExchangeRate = () => {
   const [error, setError] = useState<string | null>(null);
 
   // 환율 데이터 가져오기
-  const fetchExchangeRate = async () => {
+  const fetchExchangeRate = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -58,10 +58,10 @@ export const useExchangeRate = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user, createDefaultRate]);
 
   // 기본 환율 생성
-  const createDefaultRate = async () => {
+  const createDefaultRate = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -82,7 +82,7 @@ export const useExchangeRate = () => {
       console.error('기본 환율 생성 실패:', err);
       setError('기본 환율을 생성하는데 실패했습니다.');
     }
-  };
+  }, [user]);
 
   // 환율 업데이트
   const updateExchangeRate = async (newRate: number): Promise<boolean> => {
@@ -221,7 +221,7 @@ export const useExchangeRate = () => {
         subscription.unsubscribe();
       };
     }
-  }, [user]);
+  }, [user, fetchExchangeRate]);
 
   return {
     rate,

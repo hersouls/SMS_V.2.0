@@ -16,6 +16,12 @@ interface CalendarGridProps {
   className?: string;
 }
 
+interface Subscription {
+  service_name?: string;
+  name?: string;
+  [key: string]: unknown;
+}
+
 const serviceIcons: Record<string, string> = {
   'Netflix': '🎬',
   'Spotify': '🎵',
@@ -60,7 +66,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
     onMonthChange(today.getFullYear(), today.getMonth() + 1);
   };
 
-  const getServiceIcon = (subscription: any): string => {
+  const getServiceIcon = (subscription: Subscription): string => {
     const serviceName = subscription.service_name || subscription.name || '';
     return serviceIcons[serviceName] || '📱';
   };
@@ -184,12 +190,18 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                   "hover:bg-gray-50 cursor-pointer",
                   dayIndex === 6 && "border-r-0"
                 )}
-                onClick={() => day?.date && onDayClick?.(day.date)}
+                onClick={() => {
+                  if (day?.date) {
+                    onDayClick?.(day.date);
+                  }
+                }}
                 tabIndex={day?.date ? 0 : -1}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    day?.date && onDayClick?.(day.date);
+                    if (day?.date) {
+                      onDayClick?.(day.date);
+                    }
                   }
                 }}
                 role={day?.date ? "button" : undefined}
