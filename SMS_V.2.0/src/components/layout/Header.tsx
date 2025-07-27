@@ -7,82 +7,64 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40">
-      {/* Wave SVG Background */}
-      <div className="absolute inset-0">
-        <svg
-          className="w-full h-16"
-          viewBox="0 0 1200 120"
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Wave Effect Background */}
+      <div className="absolute inset-0 h-20 overflow-hidden">
+        <svg 
+          className="absolute bottom-0 w-full wave-single"
+          style={{ height: '80px', opacity: 0.3 }}
+          viewBox="0 0 1440 320"
           preserveAspectRatio="none"
         >
-          <path
-            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-            opacity=".25"
-            className="fill-blue-600"
-          />
-          <path
-            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-            opacity=".5"
-            className="fill-blue-500"
-          />
-          <path
-            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-            className="fill-blue-400"
+          <path 
+            fill="#3b82f6" 
+            d="M0,192L48,181.3C96,171,192,149,288,154.7C384,160,480,192,576,213.3C672,235,768,245,864,218.7C960,192,1056,128,1152,106.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           />
         </svg>
       </div>
-
-      {/* Header Content */}
-      <div className="relative flex items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm font-pretendard">M</span>
+      
+      {/* Glass Card Navigation */}
+      <nav className="relative">
+        <div className="mx-auto max-w-7xl px-4 @sm:px-6 @lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            {/* Home Button */}
+            <Link
+              to="/dashboard"
+              className="glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200"
+              aria-label="홈으로 가기"
+            >
+              <Home className="w-5 h-5 text-white" />
+            </Link>
+            
+            {/* Right Side Buttons */}
+            <div className="flex items-center gap-3">
+              {/* Notifications Button */}
+              <Link
+                to="/notifications"
+                className={cn(
+                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200",
+                  location.pathname === '/notifications' && "bg-white/30"
+                )}
+                aria-label="알림"
+              >
+                <Bell className="w-5 h-5 text-white" />
+              </Link>
+              
+              {/* Profile Button */}
+              <Link
+                to="/settings"
+                className={cn(
+                  "glass-button p-3 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-all duration-200",
+                  location.pathname === '/settings' && "bg-white/30"
+                )}
+                aria-label="프로필"
+              >
+                <User className="w-5 h-5 text-white" />
+              </Link>
+            </div>
           </div>
-          <span className="text-white font-semibold text-lg hidden sm:block font-pretendard tracking-ko-normal">
-            Moonwave
-          </span>
-        </Link>
-
-        {/* Navigation Icons */}
-        <nav className="flex items-center space-x-2">
-          <Link
-            to="/dashboard"
-            className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              location.pathname === '/dashboard'
-                ? 'bg-white/20 text-white backdrop-blur-sm'
-                : 'text-white/80 hover:bg-white/10 hover:text-white'
-            )}
-          >
-            <Home className="w-5 h-5" />
-          </Link>
-          
-          <Link
-            to="/notifications"
-            className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              location.pathname === '/notifications'
-                ? 'bg-white/20 text-white backdrop-blur-sm'
-                : 'text-white/80 hover:bg-white/10 hover:text-white'
-            )}
-          >
-            <Bell className="w-5 h-5" />
-          </Link>
-          
-          <Link
-            to="/settings"
-            className={cn(
-              'p-2 rounded-lg transition-all duration-200',
-              location.pathname === '/settings'
-                ? 'bg-white/20 text-white backdrop-blur-sm'
-                : 'text-white/80 hover:bg-white/10 hover:text-white'
-            )}
-          >
-            <User className="w-5 h-5" />
-          </Link>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </header>
   );
 };

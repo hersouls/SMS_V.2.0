@@ -71,26 +71,29 @@ const Signup: React.FC = () => {
     <AuthLayout>
       <AuthCard>
         {/* 로고 */}
-        <div className="text-center">
+        <div className="text-center space-y-2">
           <h1 className={cn(
-            "text-3xl font-bold font-pretendard",
+            "text-2xl @sm:text-3xl @lg:text-4xl font-bold font-pretendard",
             "bg-gradient-to-r from-blue-600 to-purple-600",
-            "bg-clip-text text-transparent"
+            "bg-clip-text text-transparent tracking-ko-tight"
           )}>
             Moonwave
           </h1>
+          <p className="text-sm @sm:text-base text-gray-600 font-pretendard tracking-ko-normal">
+            구독 관리의 새로운 기준
+          </p>
         </div>
 
         {success ? (
           <div className="text-center space-y-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <User className="w-8 h-8 text-green-600" />
+              <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 font-pretendard">계정이 생성되었습니다!</h3>
-            <p className="text-gray-600 font-pretendard">
+            <h3 className="text-lg font-semibold text-gray-900 font-pretendard tracking-ko-tight">계정이 생성되었습니다!</h3>
+            <p className="text-gray-600 font-pretendard tracking-ko-normal">
               이메일을 확인하여 계정을 인증해주세요.
             </p>
-            <p className="text-sm text-gray-500 font-pretendard">
+            <p className="text-sm text-gray-500 font-pretendard tracking-ko-normal">
               대시보드로 이동 중...
             </p>
           </div>
@@ -107,12 +110,14 @@ const Signup: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className={cn(
                     "w-full pl-10 pr-4 py-3 rounded-lg",
-                    "font-pretendard tracking-ko-normal",
+                    "font-pretendard tracking-ko-normal text-sm @sm:text-base",
                     "border border-gray-200 focus:border-blue-500",
                     "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
-                    "transition-all duration-200"
+                    "transition-all duration-200",
+                    "placeholder:text-gray-400"
                   )}
                   placeholder="이메일"
+                  aria-label="이메일 주소"
                 />
               </div>
 
@@ -125,17 +130,19 @@ const Signup: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className={cn(
                     "w-full pl-10 pr-12 py-3 rounded-lg",
-                    "font-pretendard tracking-ko-normal",
+                    "font-pretendard tracking-ko-normal text-sm @sm:text-base",
                     "border border-gray-200 focus:border-blue-500",
                     "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
-                    "transition-all duration-200"
+                    "transition-all duration-200",
+                    "placeholder:text-gray-400"
                   )}
                   placeholder="비밀번호"
+                  aria-label="비밀번호"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                   aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -151,12 +158,14 @@ const Signup: React.FC = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className={cn(
                     "w-full pl-10 pr-4 py-3 rounded-lg",
-                    "font-pretendard tracking-ko-normal",
+                    "font-pretendard tracking-ko-normal text-sm @sm:text-base",
                     "border border-gray-200 focus:border-blue-500",
                     "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
-                    "transition-all duration-200"
+                    "transition-all duration-200",
+                    "placeholder:text-gray-400"
                   )}
                   placeholder="비밀번호 확인"
+                  aria-label="비밀번호 확인"
                 />
               </div>
             </div>
@@ -165,7 +174,8 @@ const Signup: React.FC = () => {
             {error && (
               <div className={cn(
                 "p-3 rounded-lg bg-red-50 border border-red-200",
-                "flex items-center gap-2 text-sm text-red-700 font-pretendard"
+                "flex items-center gap-2 text-sm text-red-700 font-pretendard",
+                "animate-in slide-in-from-top-2 duration-200"
               )}>
                 <XCircle className="w-4 h-4 flex-shrink-0" />
                 <span>{error}</span>
@@ -182,8 +192,10 @@ const Signup: React.FC = () => {
                 "text-white hover:shadow-lg transform hover:scale-[1.02]",
                 "transition-all duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-purple-500/50",
+                "text-sm @sm:text-base",
                 loading && "opacity-70 cursor-not-allowed"
               )}
+              aria-label="회원가입하기"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -201,7 +213,7 @@ const Signup: React.FC = () => {
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-4 text-gray-500 font-pretendard">또는</span>
+                <span className="bg-white/80 px-4 text-gray-500 font-pretendard">또는</span>
               </div>
             </div>
 
@@ -215,17 +227,23 @@ const Signup: React.FC = () => {
                 "font-pretendard font-medium text-gray-700",
                 "hover:bg-gray-50 transition-colors duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-gray-500/20",
+                "text-sm @sm:text-base",
                 loading && "opacity-70 cursor-not-allowed"
               )}
+              aria-label="구글로 회원가입하기"
             >
               <GoogleIcon className="w-5 h-5" />
               구글로 계속하기
             </button>
 
             {/* 로그인 링크 */}
-            <p className="text-center text-sm text-gray-600 font-pretendard">
+            <p className="text-center text-sm text-gray-600 font-pretendard tracking-ko-normal">
               이미 계정이 있으신가요?{' '}
-              <Link to="/login" className="text-blue-600 hover:underline font-medium">
+              <Link 
+                to="/login" 
+                className="text-blue-600 hover:underline font-medium transition-colors duration-200"
+                aria-label="로그인 페이지로 이동"
+              >
                 로그인
               </Link>
             </p>

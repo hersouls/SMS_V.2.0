@@ -22,7 +22,7 @@ const DataTest = lazy(() => import('./components/features/DataTest'))
 
 // Loading component for Suspense fallback
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50">
     <LoadingSpinner size="lg" />
   </div>
 )
@@ -83,10 +83,12 @@ function AppRoutes() {
         {/* Protected routes */}
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
-              <main className="pt-16 pb-20">
-                <Dashboard />
+              <main className="flex-1 pt-16 pb-32">
+                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                  <Dashboard />
+                </div>
               </main>
               <Footer />
               <MusicPlayer />
@@ -101,10 +103,12 @@ function AppRoutes() {
         
         <Route path="/subscriptions" element={
           <ProtectedRoute>
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
-              <main className="pt-16 pb-20">
-                <Subscriptions />
+              <main className="flex-1 pt-16 pb-32">
+                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                  <Subscriptions />
+                </div>
               </main>
               <Footer />
               <MusicPlayer />
@@ -119,10 +123,12 @@ function AppRoutes() {
         
         <Route path="/calendar" element={
           <ProtectedRoute>
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
-              <main className="pt-16 pb-20">
-                <Calendar />
+              <main className="flex-1 pt-16 pb-32">
+                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                  <Calendar />
+                </div>
               </main>
               <Footer />
               <MusicPlayer />
@@ -137,10 +143,12 @@ function AppRoutes() {
         
         <Route path="/settings" element={
           <ProtectedRoute>
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+            <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
               <Header />
-              <main className="pt-16 pb-20">
-                <Settings />
+              <main className="flex-1 pt-16 pb-32">
+                <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                  <Settings />
+                </div>
               </main>
               <Footer />
               <MusicPlayer />
@@ -155,10 +163,12 @@ function AppRoutes() {
         
         {/* Test route for data verification */}
         <Route path="/test" element={
-          <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+          <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
             <Header />
-            <main className="pt-16 pb-20">
-              <DataTest />
+            <main className="flex-1 pt-16 pb-32">
+              <div className="container mx-auto px-4 @sm:px-6 @lg:px-8">
+                <DataTest />
+              </div>
             </main>
             <Footer />
           </div>

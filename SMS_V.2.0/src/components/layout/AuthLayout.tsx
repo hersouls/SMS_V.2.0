@@ -25,8 +25,10 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
       </div>
       
       {/* 메인 콘텐츠 */}
-      <main className="relative flex-1 flex items-center justify-center p-4">
-        {children}
+      <main className="relative flex-1 flex items-center justify-center p-4 @sm:p-6 @lg:p-8">
+        <div className="@container w-full max-w-md @lg:max-w-lg">
+          {children}
+        </div>
       </main>
     </div>
   );
