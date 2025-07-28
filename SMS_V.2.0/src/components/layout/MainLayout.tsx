@@ -26,33 +26,36 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   onDebugClick
 }) => {
   return (
-    <div className="@container min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Main Layout Frame */}
-      <div className="frame-container">
-        {/* Header Frame */}
-        {showHeader && (
-          <div className="frame-header">
-            <Header />
-          </div>
-        )}
-        
-        {/* Main Content Frame */}
-        <main className="frame-main">
-          {/* Content Container with proper spacing and centering */}
-          <div className="frame-content">
-            {/* Content Frame with improved centering */}
-            <div className="frame-content-inner flex flex-col items-center justify-center min-h-full">
-              {children}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* 🎯 중앙 정렬 컨테이너 추가 */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Main Layout Frame */}
+        <div className="frame-container">
+          {/* Header Frame */}
+          {showHeader && (
+            <div className="frame-header">
+              <Header />
             </div>
-          </div>
-        </main>
-        
-        {/* Footer Frame */}
-        {showFooter && (
-          <div className="frame-footer">
-            <Footer />
-          </div>
-        )}
+          )}
+          
+          {/* Main Content Frame */}
+          <main className="frame-main">
+            {/* Content Container with proper spacing and centering */}
+            <div className="frame-content">
+              {/* Content Frame with improved centering */}
+              <div className="frame-content-inner flex flex-col items-center justify-center min-h-full">
+                {children}
+              </div>
+            </div>
+          </main>
+          
+          {/* Footer Frame */}
+          {showFooter && (
+            <div className="frame-footer">
+              <Footer />
+            </div>
+          )}
+        </div>
       </div>
       
       {/* Floating Elements Frame */}
