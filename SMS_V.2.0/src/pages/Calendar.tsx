@@ -89,7 +89,7 @@ const Calendar: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="w-full max-w-7xl mx-auto px-6 py-8">
+        <div className="container-center py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
             <div className="bg-white rounded-xl shadow-sm p-6">
@@ -103,7 +103,7 @@ const Calendar: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="w-full max-w-7xl mx-auto px-6 py-8">
+      <div className="container-center py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold font-pretendard text-gray-900 tracking-ko-tight break-keep-ko mb-2">

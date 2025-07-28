@@ -162,7 +162,7 @@ const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-6 py-8">
+      <div className="container-center py-8">
         {/* Header Skeleton */}
         <div className="mb-8 animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-2"></div>
@@ -236,7 +236,7 @@ const Dashboard: React.FC = () => {
   // Error state
   if (error) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-6 py-8">
+      <div className="container-center py-8">
         <div className="mb-8">
           <Typography.H1 className="text-gray-900 dark:text-white mb-2">
             Dashboard
@@ -276,7 +276,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-8">
+    <div className="container-center py-8">
       {/* Header */}
       <div className="mb-8">
         <Typography.H1 className="text-gray-900 dark:text-white mb-2">

@@ -4,3 +4,4 @@ export { default as MusicPlayer } from './MusicPlayer';
 export { default as AuthLayout } from './AuthLayout';
 export { default as FloatingActionButtons } from './FloatingActionButtons';
 export { default as MainLayout } from './MainLayout';
+export { default as ResponsiveContainer } from './ResponsiveContainer';
