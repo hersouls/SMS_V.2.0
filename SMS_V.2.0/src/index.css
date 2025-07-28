@@ -10,7 +10,9 @@
   }
 
   body {
-    @apply font-pretendard antialiased;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* 한글 텍스트 최적화 */
@@ -88,31 +90,91 @@
 @layer components {
   /* Design Guide 표준 버튼 컴포넌트 */
   .btn-primary {
-    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    @apply tracking-ko-normal break-keep-ko antialiased;
-    @apply bg-blue-500 hover:bg-blue-600 text-white focus:ring-blue-500;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    outline: none;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2563eb;
+  }
+  
+  .btn-primary:focus {
+    box-shadow: 0 0 0 2px #3b82f6;
   }
 
   .btn-secondary {
-    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    @apply tracking-ko-normal break-keep-ko antialiased;
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    outline: none;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    background-color: #e5e7eb;
+    color: #111827;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #d1d5db;
+  }
+  
+  .btn-secondary:focus {
+    box-shadow: 0 0 0 2px #6b7280;
   }
 
   .btn-destructive {
-    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    @apply tracking-ko-normal break-keep-ko antialiased;
-    @apply bg-red-500 hover:bg-red-600 text-white focus:ring-red-500;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    outline: none;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    background-color: #ef4444;
+    color: white;
+  }
+  
+  .btn-destructive:hover {
+    background-color: #dc2626;
+  }
+  
+  .btn-destructive:focus {
+    box-shadow: 0 0 0 2px #ef4444;
   }
 
   .btn-ghost {
-    @apply font-pretendard font-semibold rounded-lg px-4 py-2 transition-colors duration-200;
-    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    @apply tracking-ko-normal break-keep-ko antialiased;
-    @apply bg-transparent hover:bg-gray-100 text-gray-700;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    outline: none;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    background-color: transparent;
+    color: #374151;
+  }
+  
+  .btn-ghost:hover {
+    background-color: #f3f4f6;
   }
 
   /* Design Guide 표준 카드 컴포넌트 */
@@ -139,23 +201,44 @@
 
   /* 한글 타이포그래피 컴포넌트 - Design Guide 표준 */
   .text-korean {
-    @apply font-pretendard tracking-ko-normal break-keep-ko;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .text-korean-sm {
-    @apply font-pretendard text-sm tracking-ko-normal break-keep-ko;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .text-korean-lg {
-    @apply font-pretendard text-lg tracking-ko-normal break-keep-ko;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   /* Design Guide 표준 입력 필드 */
   .input-field {
-    @apply w-full px-3 py-2 border rounded-md;
-    @apply font-pretendard tracking-ko-normal;
-    @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
-    @apply transition-all duration-200;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    letter-spacing: -0.01em;
+    outline: none;
+    transition: all 0.2s;
+  }
+  
+  .input-field:focus {
+    box-shadow: 0 0 0 2px #3b82f6;
   }
 
   /* Design Guide 표준 그림자 시스템 */
@@ -204,15 +287,31 @@
   }
 
   .moonwave-button {
-    @apply font-pretendard font-semibold rounded-lg px-4 py-2
-           transition-colors duration-200 focus:outline-none 
-           focus:ring-2 focus:ring-offset-2 tracking-ko-normal;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    outline: none;
+    letter-spacing: -0.01em;
+  }
+  
+  .moonwave-button:focus {
+    box-shadow: 0 0 0 2px #3b82f6;
   }
 
   .moonwave-input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-md
-           focus:outline-none focus:ring-2 focus:ring-blue-500
-           font-pretendard tracking-ko-normal;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    outline: none;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    letter-spacing: -0.01em;
+  }
+  
+  .moonwave-input:focus {
+    box-shadow: 0 0 0 2px #3b82f6;
   }
 
   .moonwave-table {
