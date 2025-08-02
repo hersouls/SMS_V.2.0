@@ -148,6 +148,16 @@ SMS_V.2.0/
 
 ## 🚀 배포
 
+### GitHub Pages 배포 (자동)
+```bash
+# main 브랜치에 push하면 자동 배포
+git push origin main
+```
+
+배포 도메인: `https://sub.moonwave.kr`
+
+자세한 설정 방법은 [GitHub Pages 배포 가이드](docs/GitHub-Pages-배포가이드.md)를 참조하세요.
+
 ### Vercel 배포
 ```bash
 npm run build
