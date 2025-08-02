@@ -37,7 +37,6 @@ import {
   Train,
   Bus,
   Bike,
-  Walking,
   Home,
   Building,
   Store,
@@ -84,7 +83,24 @@ import {
   Snowflake as SnowflakeIcon,
   Cloud as CloudIcon,
   Sun as SunIcon,
-  Moon as MoonIcon
+  Moon as MoonIcon,
+  Lock,
+  AlertCircle,
+  Users,
+  Activity,
+  Clock,
+  FileText,
+  BarChart,
+  Sparkles,
+  Database,
+  TestTube,
+  Tv,
+  Code,
+  Brain,
+  Palette,
+  Dumbbell,
+  Circle,
+  Coins
 } from 'lucide-react';
 import { cn } from './ui/utils';
 import {
@@ -99,7 +115,8 @@ import {
 } from '../utils/statistics';
 import {
   loadMockDataFromLocalStorage,
-  initializeMockData
+  initializeMockData,
+  generateAllMockData
 } from '../utils/mockData';
 
 interface StatisticsData {
@@ -248,7 +265,7 @@ export function StatisticsDashboard() {
           setError('실제 데이터를 불러올 수 없어 가상 데이터를 사용합니다.');
           
           // 가상 데이터로 즉시 전환
-          const mockData = initializeMockData();
+          const mockData = generateAllMockData();
           
           dashboardData = {
             total_spend_krw: mockData.monthlySpendingTrends[11]?.total_spend_krw || 150000,
@@ -303,7 +320,7 @@ export function StatisticsDashboard() {
 
       if (!dashboardData) {
         // 가상 데이터 사용
-        const mockData = initializeMockData();
+        const mockData = generateAllMockData();
         
         dashboardData = {
           total_spend_krw: mockData.monthlySpendingTrends[11]?.total_spend_krw || 150000,
@@ -414,7 +431,7 @@ export function StatisticsDashboard() {
       case 'decreasing':
         return <TrendingDown className="text-red-500 drop-shadow-lg" size={20} />;
       case 'stable':
-        return <Equal className="text-blue-500 drop-shadow-lg" size={20} />;
+        return <Minus className="text-blue-500 drop-shadow-lg" size={20} />;
     }
   };
 
