@@ -1,5 +1,10 @@
 # SMS V.2.0 - Subscription Management System
 
+[![Deploy to GitHub Pages](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/deploy.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/deploy.yml)
+[![CI](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Active-brightgreen)](https://sub.moonwave.kr)
+[![Version](https://img.shields.io/badge/Version-2.0.0-blue)](https://github.com/YOUR_USERNAME/YOUR_REPO/releases)
+
 구독 관리 시스템 (SMS V.2.0)은 개인 및 팀의 구독 서비스를 효율적으로 관리할 수 있는 웹 애플리케이션입니다.
 
 ## 🚀 주요 기능
