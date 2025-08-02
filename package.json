@@ -21,7 +21,9 @@
     "test:report": "playwright show-report",
     "test:setup": "node scripts/setup-test-accounts.js create",
     "test:verify": "node scripts/setup-test-accounts.js verify",
-    "test:cleanup": "node scripts/setup-test-accounts.js cleanup"
+    "test:cleanup": "node scripts/setup-test-accounts.js cleanup",
+    "deploy": "npm run build && gh-pages -d dist",
+    "predeploy": "npm run build"
   },
   "dependencies": {
     "@nivo/bar": "^0.99.0",
